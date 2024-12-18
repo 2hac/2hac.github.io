@@ -3,7 +3,7 @@ const originalFetch = window.fetch;
 
 // Create a map of old URLs to their corresponding new URLs
 const redirectMap = {
-    'https://files.crazygames.com/pixel-warfare/34/StreamingAssets/parkour': 'https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/parkour',
+    //'https://files.crazygames.com/pixel-warfare/34/StreamingAssets/parkour': 'https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/parkour',
     'https://pixel-warfare.game-files.crazygames.com/RoomUnlocker.js': 'https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/RoomUnlocker.js'
 };
 
