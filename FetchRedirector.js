@@ -3,7 +3,9 @@ const originalFetch = window.fetch;
 
 // Create a map of old URLs to their corresponding new URLs
 const redirectMap = {
-    'https://games.crazygames.com/en_US/pixel-warfare/StreamingAssets/parkour': 'https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/PmRsMsFgM2yeBIYwR4oXgLIzjKRYKMa7-Pa'
+    'https://games.crazygames.com/en_US/pixel-warfare/StreamingAssets/parkour': 'https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/PmRsMsFgM2yeBIYwR4oXgLIzjKRYKMa7-Pa',
+    'https://pixel-warfare.game-files.crazygames.com/unity/unity2020/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/qEc8iOOHQJxIvusUedearNKgHp6u6y8T.loader.js': 'https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/qEc8iOOHQJxIvusUedearNKgHp6u6y8T.loader.js',
+    'https://files.crazygames.com/pixel-warfare/34/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/qEc8iOOHQJxIvusUedearNKgHp6u6y8T.loader.js': 'https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/qEc8iOOHQJxIvusUedearNKgHp6u6y8T.loader.js'
 };
 
 // Override the fetch function to detect and redirect specific URLs
