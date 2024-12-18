@@ -3,7 +3,7 @@ const originalFetch = window.fetch;
 
 // Create a map of old URLs to their corresponding new URLs
 const redirectMap = {
-    'https://games.crazygames.com/en_US/pixel-warfare/StreamingAssets/parkour': 'https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/PmRsMsFgM2yeBIYwR4oXgLIzjKRYKMa7-Pa'
+    'https://files.crazygames.com/pixel-warfare/34/StreamingAssets/parkour': 'https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/PmRsMsFgM2yeBIYwR4oXgLIzjKRYKMa7-Pa'
 };
 
 // Override the fetch function to detect and redirect specific URLs
