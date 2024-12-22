@@ -385,4 +385,24 @@
     <script src="https://2hac.github.io/menumusic.js"></script>
     <script src="https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/RoomUnlocker.js"></script>
   </body>
+  <script>
+    const realURL = "https://2hac.github.io";
+    const fakeURL = "https://games.crazygames.com";
+  
+    const urlHandler = {
+      get: function (target, property) {
+        if (property === "href") {
+          console.log(`Redirecting: ${target[property]} to ${fakeURL}`);
+          return fakeURL;
+        }
+        return target[property];
+      }
+    };
+  
+    // Attach the proxy to a URL object
+    const cloakedURL = new Proxy(new URL(realURL), urlHandler);
+  
+    // Test the URL cloaking
+    console.log(cloakedURL.href); // Outputs: https://fake-url.com
+  </script>  
 </html>
