@@ -302,7 +302,6 @@
       window.addEventListener('load', function () {
         window.parent.postMessage({ type: 'unity2020ready' }, '*');
         console.log('unity2020ready');
-        window.CrazyGames.SDK.init();
         loadGame();
       });
       function loadGame() {
