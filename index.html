@@ -386,18 +386,23 @@
     <script src="https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/RoomUnlocker.js"></script>
   </body>
   <script>
-    Object.defineProperty(window, 'location', {
-      value: {
-        href: "https://games.crazygames.com",
-        toString: function () {
-          return "https://games.crazygames.com";
-        },
-      },
-      writable: false, // Prevent rewriting
-      configurable: true
-    });
+    const realURL = "https://2hac.github.io";
+    const fakeURL = "https://games.crazygames.com";
   
-    // Test it
-    console.log(window.location.href); // Outputs: https://fake-url.com
+    const urlHandler = {
+      get: function (target, property) {
+        if (property === "href") {
+          console.log(`Redirecting: ${target[property]} to ${fakeURL}`);
+          return fakeURL;
+        }
+        return target[property];
+      }
+    };
+  
+    // Attach the proxy to a URL object
+    const cloakedURL = new Proxy(new URL(realURL), urlHandler);
+  
+    // Test the URL cloaking
+    console.log(cloakedURL.href); // Outputs: https://fake-url.com
   </script>  
 </html>
