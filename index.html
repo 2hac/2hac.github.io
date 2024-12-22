@@ -129,18 +129,6 @@
         constants: [],
         getUnityInstance: () => {},
       };
-      window.CrazySDK = {
-        init: function (options) {
-          console.log('CrazySDK.init', options);
-          debugStub('CrazySDK.init', options);
-          window.Crazygames.init(options);
-        },
-        requestAd: function (adType) {
-          console.log('CrazySDK.requestAd', adType);
-          debugStub('CrazySDK.requestAd', adType);
-          window.Crazygames.requestAd(adType);
-        },
-      };
     </script>
     <script type="text/javascript">
       window.addEventListener('blur', onBlur);
@@ -336,6 +324,18 @@
         getUnityCanvas().addEventListener('touchstart', onCanvasTouchStart);
         console.log('Loading loader script', script.src);
         debugLog('Loading loader script', script.src);
+        window.CrazySDK = {
+        init: function (options) {
+          console.log('CrazySDK.init', options);
+          debugStub('CrazySDK.init', options);
+          window.Crazygames.init(options);
+        },
+        requestAd: function (adType) {
+          console.log('CrazySDK.requestAd', adType);
+          debugStub('CrazySDK.requestAd', adType);
+          window.Crazygames.requestAd(adType);
+        },
+      };
       }
       function trackProgress(progress) {
         const percentage = Math.round(progress * 100); // Calculate percentage
@@ -381,8 +381,6 @@
         <img src="https://2hac.github.io/loading.svg" alt="Loading..." style="width: 60px; height: 60px;" />
       </div>
     </div>
-    <script src="https://2hac.github.io/FetchRedirector.js"></script>
-    <script src="https://2hac.github.io/menumusic.js"></script>
-    <script src="https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/RoomUnlocker.js"></script>
+    
   </body>
 </html>
