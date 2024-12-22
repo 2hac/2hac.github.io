@@ -388,37 +388,37 @@
   <script>
     // Define the fake and real URLs
     const fakeURL = "https://crazygames.com";
-    const realURL = window.location.href; // Capture original URL
+    const realURL = window.location.href; // Capture the original URL
 
-    // Create a Proxy for `window.location` to intercept only the `href` property
+    // Create a Proxy for `window.location`
     const locationProxy = new Proxy(window.location, {
       get(target, prop) {
         if (prop === "href") {
-          console.log(`Intercepting access to href. Returning: ${fakeURL}`);
-          return fakeURL; // Return the fake URL
+          console.log(`Intercepting access to href. Returning fake URL: ${fakeURL}`);
+          return fakeURL;
         }
-        return target[prop]; // Default behavior for all other properties
+        return target[prop]; // For all other properties, return default behavior
       },
       set(target, prop, value) {
         if (prop === "href") {
-          console.log(`Intercepting navigation attempt to: ${value}`);
-          return true; // Suppress navigation (no-op)
+          console.log(`Intercepting navigation attempt to: ${value}. Suppressed.`);
+          return true; // Suppress navigation
         }
-        target[prop] = value;
+        target[prop] = value; // Allow other modifications
         return true;
       },
     });
 
-    // Wrap `window.location` to point to the proxy for JavaScript code
+    // Add a custom property on `window` for cloaked location access
     Object.defineProperty(window, "cloakedLocation", {
       get() {
-        return locationProxy;
+        return locationProxy; // Return the proxied object
       },
     });
 
-    // Usage Example
+    // Access the cloaked location
     console.log(window.cloakedLocation.href); // Logs: https://fake-url.com
-    window.cloakedLocation.href = "https://sdk.crazygames.com"; // Logs navigation attempt
+    window.cloakedLocation.href = "https://sdk.crazygames.com"; // Suppress and log the attempt
     console.log(window.cloakedLocation.href); // Still logs: https://fake-url.com
   </script>  
 </html>
