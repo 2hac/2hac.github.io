@@ -1,9 +1,9 @@
 // Intercept the fetch function to redirect specific URLs
-/*const originalFetch = window.fetch;
+const originalFetch = window.fetch;
 
 // Create a map of old URLs to their corresponding new URLs
 const redirectMap = {
-    // 'https://files.crazygames.com/pixel-warfare/34/StreamingAssets/parkour': 'https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/playgroundFake'
+    'https://sdk.crazygames.com/crazygames-sdk-v3.js': 'https://2hac.github.io/crazygames-sdk-v3.js'
 };
 
 // Override the fetch function to detect and redirect specific URLs
@@ -29,4 +29,4 @@ function checkEveryFrame() {
 // Start the frame monitoring
 requestAnimationFrame(checkEveryFrame);
 
-console.log('Fetch URL redirection script is active.');*/
+console.log('Fetch URL redirection script is active.');
