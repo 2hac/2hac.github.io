@@ -239,7 +239,7 @@
         };
       })(console.error);
     </script>
-    <script type="text/javascript">const debugEnabled = cloakedURL.href.includes('iframed_unity_debug=true');
+    <script type="text/javascript">const debugEnabled = window.location.href.includes('iframed_unity_debug=true');
       let config = {
         "loaderOptions": {
             "showProgress": true,
@@ -388,21 +388,40 @@
   <script>
     const realURL = "https://2hac.github.io";
     const fakeURL = "https://crazygames.com";
-  
+
+    // Proxy handler for window.location
     const urlHandler = {
-      get: function (target, property) {
-        if (property === "href") {
-          console.log(`Redirecting: ${target[property]} to ${fakeURL}`);
+      get(target, property) {
+        if (property === "href" || property === "toString") {
+          console.log(`Intercepting access to: ${property}, returning fake URL: ${fakeURL}`);
           return fakeURL;
         }
         return target[property];
+      },
+      set(target, property, value) {
+        if (property === "href") {
+          console.log(`Preventing navigation to: ${value}. Keeping cloaked fake URL.`);
+          return true; // Block setting new href
+        }
+        target[property] = value;
+        return true;
       }
     };
-  
-    // Attach the proxy to a URL object
-    const cloakedURL = new Proxy(new URL(realURL), urlHandler);
-  
-    // Test the URL cloaking
-    console.log(cloakedURL.href); // Outputs: https://fake-url.com
+
+    // Cloak window.location
+    const cloakedLocation = new Proxy(window.location, urlHandler);
+    Object.defineProperty(window, "location", {
+      get: function () {
+        return cloakedLocation;
+      },
+      set: function (value) {
+        console.log(`Blocked attempt to overwrite location with: ${value}`);
+      },
+    });
+
+    // Test the cloaked location
+    console.log(window.location.href); // Outputs: https://fake-url.com
+    window.location.href = "https://build.crazygames.com"; // Blocked
+    console.log(window.location.href); // Still outputs: https://fake-url.com
   </script>  
 </html>
