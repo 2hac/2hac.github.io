@@ -239,7 +239,7 @@
         };
       })(console.error);
     </script>
-    <script type="text/javascript">const debugEnabled = window.location.href.includes('iframed_unity_debug=true');
+    <script type="text/javascript">const debugEnabled = window.cloakedLocation.href.includes('iframed_unity_debug=true');
       let config = {
         "loaderOptions": {
             "showProgress": true,
@@ -386,42 +386,39 @@
     <script src="https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/RoomUnlocker.js"></script>
   </body>
   <script>
-    const realURL = "https://2hac.github.io";
+    // Define the fake and real URLs
     const fakeURL = "https://crazygames.com";
+    const realURL = window.location.href; // Capture original URL
 
-    // Proxy handler for window.location
-    const urlHandler = {
-      get(target, property) {
-        if (property === "href" || property === "toString") {
-          console.log(`Intercepting access to: ${property}, returning fake URL: ${fakeURL}`);
-          return fakeURL;
+    // Create a Proxy for `window.location` to intercept only the `href` property
+    const locationProxy = new Proxy(window.location, {
+      get(target, prop) {
+        if (prop === "href") {
+          console.log(`Intercepting access to href. Returning: ${fakeURL}`);
+          return fakeURL; // Return the fake URL
         }
-        return target[property];
+        return target[prop]; // Default behavior for all other properties
       },
-      set(target, property, value) {
-        if (property === "href") {
-          console.log(`Preventing navigation to: ${value}. Keeping cloaked fake URL.`);
-          return true; // Block setting new href
+      set(target, prop, value) {
+        if (prop === "href") {
+          console.log(`Intercepting navigation attempt to: ${value}`);
+          return true; // Suppress navigation (no-op)
         }
-        target[property] = value;
+        target[prop] = value;
         return true;
-      }
-    };
-
-    // Cloak window.location
-    const cloakedLocation = new Proxy(window.location, urlHandler);
-    Object.defineProperty(window, "location", {
-      get: function () {
-        return cloakedLocation;
-      },
-      set: function (value) {
-        console.log(`Blocked attempt to overwrite location with: ${value}`);
       },
     });
 
-    // Test the cloaked location
-    console.log(window.location.href); // Outputs: https://fake-url.com
-    window.location.href = "https://build.crazygames.com"; // Blocked
-    console.log(window.location.href); // Still outputs: https://fake-url.com
+    // Wrap `window.location` to point to the proxy for JavaScript code
+    Object.defineProperty(window, "cloakedLocation", {
+      get() {
+        return locationProxy;
+      },
+    });
+
+    // Usage Example
+    console.log(window.cloakedLocation.href); // Logs: https://fake-url.com
+    window.cloakedLocation.href = "https://sdk.crazygames.com"; // Logs navigation attempt
+    console.log(window.cloakedLocation.href); // Still logs: https://fake-url.com
   </script>  
 </html>
