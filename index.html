@@ -129,6 +129,18 @@
         constants: [],
         getUnityInstance: () => {},
       };
+      window.CrazySDK = {
+        init: function (options) {
+          console.log('CrazySDK.init', options);
+          debugStub('CrazySDK.init', options);
+          window.Crazygames.init(options);
+        },
+        requestAd: function (adType) {
+          console.log('CrazySDK.requestAd', adType);
+          debugStub('CrazySDK.requestAd', adType);
+          window.Crazygames.requestAd(adType);
+        },
+      };
     </script>
     <script type="text/javascript">
       window.addEventListener('blur', onBlur);
@@ -231,18 +243,18 @@
       let config = {
         "loaderOptions": {
             "showProgress": true,
-            "unityLoaderUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/qEc8iOOHQJxIvusUedearNKgHp6u6y8T.loader.js",
+            "unityLoaderUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/bb0d9ecdb05db3e84da20bd14a4f84dc.loader.js",
             "unityConfigOptions": {
-                "codeUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/lxV1Lqe1iovW3jTbpN6w2TXGuuPaKSyY.wasm",
-                "dataUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/ZSo55q7xAHPa93eWtJCTRf2pbiwEgikS.data",
-                "frameworkUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/ZAwrUV51Ybl4HPgoD4YIqLJOA6nveGc4.framework",
+                "codeUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/d810c3a16250153df62e4d30e50612fe.wasm.br",
+                "dataUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/98cdb9e7d96b4d7e8a55b07aaa528ffb.data.br",
+                "frameworkUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/1a432a66424e7632f7f48ea686205e1c.framework.js.br",
                 "streamingAssetsUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/"
             }
         },
         "unityConfig": {
-            "codeUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/lxV1Lqe1iovW3jTbpN6w2TXGuuPaKSyY.wasm",
-            "dataUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/ZSo55q7xAHPa93eWtJCTRf2pbiwEgikS.data",
-            "frameworkUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/ZAwrUV51Ybl4HPgoD4YIqLJOA6nveGc4.framework",
+            "codeUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/d810c3a16250153df62e4d30e50612fe.wasm.br",
+            "dataUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/98cdb9e7d96b4d7e8a55b07aaa528ffb.data.br",
+            "frameworkUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/1a432a66424e7632f7f48ea686205e1c.framework.js.br",
             "streamingAssetsUrl": "https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/",
             "companyName": "CrazyGames",
             "productName": "pixel-warfare",
@@ -290,6 +302,7 @@
       window.addEventListener('load', function () {
         window.parent.postMessage({ type: 'unity2020ready' }, '*');
         console.log('unity2020ready');
+        CrazyGames.SDK.init();
         loadGame();
       });
       function loadGame() {
@@ -324,18 +337,6 @@
         getUnityCanvas().addEventListener('touchstart', onCanvasTouchStart);
         console.log('Loading loader script', script.src);
         debugLog('Loading loader script', script.src);
-        window.CrazySDK = {
-        init: function (options) {
-          console.log('CrazySDK.init', options);
-          debugStub('CrazySDK.init', options);
-          window.Crazygames.init(options);
-        },
-        requestAd: function (adType) {
-          console.log('CrazySDK.requestAd', adType);
-          debugStub('CrazySDK.requestAd', adType);
-          window.Crazygames.requestAd(adType);
-        },
-      };
       }
       function trackProgress(progress) {
         const percentage = Math.round(progress * 100); // Calculate percentage
@@ -381,6 +382,8 @@
         <img src="https://2hac.github.io/loading.svg" alt="Loading..." style="width: 60px; height: 60px;" />
       </div>
     </div>
-    
+    <script src="https://2hac.github.io/FetchRedirector.js"></script>
+    <script src="https://2hac.github.io/menumusic.js"></script>
+    <script src="https://2hac.github.io/ssWk3rhCZFHkxMlQXSlYMIS27TQvlmPA/RoomUnlocker.js"></script>
   </body>
 </html>
