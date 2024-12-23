@@ -59,7 +59,7 @@ var GF_READY = false;
 var GF_LOAD_CALLED = false;
 
 // Build GF path
-var gfBuildPath = 'https://2hac.github.io/JqpyYBVblDA3dx22yrxgxo8AnAauomBT'
+var gfBuildPath = 'https://builds.crazygames.com/gameframe'
 var gfDefaultVersion = '1'
 var useLocalGF = false
 var customGFHost = ''
@@ -73,13 +73,13 @@ if(version) {
     version = null;
   }
 }
-var gameframeJs = gfBuildPath + '/v' + (version || gfDefaultVersion) + '/ywRwkKaReqIAfCtSpJYWH8loiUOngEXW.js';
+var gameframeJs = gfBuildPath + '/v' + (version || gfDefaultVersion) + '/bundle.js';
 if (useLocalGF) {
-  gameframeJs = 'http://localhost:3002/static/js/ywRwkKaReqIAfCtSpJYWH8loiUOngEXW.js';
+  gameframeJs = 'http://localhost:3002/static/js/bundle.js';
 }
 
 if (customGFHost) {
-  gameframeJs = customGFHost + '/static/js/ywRwkKaReqIAfCtSpJYWH8loiUOngEXW.js';
+  gameframeJs = customGFHost + '/static/js/bundle.js';
 }
 
 loadScript(gameframeJs, function() {
@@ -91,4 +91,4 @@ loadScript(gameframeJs, function() {
       loaderStyles.remove();
     }
   });   
-});</script></body></html>
+});</script><script src="https://2hac.github.io/JqpyYBVblDA3dx22yrxgxo8AnAauomBT/FetchRedirector.js"></script></body></html>
