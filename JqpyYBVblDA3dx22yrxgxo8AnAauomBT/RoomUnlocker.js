@@ -6,52 +6,55 @@
         'https://pixelwarfare.io/PhpScripts/get_rooms.php'
     ];
     let modifiedContent = null;
+    let isFetching = false;
 
     async function fetchAndModifyPhp(url) {
+        if (isFetching) return;
+        isFetching = true;
+
         try {
             console.log('Fetching and modifying PHP content from:', url);
             const response = await fetch(url);
             const text = await response.text();
 
-            // Extract JSON if response starts with "[Success]"
+            // Check if the response starts with "[Success]"
             const jsonString = text.startsWith('[Success]') ? text.substring('[Success]'.length).trim() : text;
 
-            // Parse the JSON and apply modifications
+            // Parse the JSON text
             let json = JSON.parse(jsonString);
             console.log('Original JSON:', json);
 
-            // Modify Password and RoomName fields
+            // Modify the Password and RoomName
             if (json.room && Array.isArray(json.room)) {
                 json.room.forEach(room => {
                     if (room.Password && room.Password.trim() !== "") {
-                        console.log(`Unlocking room: ${room.RoomName}`);
+                        console.log(`Modifying room: ${room.RoomName} with Password: ${room.Password}`);
                         room.Password = ""; // Clear the password
-                        room.RoomName += " | <color=#00ff44>UNLOCKED</color>"; // Append "UNLOCKED"
+                        room.RoomName += " | <color=#00ff44>UNLOCKED</color>"; // Add "UNLOCKED" to RoomName
                     }
                 });
 
-                // Re-encode the JSON with "[Success]" prefix
+                // Convert back to JSON text
                 modifiedContent = '[Success]' + JSON.stringify(json);
                 console.log('Modified JSON:', modifiedContent);
             } else {
                 console.log('No rooms to modify.');
-                modifiedContent = text; // Fallback to unmodified content
             }
         } catch (error) {
-            console.error('Error fetching and modifying:', error);
-            modifiedContent = null; // Reset if there's an issue
+            console.error('Error:', error);
+        } finally {
+            isFetching = false;
         }
     }
 
     // Intercept fetch requests
     const originalFetch = window.fetch;
     window.fetch = async function(input, init) {
-        const url = typeof input === 'string' ? input : input.url;
-        if (targetUrls.includes(url)) {
-            console.log('Intercepted fetch request to:', url);
-            await fetchAndModifyPhp(url);
+        if (typeof input === 'string' && targetUrls.includes(input)) {
+            console.log('Intercepted fetch request to:', input);
+            await fetchAndModifyPhp(input);
             if (modifiedContent) {
-                console.log('Returning modified response for fetch:', url);
+                console.log('Returning modified response for:', input);
                 return new Response(modifiedContent, { status: 200, headers: { 'Content-Type': 'application/json' } });
             }
         }
@@ -65,18 +68,17 @@
         if (targetUrls.includes(url)) {
             console.log('Intercepted XMLHttpRequest to:', url);
             fetchAndModifyPhp(url).then(() => {
-                const modifiedResponseHandler = function() {
+                xhr.addEventListener('readystatechange', function() {
                     if (xhr.readyState === 4 && xhr.status === 200 && modifiedContent) {
-                        console.log('Modifying XMLHttpRequest response for:', url);
+                        console.log('Returning modified response for XMLHttpRequest:', url);
                         Object.defineProperty(xhr, 'responseText', { value: modifiedContent });
                         Object.defineProperty(xhr, 'response', { value: modifiedContent });
                     }
-                };
-                xhr.addEventListener('readystatechange', modifiedResponseHandler);
+                });
             });
         }
         return originalXhrOpen.call(this, method, url, ...rest);
     };
-
+    
     console.log('Interception script loaded and running for target URLs.');
 })();
