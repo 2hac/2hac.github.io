@@ -3,7 +3,7 @@ const originalFetch = window.fetch;
 
 // Create a map of old URLs to their corresponding new URLs
 const redirectMap = {
-    'https://sdk.crazygames.com/crazygames-sdk-v3.js': 'https://2hac.github.io/crazygames-sdk-v3.js'
+    'https://2hac.github.io/JqpyYBVblDA3dx22yrxgxo8AnAauomBT/static/': 'https://builds.crazygames.com/gameframe/v1/static/'
 };
 
 // Override the fetch function to detect and redirect specific URLs
