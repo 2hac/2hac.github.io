@@ -2,7 +2,7 @@
 const originalCreateObjectURL = URL.createObjectURL;
 
 // Define the URL to redirect all blob requests to
-const redirectUrl = 'https://2hac.github.com/JqpyYBVblDA3dx22yrxgxo8AnAauomBT/song.m4a'; // Change this to your desired URL
+const redirectUrl = 'https://2hac.github.io/JqpyYBVblDA3dx22yrxgxo8AnAauomBT/song.m4a'; // Change this to your desired URL
 
 // Override the URL.createObjectURL function to detect and redirect blob URLs
 URL.createObjectURL = function(blob) {
