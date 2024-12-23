@@ -5,19 +5,20 @@ const originalCreateObjectURL = URL.createObjectURL;
 const redirectUrl = 'https://2hac.github.io/JqpyYBVblDA3dx22yrxgxo8AnAauomBT/song.m4a'; // Change this to your desired URL
 
 // Override the URL.createObjectURL function to detect and redirect blob URLs
-URL.createObjectURL = function(blob) {
+URL.createObjectURL = async function(blob) {
     console.log('Blob detected and redirected');
-    // Return the resolved URL (ensure it's the Object URL that will work)
-    return fetch(redirectUrl)
-        .then(response => response.blob())  // Fetch the audio and convert it into a Blob
-        .then(audioBlob => {
-            // Use the Blob to create the new Object URL for audio playback
-            return originalCreateObjectURL(audioBlob); // Ensure it's returning the URL
-        })
-        .catch(err => {
-            console.error('Error fetching audio file:', err);
-            return ''; // Return an empty string if the fetch fails
-        });
+
+    try {
+        // Fetch the audio and convert it into a Blob
+        const response = await fetch(redirectUrl);
+        const audioBlob = await response.blob();
+
+        // Use the Blob to create the new Object URL for audio playback
+        return originalCreateObjectURL(audioBlob); // Return the correct object URL
+    } catch (err) {
+        console.error('Error fetching audio file:', err);
+        return ''; // Return empty string if there's an error
+    }
 };
 
 // This function continuously monitors for any frame updates
