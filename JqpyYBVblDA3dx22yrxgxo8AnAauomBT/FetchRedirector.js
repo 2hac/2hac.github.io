@@ -3,22 +3,18 @@ const originalFetch = window.fetch;
 
 // Create a map of old URLs to their corresponding new URLs
 const redirectMap = {
-    'https://2hac.github.io/JqpyYBVblDA3dx22yrxgxo8AnAauomBT/static/': 'https://builds.crazygames.com/gameframe/v1/static/'
+    // 'https://sdk.crazygames.com/crazygames-sdk-v3.js': 'https://2hac.github.io/crazygames-sdk-v3.js'
 };
 
 // Override the fetch function to detect and redirect specific URLs
-window.fetch = async function (input, init) {
-    // Extract URL from the input
+window.fetch = function(input, init) {
     const url = typeof input === 'string' ? input : input.url;
 
     // Check if the requested URL matches any in the redirect map
-    for (const oldURL in redirectMap) {
-        if (url.startsWith(oldURL)) {
-            console.log(`Redirecting URL: ${url} -> ${redirectMap[oldURL]}`);
-            // Replace the old base URL with the new base URL
-            input = url.replace(oldURL, redirectMap[oldURL]);
-            break;
-        }
+    if (redirectMap[url]) {
+        console.log('Redirecting URL:', url);
+        // Modify the request to redirect to the new URL
+        input = redirectMap[url]; // New URL to redirect to
     }
 
     // Call the original fetch function with the modified URL
