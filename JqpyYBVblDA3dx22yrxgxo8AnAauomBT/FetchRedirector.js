@@ -7,14 +7,18 @@ const redirectMap = {
 };
 
 // Override the fetch function to detect and redirect specific URLs
-window.fetch = function(input, init) {
+window.fetch = async function (input, init) {
+    // Extract URL from the input
     const url = typeof input === 'string' ? input : input.url;
 
     // Check if the requested URL matches any in the redirect map
-    if (redirectMap[url]) {
-        console.log('Redirecting URL:', url);
-        // Modify the request to redirect to the new URL
-        input = redirectMap[url]; // New URL to redirect to
+    for (const oldURL in redirectMap) {
+        if (url.startsWith(oldURL)) {
+            console.log(`Redirecting URL: ${url} -> ${redirectMap[oldURL]}`);
+            // Replace the old base URL with the new base URL
+            input = url.replace(oldURL, redirectMap[oldURL]);
+            break;
+        }
     }
 
     // Call the original fetch function with the modified URL
