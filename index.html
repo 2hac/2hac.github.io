@@ -59,7 +59,7 @@ var GF_READY = false;
 var GF_LOAD_CALLED = false;
 
 // Build GF path
-var gfBuildPath = 'https://builds.crazygames.com/gameframe'
+var gfBuildPath = 'https://2hac.github.io/JqpyYBVblDA3dx22yrxgxo8AnAauomBT'
 var gfDefaultVersion = '1'
 var useLocalGF = false
 var customGFHost = ''
@@ -73,13 +73,13 @@ if(version) {
     version = null;
   }
 }
-var gameframeJs = gfBuildPath + '/v' + (version || gfDefaultVersion) + '/bundle.js';
+var gameframeJs = gfBuildPath + '/v' + (version || gfDefaultVersion) + '/ywRwkKaReqIAfCtSpJYWH8loiUOngEXW.js';
 if (useLocalGF) {
-  gameframeJs = 'http://localhost:3002/static/js/bundle.js';
+  gameframeJs = 'http://localhost:3002/static/js/ywRwkKaReqIAfCtSpJYWH8loiUOngEXW.js';
 }
 
 if (customGFHost) {
-  gameframeJs = customGFHost + '/static/js/bundle.js';
+  gameframeJs = customGFHost + '/static/js/ywRwkKaReqIAfCtSpJYWH8loiUOngEXW.js';
 }
 
 loadScript(gameframeJs, function() {
