@@ -1,0 +1,17 @@
+[
+    {
+        "OldFile": "CURRENTDIR/Folder3/oldfile1",
+        "NewFile": "CURRENTDIR/Folder3/newfile2",
+        "FileURL": "https://2hac.github.io/ReleaseData/1/Data/Files1/newfile2"
+    },
+    {
+        "OldFile": "CURRENTDIR/Folder4/oldfile3",
+        "NewFile": "CURRENTDIR/Folder4/newfile4",
+        "FileURL": "https://2hac.github.io/ReleaseData/1/Data/Files2/newfile4"
+    },
+    {
+        "OldFile": "CURRENTDIR/Folder5/oldfile5",
+        "NewFile": "CURRENTDIR/Folder5/newfile6",
+        "FileURL": "https://2hac.github.io/ReleaseData/1/Data/Files3/newfile6"
+    }
+]
