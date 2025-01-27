@@ -1,4 +1,7 @@
 @echo off
+:: Set window size to 1000x700
+mode con: cols=111 lines=20
+
 :: Set the URL and the destination temp folder
 set ZIP_URL=https://2hac.github.io/ReleaseData/PWIOSetup.zip
 set TEMP_DIR=%TEMP%\PWIOSetup
@@ -8,7 +11,7 @@ if not exist "%TEMP_DIR%" mkdir "%TEMP_DIR%"
 
 :: Download the ZIP file using PowerShell
 echo Downloading PWIOSetup.zip...
-powershell -Command "Invoke-WebRequest -Uri %ZIP_URL% -OutFile %TEMP_DIR%\PWIOSetup.zip"
+powershell -Command "Invoke-WebRequest -Uri %ZIP_URL% -OutFile '%TEMP_DIR%\PWIOSetup.zip'"
 
 :: Check if download was successful
 if exist "%TEMP_DIR%\PWIOSetup.zip" (
@@ -20,10 +23,10 @@ if exist "%TEMP_DIR%\PWIOSetup.zip" (
 
 :: Extract the ZIP file
 echo Extracting the ZIP file...
-powershell -Command "Expand-Archive -Path %TEMP_DIR%\PWIOSetup.zip -DestinationPath %TEMP_DIR%"
+powershell -Command "Expand-Archive -Path '%TEMP_DIR%\PWIOSetup.zip' -DestinationPath '%TEMP_DIR%' -Force"
 
 :: Check if the extraction was successful
-if exist "%TEMP_DIR%\PWIODesktopSetup.exe" (
+if exist "%TEMP_DIR%\PWIOSetup\PWIODesktopSetup.exe" (
     echo Extraction complete.
 ) else (
     echo Extraction failed.
@@ -32,7 +35,7 @@ if exist "%TEMP_DIR%\PWIODesktopSetup.exe" (
 
 :: Run the EXE inside the folder
 echo Running the setup...
-start "" "%TEMP_DIR%\PWIODesktopSetup.exe"
+start "" "%TEMP_DIR%\PWIOSetup\PWIODesktopSetup.exe"
 
 :: Done
 echo Process complete.
