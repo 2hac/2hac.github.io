@@ -1,0 +1,12 @@
+[
+    {
+        "OldFile": "CURRENTDIR/Pixel_Warfare_desktop_Data/2PWIOData.data",
+        "NewFile": "CURRENTDIR/Pixel_Warfare_desktop_Data/3PWIOData.data",
+        "FileURL": "https://2hac.github.io/ReleaseData/3/Data/3PWIOData.data"
+    },
+    {
+        "OldFile": "CURRENTDIR/Pixel_Warfare_desktop_Data/index.html",
+        "NewFile": "CURRENTDIR/Pixel_Warfare_desktop_Data/index.html",
+        "FileURL": "https://2hac.github.io/ReleaseData/3/Data/index.html"
+    }
+]
