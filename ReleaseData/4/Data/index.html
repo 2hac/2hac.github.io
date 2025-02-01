@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF8">
+    <meta name="robots" content="noindex,follow">
+    <style>
+      html, body {
+        background-color: #000000; /* Black background */
+      }
+      
+      #unity-progress-bar-empty {
+        width: 700px; /* Updated width */
+        height: 18px;
+        margin-top: 10px;
+        margin-left: auto; /* Center alignment */
+        margin-right: auto; /* Center alignment */
+        border-radius: 25px;
+        background-color: rgb(99, 15, 15);
+      }
+
+      #unity-progress-bar-full {
+        width: 0%;
+        height: 18px;
+        margin-top: 10px;
+        box-shadow:0 0 50px #e100ff;
+        border-radius: 25px;
+        background-color: aliceblue;
+      }
+    </style>
+    <script type="text/javascript">/** 
+      Some older Unity SDKs relied on calling SDK functionality directly from the window they are running in.
+      This file forwards some of those calls to GF to still support ads.
+      */
+      const stubDebugEnabled = window.location.href.includes('iframed_unity_debug=true');
+      let crazySDKObjectName = null;
+      /** 
+      Older Unity SDKs require an InitCallback after init, so that the Init object is set in the CrazySDK in Unity and requestAd method which relies on it can be called.
+      This means we cannot wait for the init response from GF to call the InitCallback, as it arrives a couple ticks later when Unity already tries to request the ad.
+      That's why GF will send here the oldSdkInitObject in the Unity config message, so that it can be forwarded to the Unity SDK instantly after Crazygames.init call.
+      */
+      let oldSdkInitObject = null;
+      function debugStub(...args) {
+        if (stubDebugEnabled) {
+          console.log('[StubSDK]', ...args);
+        }
+      }
+      function stubSendUnityMessage(methodName, value) {
+        // unityGameInstance is defined in unity2020Loader.pug or unity56Loader.pug
+        if (unityGameInstance && crazySDKObjectName) {
+          console.log('Send message to Unity game instance', methodName, value);
+          debugStub('Send message to Unity game instance', methodName, value);
+          unityGameInstance.SendMessage(crazySDKObjectName, methodName, value);
+        } else {
+          console.log('unityGameInstance or crazySDKObjectName not defined, cannot send message', methodName, value);
+          debugStub('unityGameInstance or crazySDKObjectName not defined, cannot send message', methodName, value);
+        }
+      }
+      /** GF will reply with ad events */
+      window.addEventListener('message', (event) => {
+        if (event.data.type === 'sendUnityMessage') {
+          if (event.data.methodName === 'InitCallback') {
+            // InitCallback will be sent instantly from Crazygames.init
+            return;
+          }
+          console.log('Got GF event', event.data);
+          debugStub('Got GF event', event.data);
+          stubSendUnityMessage(event.data.methodName, event.data.value);
+        }
+      });
+      window.Crazygames = {
+        load: () => {
+          console.log('Crazygames.load');
+          debugStub('Crazygames.load');
+        },
+        init: (options) => {
+          console.log('Crazygames.init forwarded to GF', options);
+          debugStub('Crazygames.init forwarded to GF', options);
+          crazySDKObjectName = options.crazySDKObjectName;
+          window.parent.postMessage({ type: 'window.Crazygames.init', options }, '*');
+          if (oldSdkInitObject) {
+            stubSendUnityMessage('InitCallback', JSON.stringify(oldSdkInitObject));
+          } else {
+            // this is to handle cached GF
+            const gameSlug = new URL(window.location.href).hostname.split('.')[0];
+            const initObject = { gameLink: 'https://www.crazygames.com/game/' + gameSlug, userInfo: { countryCode: 'US', device: { type: 'desktop' }, os: { name: 'Windows', version: '11' }, browser: { name: 'Chrome', version: '130.0.0.0' } } };
+            console.log('No oldSdkInitObject to send, sending temporary init object', initObject);
+            debugStub('No oldSdkInitObject to send, sending temporary init object', initObject);
+            stubSendUnityMessage('InitCallback', JSON.stringify(initObject));
+          }
+        },
+        requestAd: (adType) => {
+          console.log('Crazygames.requestAd forwarded to GF', adType);
+          debugStub('Crazygames.requestAd forwarded to GF', adType);
+          window.parent.postMessage({ type: 'window.Crazygames.requestAd', adType }, '*');
+        },
+        happytime: () => {
+          console.log('Crazygames.happytime');
+          debugStub('Crazygames.happytime');
+        },
+        gameplayStart: () => {
+          console.log('Crazygames.gameplayStart');
+          debugStub('Crazygames.gameplayStart');
+        },
+        gameplayStop: () => {
+          console.log('Crazygames.gameplayStop');
+          debugStub('Crazygames.gameplayStop');
+        },
+        sdkGameLoadingStart: () => {
+          console.log('Crazygames.sdkGameLoadingStart');
+          debugStub('Crazygames.sdkGameLoadingStart');
+        },
+        sdkGameLoadingStop: () => {
+          console.log('Crazygames.sdkGameLoadingStop');
+          debugStub('Crazygames.sdkGameLoadingStop');
+        },
+        requestInviteUrl: (url) => {
+          console.log('Crazygames.requestInviteUrl', url);
+          debugStub('Crazygames.requestInviteUrl', url);
+        },
+        requestBanners: (banners) => {
+          console.log('Crazygames.requestBanners', banners);
+          debugStub('Crazygames.requestBanners', banners);
+          console.warn("Stub SDK doesn't support banners, please migrate to the new Unity SDK");
+        },
+        screenshotReceived: () => {
+          console.log('Crazygames.screenshotReceived');
+          debugStub('Crazygames.screenshotReceived');
+        },
+        constants: [],
+        getUnityInstance: () => {},
+      };
+      window.CrazySDK = {
+        init: function (options) {
+          console.log('CrazySDK.init', options);
+          debugStub('CrazySDK.init', options);
+          window.Crazygames.init(options);
+        },
+        requestAd: function (adType) {
+          console.log('CrazySDK.requestAd', adType);
+          debugStub('CrazySDK.requestAd', adType);
+          window.Crazygames.requestAd(adType);
+        },
+      };
+    </script>
+    <script type="text/javascript">
+      window.addEventListener('blur', onBlur);
+      function onBlur() {
+        window.parent.postMessage({ type: 'syncUnityData' }, '*');
+      }
+      function sendDelayedMemoryUsage() {
+        setTimeout(() => {
+          const windowMemory = window?.performance?.memory;
+          if (!windowMemory) {
+            return;
+          }
+          const { totalJSHeapSize, usedJSHeapSize, jsHeapSizeLimit } = windowMemory;
+          window.parent.postMessage(
+            {
+              type: 'unityMemoryUsage',
+              usageData: {
+                type: 'memoryUsage',
+                totalJSHeapSize,
+                usedJSHeapSize,
+                jsHeapSizeLimit,
+              },
+            },
+            '*'
+          );
+        }, 10000);
+      }
+    </script>
+    <script type="text/javascript">
+      const ERROR_MAPPING = [
+        ['exception handling has been disabled', 'noExceptionSupport'],
+        ['The browser could not allocate enough memory', 'failedToAllocateMemory'],
+        ['Out of memory', 'outOfMemory'],
+        ['out of memory', 'outOfMemory'],
+        ['abort', 'AbortedError'],
+        ['NotAllowedError', 'NotAllowedError'],
+        ['TypeError', 'TypeError'],
+        ['ScriptError', 'ScriptError'],
+        ['NotSupportedError', 'NotSupportedError'],
+        ['RuntimeError', 'RuntimeError'],
+        ['RangeError', 'RangeError'],
+        ['InvalidStateError', 'InvalidStateError'],
+        ['SDK Not initialized', 'SDKNotInitializedError'],
+        ['NetworkError', 'NetworkError'],
+        ['DataCloneError', 'DataCloneError'],
+        ['ReferenceError', 'ReferenceError'],
+        ['SecurityError', 'SecurityError'],
+        ['InvalidAccessError', 'InvalidAccessError'],
+        ['ChunkLoadError', 'ChunkLoadError'],
+        ['QuotaExceededError', 'QuotaExceededError'],
+        ['TimeoutError', 'TimeoutError'],
+        ['NotFoundError', 'NotFoundError'],
+        ['NS_ERROR_', 'NSError'],
+        // keep this entry unknown, at the end of the list as this list is iterated sequentially
+        ['An error occurred running the Unity content on this page', 'unknown'],
+      ];
+      let crashDetected = false;
+      const detectUnityError = (message, origin) => {
+        if (crashDetected) {
+          return true;
+        }
+        crashDetected = true;
+        let error;
+        if (typeof message !== 'string') {
+          crashDetected = false;
+          return false;
+        }
+        // errors taken from C:\Program Files\Unity\Hub\Editor\2022.3.6f1\Editor\Data\PlaybackEngines\WebGLSupport\BuildTools\UnityLoader\UnityLoader.js
+        for (let mapping of ERROR_MAPPING) {
+          if (message.includes(mapping[0])) {
+            error = mapping[1];
+            break;
+          }
+        }
+        if (error) {
+          window.parent.postMessage({ type: 'unityCrashError', error, errorMessage: `${message}`,origin }, '*');
+          return true;
+        }
+        crashDetected = false;
+        return false;
+      };
+      (function (proxied) {
+        window.alert = function () {
+          const hasError = detectUnityError(arguments[0] || '', 'alert');
+          if (hasError) {
+            window.parent.postMessage({ type: 'unityCrashModalOpen' }, '*');
+            return;
+          }
+          return proxied.apply(this, arguments);
+        };
+      })(window.alert);
+      (function (proxied) {
+        console.error = function () {
+          detectUnityError(arguments[0] || '', 'console');
+          return proxied.apply(this, arguments);
+        };
+      })(console.error);
+    </script>
+    <script type="text/javascript">const debugEnabled = window.location.href.includes('iframed_unity_debug=true');
+      let config = {
+        "loaderOptions": {
+            "showProgress": true,
+              "unityLoaderUrl": "https://pwiolds43.crazygames.com/Pixel_Warfare_desktop_Data/1PWIOLoader.js",
+            "unityConfigOptions": {
+                "codeUrl": "https://pwiolds43.crazygames.com/Pixel_Warfare_desktop_Data/1PWIOWebAssembly.wasm",
+                "dataUrl": "https://pwiolds43.crazygames.com/Pixel_Warfare_desktop_Data/4PWIOData.data",
+                "frameworkUrl": "https://pwiolds43.crazygames.com/Pixel_Warfare_desktop_Data/1PWIOFramework.js",
+                "streamingAssetsUrl": "https://pwiolds43.crazygames.com/Pixel_Warfare_desktop_Data/StreamingAssets"
+            }
+        },
+        "unityConfig": {
+            "codeUrl": "https://pwiolds43.crazygames.com/Pixel_Warfare_desktop_Data/1PWIOWebAssembly.wasm",
+            "dataUrl": "https://pwiolds43.crazygames.com/Pixel_Warfare_desktop_Data/4PWIOData.data",
+            "frameworkUrl": "https://pwiolds43.crazygames.com/Pixel_Warfare_desktop_Data/1PWIOFramework.js",
+            "streamingAssetsUrl": "https://pwiolds43.crazygames.com/Pixel_Warfare_desktop_Data/StreamingAssets",
+            "companyName": "R.A.F",
+            "productName": "PixelWarfareio",
+            "productVersion": "1.0"
+        },
+      };
+      let unityGameInstance = null;
+      let canvas = null;
+      function debugLog(...args) {
+        if (debugEnabled) {
+          console.log('[IframedUnity2020]', ...args);
+        }
+      }
+      function getUnityCanvas() {
+        if (!canvas) {
+          canvas = document.getElementById('unity-canvas');
+        }
+        return canvas;
+      }
+      async function handleMessage(event) {
+        switch (event.data.type) {
+          case 'unity2020config':
+            console.log('Got config', event.data);
+            debugLog('Got config', event.data);
+            config = event.data;
+            oldSdkInitObject = event.data.oldSdkInitObject;
+            loadGame();
+            break;
+          case 'loadGame':
+            console.log('Requested loadGame');
+            debugLog('Requested loadGame');
+            loadGame();
+            break;
+          case 'focusGame':
+            console.log('Focus Game');
+            window.focus();
+            break;
+          case 'disableGame':
+            console.log('Disable Game');
+            // await unityGameInstance.Quit();
+            break;
+        }
+      }
+      window.addEventListener('message', handleMessage);
+      window.addEventListener('load', function () {
+        window.parent.postMessage({ type: 'unity2020ready' }, '*');
+        console.log('unity2020ready');
+        loadGame();
+      });
+      function loadGame() {
+        console.log('Load Game');
+        if (!config) {
+            console.error('[IframedUnity2020] config is missing');
+            return;
+        }
+        var script = document.createElement('script');
+        script.type = 'text/javascript';
+        script.onload = async function () {
+            try {
+                console.log('Creating Unity instance', config.unityConfig);
+                debugLog('Creating Unity instance', config.unityConfig);
+                
+                // Create Unity instance and track progress
+                unityGameInstance = await window.createUnityInstance(
+                    getUnityCanvas(), 
+                    config.unityConfig, 
+                );
+
+                console.log('Game loaded');
+                debugLog('Game loaded');
+            } catch (error) {
+                console.error('[IframedUnity2020] error', error);
+                window.parent.postMessage({ type: 'unityError', error }, '*');
+            }
+        };
+        script.src = config.loaderOptions.unityLoaderUrl;
+        document.body.appendChild(script);
+        getUnityCanvas().addEventListener('touchstart', onCanvasTouchStart);
+        console.log('Loading loader script', script.src);
+        debugLog('Loading loader script', script.src);
+      }
+      function onCanvasTouchStart() {
+        if (!document.hasFocus()) {
+          window.focus();
+        }
+      }
+    </script>
+  </head>
+  <body style="margin: 0; padding: 0">
+    <canvas id="unity-canvas" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%"></canvas>
+  </body>
+</html>
