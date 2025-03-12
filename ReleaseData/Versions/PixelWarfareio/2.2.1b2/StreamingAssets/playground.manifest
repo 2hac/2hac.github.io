@@ -1,0 +1,89 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.0.25f1
+CRC: 2181850223
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 539b1cf91b1686a8a96e220a105a6a68
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 54031767d22dff747d1aa52779765164
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 5727be51202216ddbfbd02f5edfb9091
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 89
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 104
+  Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2a4398e22350a3e4e83acc942be58c32, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4768b336cb8a3394aad32183e6c4a50d, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4bc6f927511b6b947996ea76d239ccfb, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3a4dc36900d105f43bba317e172f0186, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 453ac3f7356d6e34cba983c5ff946abf, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5f88edc9fb4ff35459dcaba3fef3c133, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 157
+  Script: {instanceID: 0}
+- Class: 196
+  Script: {instanceID: 0}
+- Class: 198
+  Script: {instanceID: 0}
+- Class: 199
+  Script: {instanceID: 0}
+- Class: 220
+  Script: {instanceID: 0}
+- Class: 241
+  Script: {instanceID: 0}
+- Class: 243
+  Script: {instanceID: 0}
+- Class: 245
+  Script: {instanceID: 0}
+- Class: 258
+  Script: {instanceID: 0}
+- Class: 850595691
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/GameCore/Scenes/Playground.unity
+Dependencies: []

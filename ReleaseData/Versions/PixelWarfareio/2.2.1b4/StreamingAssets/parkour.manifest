@@ -1,0 +1,109 @@
+ManifestFileVersion: 0
+UnityVersion: 6000.0.25f1
+CRC: 2980097974
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 069cc77ec51821d26985d814af00b8f8
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: a8ab54bdfcf548c9c88d5f79d938d5b9
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 4e24ce2c1ca9415432e47f7515236e11
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 64
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+- Class: 83
+  Script: {instanceID: 0}
+- Class: 89
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 91
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 104
+  Script: {instanceID: 0}
+- Class: 108
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 71537023c90ca6f48b97fb05801336fd, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 533ebcd413c63124291ed2a6bc7f6cac, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2a4398e22350a3e4e83acc942be58c32, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7d41887b1546f5c44ab54e7e65aad3bc, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 2fb2e0d8bc810bb48b63c91af80d5f17, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4bc6f927511b6b947996ea76d239ccfb, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3a4dc36900d105f43bba317e172f0186, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 077f80fe3940dc7468ecec90989abe66, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 453ac3f7356d6e34cba983c5ff946abf, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e1ad6359cd51223438e61e4001e9adc6, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: aca8f7fce8f7091418ba710381a285e6, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b707d709a916b024a9227027be6d5961, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 5b15a71d4d05cfa47842eeb371222ddd, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: d73886ae94c434d47955a608e859a39b, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 157
+  Script: {instanceID: 0}
+- Class: 196
+  Script: {instanceID: 0}
+- Class: 220
+  Script: {instanceID: 0}
+- Class: 241
+  Script: {instanceID: 0}
+- Class: 243
+  Script: {instanceID: 0}
+- Class: 245
+  Script: {instanceID: 0}
+- Class: 258
+  Script: {instanceID: 0}
+- Class: 850595691
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers: []
+Assets:
+- Assets/GameCore/Scenes/Parkour.unity
+Dependencies: []
