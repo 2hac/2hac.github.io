@@ -483,5 +483,21 @@
         "https://files.crazygames.com/pixel-warfare/2/StreamingAssets/painhouse",
         "https://files.crazygames.com/pixel-warfare/2/StreamingAssets/skybase",
         "https://files.crazygames.com/pixel-warfare/2/StreamingAssets/toplicata"]
+    },
+    {
+        "id": 0,
+        "version": "2.0.1dev1",
+        "name": "Version 2.0.2 (DEV)",
+        "versionsPrefix": "PixelWarfareio/2.0.2dev1",
+        "versionsStartFolder": "PixelWarfareio",
+        "urls": ["https://files.crazygames.com/pixel-warfare/2/Build/pwio.data.br",
+        "https://files.crazygames.com/pixel-warfare/2/Build/pwio.framework.js.br",
+        "https://files.crazygames.com/pixel-warfare/2/Build/pwio.loader.js",
+        "https://files.crazygames.com/pixel-warfare/2/Build/pwio.wasm.br",
+        "https://files.crazygames.com/pixel-warfare/2/StreamingAssets/closebattle",
+        "https://files.crazygames.com/pixel-warfare/2/StreamingAssets/openfire",
+        "https://files.crazygames.com/pixel-warfare/2/StreamingAssets/painhouse",
+        "https://files.crazygames.com/pixel-warfare/2/StreamingAssets/skybase",
+        "https://files.crazygames.com/pixel-warfare/2/StreamingAssets/toplicata"]
     }
 ]
