@@ -335,10 +335,10 @@
       unityContainer.style.display = "block";
       loadingBar.style.display = "block";
       const [dataUrl, frameworkUrl, codeUrl, loaderUrl] = await Promise.all([
-        getBlobURL(zip, "Game.data"),
-        getBlobURL(zip, "Game.framework.js.br"),
-        getBlobURL(zip, "Game.wasm"),
-        getBlobURL(zip, "Game.loader.js"),
+        getBlobURL(zip, "PixelWafrare.data"),
+        getBlobURL(zip, "PixelWafrare.framework.js.br"),
+        getBlobURL(zip, "PixelWafrare.wasm"),
+        getBlobURL(zip, "PixelWafrare.loader.js"),
       ]);
 
       const config = {
