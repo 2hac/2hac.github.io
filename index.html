@@ -336,7 +336,7 @@
       loadingBar.style.display = "block";
       const [dataUrl, frameworkUrl, codeUrl, loaderUrl] = await Promise.all([
         getBlobURL(zip, "PixelWafrare.data"),
-        getBlobURL(zip, "PixelWafrare.framework.js.br"),
+        getBlobURL(zip, "PixelWafrare.framework.js"),
         getBlobURL(zip, "PixelWafrare.wasm"),
         getBlobURL(zip, "PixelWafrare.loader.js"),
       ]);
