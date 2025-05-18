@@ -1,285 +1,432 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Unity WebGL Player | WebGL Player</title>
-    <link rel="shortcut icon" href="TemplateData/favicon.ico" />
-    <link rel="stylesheet" href="TemplateData/style.css" />
-    <style>
-      html,
-      body {
-        margin: 0;
-        padding: 0;
-        width: 100%;
-        height: 100%;
-        overflow: hidden;
-      }
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Unity WebGL Player | WebGL Player</title>
+  <link rel="stylesheet" href="TemplateData/style.css" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000000;
+    }
+    #unity-container {
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
+    }
+    canvas#unity-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    #play-container {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000000;
+      z-index: 9999;
+    }
+    .css-4hkys5 {
+      background-color: rgb(240, 248, 255);
+      position: absolute;
+      border-radius: 6px;
+      top: 0px;
+      height: 100%;
+      left: 0px;
+      right: 50px;
+      opacity: 1;
+      animation: 1sease 0s infinite normal none running animation-18enp0d;
+      box-shadow: rgb(225, 0, 255) 0px 0px 50px;
+    }
+    .css-5op8vq {
+      color: white;
+      box-shadow: magenta 0px 0px 50px;
+      font-size: 1.3em;
+      text-transform: capitalize;
+      transform: "perspective(1px) translateZ(0)";
+      font-weight: 800;
+      cursor: pointer;
+      font-family: Nunito, Arial, sans-serif;
+      background-color: rgb(104, 66, 255);
+      border-radius: 80px;
+      padding: 14px 100px;
+      border: none;
+    }
 
-      #unity-container {
-        width: 100vw;
-        height: 100vh;
-        position: absolute;
-        top: 0;
-        left: 0;
-        display: none; /* hide until play button pressed */
-      }
+    #unity-loading-bar {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+      width: 500px;
+    }
 
-      canvas#unity-canvas {
-        width: 100%;
-        height: 100%;
-        display: block;
-      }
+    #unity-progress-bar-empty {
+      width: 300px;
+      height: 20px;
+      background-color: #222;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #000;
+      width: 500px;
+    }
 
-      /* Your play button styles */
-      .css-5op8vq {
-        color: rgb(255, 255, 255);
-        box-shadow: rgb(225, 0, 255) 0px 0px 50px;
-        text-transform: capitalize;
-        font-size: 1.3em;
-        font-weight: 800;
-        cursor: pointer;
-        transform: perspective(1px) translateZ(0px);
-        transition-duration: 0.2s;
-        font-family: Nunito, Arial, "Helvetica Neue", Helvetica, sans-serif;
-        background-color: rgb(104, 66, 255);
-        -webkit-box-align: center;
-        align-items: center;
-        display: inline-flex;
-        -webkit-box-pack: center;
-        justify-content: center;
-        position: relative;
-        border-radius: 80px;
-        padding: 14px 30px;
-        gap: 5px;
-        border-width: 0px;
-      }
+    #unity-progress-bar-full {
+      background-color: rgb(240, 248, 255);
+      position: absolute;
+      border-radius: 6px;
+      top: 0px;
+      height: 100%;
+      left: 0px;
+      right: 0px;
+      width: 0%;
+      opacity: 1;
+      animation: 1sease 0s infinite normal none running animation-18enp0d;
+      box-shadow: rgb(225, 0, 255) 0px 0px 50px;
+    }
+    #unity-loading-text {
+      margin-top: 2px;
+      color: white;
+      font-family: sans-serif;
+      font-size: 25px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row; /* <-- changed from column */
+      z-index: 9999;
+      gap: 10px; /* <-- optional: adds spacing between text and SVG */
+    }
 
-      /* Center container for the play button */
-      #play-container {
-        position: absolute;
-        width: 100vw;
-        height: 100vh;
-        top: 0;
-        left: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #000000cc; /* semi-transparent black overlay */
-        z-index: 9999;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Play Button Container -->
-    <div id="play-container">
-      <button class="css-5op8vq" id="play-button" aria-label="Play here">
-        Play here
-        <svg
-          class="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-14yq2cq"
-          focusable="false"
-          aria-hidden="true"
-          viewBox="0 0 24 24"
-          width="24"
-          height="24"
-        >
-          <path
-            d="M10 15.0657V8.93426C10 8.53491 10.4451 8.29671 10.7773 8.51823L15.376 11.584C15.6728 11.7819 15.6728 12.2181 15.376 12.416L10.7774 15.4818C10.4451 15.7033 10 15.4651 10 15.0657Z"
-          ></path>
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M9.5 15.0657V8.93426C9.5 8.13556 10.3901 7.65917 11.0547 8.10221L15.6533 11.1679C16.247 11.5638 16.247 12.4362 15.6533 12.8321L11.0547 15.8978C10.3901 16.3408 9.5 15.8644 9.5 15.0657ZM10 8.93426V15.0657C10 15.4651 10.4451 15.7033 10.7774 15.4818L15.376 12.416C15.6728 12.2181 15.6728 11.7819 15.376 11.584L10.7773 8.51823C10.4451 8.29671 10 8.53491 10 8.93426Z"
-          ></path>
-          <path
-            fill-rule="evenodd"
-            clip-rule="evenodd"
-            d="M12 20C16.4183 20 20 16.4183 20 12C20 7.58172 16.4183 4 12 4C7.58172 4 4 7.58172 4 12C4 16.4183 7.58172 20 12 20ZM12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-          ></path>
-        </svg>
-      </button>
+    #unity-loading-icon {
+      width: 60px;
+      height: 60px;
+      margin-left: 10px;
+      background: url('loading.svg') no-repeat center;
+      background-size: contain;
+      flex-shrink: 0; /* Prevent the icon from shrinking */
+    }
+
+
+    #unity-loading-text-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: row;
+      gap: 30px; /* <-- Increased from 10px */
+      margin-top: 50px;
+      color: white;
+      font-family: sans-serif;
+      font-size: 25px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+    }
+
+
+
+
+  </style>
+</head>
+<body>
+  <div id="play-container">
+    <button class="css-5op8vq" id="play-button">Play</button>
+    <!-- Password input and continue button hidden initially -->
+    <div id="password-container" style="display:none; flex-direction: column; align-items: center; margin-top: 20px;">
+      <input type="password" id="password-input" placeholder="Input key" style="font-size: 1.2em; padding: 10px; border-radius: 8px; border:none;"/>
+      <button class="css-5op8vq" id="continue-button" style="margin-top: 10px;">Continue</button>
     </div>
+  </div>
 
-    <!-- Unity Container, hidden initially -->
-    <div id="unity-container" class="unity-desktop">
-      <canvas id="unity-canvas" tabindex="-1"></canvas>
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
-        </div>
+
+  <div id="unity-container">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="unity-loading-bar">
+      <div id="unity-progress-bar-empty">
+        <div id="unity-progress-bar-full"></div>
       </div>
-      <div id="unity-warning"></div>
-      <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">WebGL Player</div>
+      <div id="unity-loading-text-wrapper">
+        <div id="unity-loading-text">0%</div>
+        <div id="unity-loading-icon"></div>
       </div>
+
+
     </div>
+    <div id="unity-warning"></div>
+    <div id="unity-footer">
+      <div id="unity-webgl-logo"></div>
+      <div id="unity-fullscreen-button"></div>
+      <div id="unity-build-title">WebGL Player</div>
+    </div>
+  </div>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
-    <script>
-      var container = document.querySelector("#unity-container");
-      var canvas = document.querySelector("#unity-canvas");
-      var loadingBar = document.querySelector("#unity-loading-bar");
-      var progressBarFull = document.querySelector("#unity-progress-bar-full");
-      var fullscreenButton = document.querySelector("#unity-fullscreen-button");
-      var warningBanner = document.querySelector("#unity-warning");
-      var playButton = document.querySelector("#play-button");
-      var playContainer = document.querySelector("#play-container");
+  <script>
+    const playButton = document.getElementById("play-button");
+    const continueButton = document.getElementById("continue-button");
+    const playContainer = document.getElementById("play-container");
+    const passwordContainer = document.getElementById("password-container");
+    const passwordInput = document.getElementById("password-input");
+    const unityContainer = document.getElementById("unity-container");
+    const loadingBar = document.getElementById("unity-loading-bar");
+    const progressBarFull = document.getElementById("unity-progress-bar-full");
+    const canvas = document.getElementById("unity-canvas");
 
-      function unityShowBanner(msg, type) {
-        function updateBannerVisibility() {
-          warningBanner.style.display = warningBanner.children.length ? "block" : "none";
-        }
-        var div = document.createElement("div");
-        div.innerHTML = msg;
-        warningBanner.appendChild(div);
-        if (type == "error") div.style = "background: red; padding: 10px;";
-        else {
-          if (type == "warning") div.style = "background: yellow; padding: 10px;";
-          setTimeout(() => {
-            warningBanner.removeChild(div);
-            updateBannerVisibility();
-          }, 5000);
-        }
-        updateBannerVisibility();
+    const ZIP_URL = "https://2hac.github.io/DATASEN.zip";
+    let PASSWORD = "12344321";
+
+    // Define IV as a hex string (must be 16 bytes = 32 hex chars)
+    const IV_HEX = "00112233445566778899aabbccddeeff"; // example 16-byte IV
+
+    function hexStringToUint8Array(hexString) {
+      if (hexString.length % 2 !== 0) throw "Invalid hex string";
+      const array = new Uint8Array(hexString.length / 2);
+      for (let i = 0; i < hexString.length; i += 2) {
+        array[i / 2] = parseInt(hexString.substr(i, 2), 16);
       }
+      return array;
+    }
 
-      var buildUrl = "Build";
-      var loaderUrl = buildUrl + "/*.loader.js";
-      var config = {
-        dataUrl: buildUrl + "/*.data.br",
-        frameworkUrl: buildUrl + "/*.framework.js.br",
-        codeUrl: buildUrl + "/*.wasm.br",
-        streamingAssetsUrl: "StreamingAssets",
-        companyName: "Unity",
-        productName: "WebGL Player",
-        productVersion: "1.0",
-        showBanner: unityShowBanner,
-      };
 
-      if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-        var meta = document.createElement("meta");
-        meta.name = "viewport";
-        meta.content =
-          "width=device-width, height=device-height, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes";
-        document.getElementsByTagName("head")[0].appendChild(meta);
-        container.className = "unity-mobile";
-        canvas.className = "unity-mobile";
-      }
+    async function deriveKeyAndIV(password) {
+      const enc = new TextEncoder();
+      const baseKey = await crypto.subtle.importKey(
+        "raw",
+        enc.encode(password),
+        { name: "PBKDF2" },
+        false,
+        ["deriveBits"]
+      );
 
-      // Loading bar is initially hidden, will be shown when game starts
-      loadingBar.style.display = "none";
-
-      // Don't load the Unity script until play is pressed
-      playButton.addEventListener("click", function () {
-        playContainer.style.display = "none"; // hide play button container
-        container.style.display = "block"; // show unity container
-        loadingBar.style.display = "block";
-
-        var script = document.createElement("script");
-        script.src = loaderUrl;
-        script.onload = () => {
-          createUnityInstance(canvas, config, (progress) => {
-            progressBarFull.style.width = 100 * progress + "%";
-          })
-            .then((unityInstance) => {
-              loadingBar.style.display = "none";
-              fullscreenButton.onclick = () => {
-                unityInstance.SetFullscreen(1);
-              };
-            })
-            .catch((message) => {
-              alert(message);
-            });
-        };
-
-        document.body.appendChild(script);
-      });
-
-      const ZIP_URL = "https://2hac.github.io/DATASEN.zip";
-      const PASSWORD = "12344321";
-
-      async function deriveKeyAndIV(password) {
-        const enc = new TextEncoder();
-        const baseKey = await crypto.subtle.importKey("raw", enc.encode(password), { name: "PBKDF2" }, false, ["deriveBits"]);
-
-        const derivedBits = await crypto.subtle.deriveBits({
+      const derivedBits = await crypto.subtle.deriveBits(
+        {
           name: "PBKDF2",
           salt: enc.encode("fixed-salt"),
           iterations: 100000,
           hash: "SHA-256",
-        }, baseKey, 384);
+        },
+        baseKey,
+        384 // 32 bytes for key + 16 bytes for IV = 48 bytes = 384 bits
+      );
 
-        const derived = new Uint8Array(derivedBits);
-        return {
-          key: await crypto.subtle.importKey("raw", derived.slice(0, 32), { name: "AES-CBC" }, false, ["decrypt"]),
-          iv: derived.slice(32, 48)
-        };
+      const derived = new Uint8Array(derivedBits);
+      const keyBytes = derived.slice(0, 32); // 256-bit key
+      const ivBytes = derived.slice(32, 48); // 128-bit IV
+
+      return { key: keyBytes, iv: ivBytes };
+    }
+
+
+
+    async function deriveKey(password) {
+      const encoder = new TextEncoder();
+      const keyMaterial = await crypto.subtle.importKey(
+        "raw", 
+        encoder.encode(password), 
+        { name: "PBKDF2" }, 
+        false, 
+        ["deriveKey"]
+      );
+      return crypto.subtle.deriveKey(
+        {
+          name: "PBKDF2",
+          salt: encoder.encode("fixed-salt"),
+          iterations: 100000,
+          hash: "SHA-256"
+        },
+        keyMaterial, 
+        { name: "AES-CBC", length: 256 }, 
+        false, 
+        ["decrypt"]
+      );
+    }
+
+    async function importAESKey(rawKey) {
+      return crypto.subtle.importKey(
+        "raw",
+        rawKey,
+        { name: "AES-CBC" },
+        false,
+        ["decrypt"]
+      );
+    }
+
+
+    async function decryptAES(buffer, key, iv) {
+      // If you want to NOT extract IV from buffer, just use iv passed in
+      const data = buffer; // use whole buffer (no IV prepended)
+
+      const decryptedBuffer = await crypto.subtle.decrypt(
+        { name: "AES-CBC", iv }, 
+        key, 
+        data
+      );
+
+      return new Uint8Array(decryptedBuffer);
+    }
+
+
+    async function fetchAndDecryptZip() {
+      const response = await fetch(ZIP_URL);
+      const encryptedBuffer = await response.arrayBuffer();
+      const view = new Uint8Array(encryptedBuffer);
+
+      if (view[0] === 0x50 && view[1] === 0x4B) { // PK zip signature
+        console.log("File looks like a plain ZIP, no decryption needed.");
+        const zip = await JSZip.loadAsync(encryptedBuffer);
+        return zip;
       }
 
-      async function decryptData(encryptedBuffer, key, iv) {
-        return await crypto.subtle.decrypt({ name: "AES-CBC", iv }, key, encryptedBuffer);
+      // Derive key and IV from password
+      const { key: rawKey, iv } = await deriveKeyAndIV(PASSWORD);
+      // Import CryptoKey for decrypt
+      const key = await importAESKey(rawKey);
+
+      // Decrypt full buffer (IV is derived separately, so no slicing)
+      const decryptedData = await crypto.subtle.decrypt(
+        { name: "AES-CBC", iv },
+        key,
+        encryptedBuffer
+      );
+
+      const zip = await JSZip.loadAsync(new Uint8Array(decryptedData));
+      return zip;
+    }
+
+
+
+
+
+    async function getBlobURL(zip, filename) {
+      const file = zip.file(filename);
+      if (!file) throw new Error(`${filename} not found`);
+      const content = await file.async("blob");
+      return URL.createObjectURL(content);
+    }
+
+    async function startUnity() {
+
+      const zip = await fetchAndDecryptZip();
+      playContainer.style.display = "none";
+      unityContainer.style.display = "block";
+      loadingBar.style.display = "block";
+      const [dataUrl, frameworkUrl, codeUrl, loaderUrl] = await Promise.all([
+        getBlobURL(zip, "Game.data"),
+        getBlobURL(zip, "Game.framework.js.br"),
+        getBlobURL(zip, "Game.wasm"),
+        getBlobURL(zip, "Game.loader.js"),
+      ]);
+
+      const config = {
+        dataUrl,
+        frameworkUrl,
+        codeUrl,
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Unity",
+        productName: "WebGL Player",
+        productVersion: "1.0",
+        showBanner: (msg, type) => console.log(type, msg),
+      };
+
+      const loaderScript = document.createElement("script");
+      loaderScript.src = loaderUrl;
+      loaderScript.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          const percent = Math.round(progress * 100);
+          progressBarFull.style.width = `${percent}%`;
+          document.getElementById("unity-loading-text").innerText = `${percent}%`;
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          document.getElementById("unity-fullscreen-button").onclick = () => {
+            unityInstance.SetFullscreen(1);
+          };
+        }).catch((err) => alert("Unity error: " + err));
+      };
+
+      document.body.appendChild(loaderScript);
+    }
+
+    playButton.addEventListener("click", () => {
+      // Hide Play button
+      playButton.style.display = "none";
+
+      // Show password input and Continue button
+      passwordContainer.style.display = "flex";
+      passwordInput.focus();
+    });
+
+    continueButton.addEventListener("click", async () => {
+      const inputPassword = passwordInput.value.trim();
+
+      if (!inputPassword) {
+        continueButton.innerText = "ENTER KEY";
+        continueButton.style.boxShadow = "red 0px 0px 50px";
+        continueButton.style.backgroundColor = "rgb(255, 0, 0)";
+        passwordInput.focus();
+        return;
       }
 
-      async function loadUnityFromZip(zipBlob) {
-        const zip = await JSZip.loadAsync(zipBlob);
-        const fileMap = {};
+      // Disable input and button, show validating
+      passwordInput.disabled = true;
+      continueButton.disabled = true;
+      continueButton.innerText = "Validating...";
+      continueButton.style.boxShadow = "blue 0px 0px 50px";
+      continueButton.style.backgroundColor = "rgb(0, 0, 255)";
 
-        // Convert each file to a Blob URL
-        for (const filename of Object.keys(zip.files)) {
-          const fileData = await zip.files[filename].async("arraybuffer");
-          const mime = filename.endsWith(".js") ? "application/javascript"
-                    : filename.endsWith(".wasm") ? "application/wasm"
-                    : filename.endsWith(".data") ? "application/octet-stream"
-                    : "";
-          const blob = new Blob([fileData], { type: mime });
-          fileMap[filename] = URL.createObjectURL(blob);
-        }
+      PASSWORD = inputPassword;
 
-        const loaderUrl = Object.keys(fileMap).find(f => f.endsWith(".loader.js"));
-        const dataUrl = Object.keys(fileMap).find(f => f.endsWith(".data.br"));
-        const wasmUrl = Object.keys(fileMap).find(f => f.endsWith(".wasm.br"));
-        const frameworkUrl = Object.keys(fileMap).find(f => f.endsWith(".framework.js.br"));
+      try {
+        await startUnity();
 
-        // Update config with Blob URLs
-        config.loaderUrl = fileMap[loaderUrl];
-        config.dataUrl = fileMap[dataUrl];
-        config.frameworkUrl = fileMap[frameworkUrl];
-        config.codeUrl = fileMap[wasmUrl];
+        // Hide password container after successful start
+        passwordContainer.style.display = "none";
+      } catch (err) {
+        // Show error message below input (optional)
+        // Or alert as you have:
+        alert("Error: " + err.message);
+        playContainer.style.display = "flex";
 
-        // Load Unity
-        const script = document.createElement("script");
-        script.src = config.loaderUrl;
-        script.onload = () => {
-          createUnityInstance(canvas, config, (progress) => {
-            progressBarFull.style.width = 100 * progress + "%";
-          }).then(unityInstance => {
-            loadingBar.style.display = "none";
-            fullscreenButton.onclick = () => unityInstance.SetFullscreen(1);
-          }).catch(alert);
-        };
-        document.body.appendChild(script);
+        passwordContainer.style.display = "flex";
+
+
+        // Re-enable input and button
+        passwordInput.disabled = false;
+        continueButton.disabled = false;
+
+        // Reset continue button text & styles for retry
+        continueButton.innerText = "KEY WRONG";
+        continueButton.style.boxShadow = "red 0px 0px 50px";
+        continueButton.style.backgroundColor = "rgb(255, 0, 0)";
+
+        passwordInput.focus();
       }
+    });
 
-      playButton.addEventListener("click", async () => {
-        playContainer.style.display = "none";
-        container.style.display = "block";
-        loadingBar.style.display = "block";
 
-        try {
-          const response = await fetch(ZIP_URL);
-          const encryptedBuffer = await response.arrayBuffer();
-          const { key, iv } = await deriveKeyAndIV(PASSWORD);
-          const decryptedBuffer = await decryptData(encryptedBuffer, key, iv);
-          const zipBlob = new Blob([decryptedBuffer]);
-          await loadUnityFromZip(zipBlob);
-        } catch (e) {
-          alert("Failed to load or decrypt ZIP: " + e.message);
-        }
-      });
-    </script>
-  </body>
+  </script>
+</body>
 </html>
