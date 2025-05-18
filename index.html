@@ -62,83 +62,177 @@
         <div style="margin-top:18px;">Preparing your game…</div>
       </div>
     </div>
-    <script type="text/javascript">
+    <script src="https://unpkg.com/fflate/umd/index.js"></script>
+    <script type="module">
+      import * as fflate from "https://cdn.jsdelivr.net/npm/fflate@0.7.4/esm/browser.js";
+
+      async function deriveKeyAndIV(password) {
+        const enc = new TextEncoder();
+        const baseKey = await crypto.subtle.importKey(
+          "raw",
+          enc.encode(password),
+          { name: "PBKDF2" },
+          false,
+          ["deriveBits"]
+        );
+
+        const derivedBits = await crypto.subtle.deriveBits(
+          {
+            name: "PBKDF2",
+            salt: enc.encode("fixed-salt"),
+            iterations: 100000,
+            hash: "SHA-256",
+          },
+          baseKey,
+          384
+        );
+
+        const derived = new Uint8Array(derivedBits);
+        const keyBytes = derived.slice(0, 32);
+        const ivBytes = derived.slice(32, 48);
+
+        return { key: keyBytes, iv: ivBytes };
+      }
+
+      async function fetchAndDecryptZip(url, key, iv) {
+        const encryptedData = await fetch(url).then(res => res.arrayBuffer());
+
+        const cryptoKey = await crypto.subtle.importKey(
+          'raw',
+          key,
+          { name: 'AES-CBC' },
+          false,
+          ['decrypt']
+        );
+
+        const decryptedData = await crypto.subtle.decrypt(
+          { name: 'AES-CBC', iv: iv },
+          cryptoKey,
+          encryptedData
+        );
+
+        return new Uint8Array(decryptedData);
+      }
+
+      function unzipFiles(buffer) {
+        const unzipped = fflate.unzipSync(buffer);
+        const blobs = {};
+
+        for (const file in unzipped) {
+          const blob = new Blob([unzipped[file]], { type: getMimeType(file) });
+          blobs[file] = URL.createObjectURL(blob);
+
+          // Try printing the file contents (text-based only)
+          const textDecoder = new TextDecoder();
+          let preview = "";
+          try {
+            preview = textDecoder.decode(unzipped[file]);
+          } catch (e) {
+            preview = "[Binary data not printable]";
+          }
+
+          console.log(`===== File: ${file} =====`);
+        }
+
+        return blobs;
+      }
+
+
+      function getMimeType(filename) {
+        if (filename.endsWith('.wasm')) return 'application/wasm';
+        if (filename.endsWith('.js')) return 'application/javascript';
+        if (filename.endsWith('.data')) return 'application/octet-stream';
+        if (filename.endsWith('.json')) return 'application/json';
+        return 'application/octet-stream';
+      }
+
       function loadScript(url, callback) {
-        var head = document.head;
-        var script = document.createElement('script');
+        const script = document.createElement('script');
         script.type = 'text/javascript';
         script.src = url;
-        script.async = true;
-        script.onreadystatechange = callback;
         script.onload = callback;
-        head.appendChild(script);
+        document.head.appendChild(script);
       }
-      var options = {
-        "loader":"unity2022",
-        "loaderOptions": {
-          "showProgress":true,
-          "unityLoaderUrl":"https://2hac.github.io/CLk9NG1LtMbenHJZbwNMwBZvrD2nlmpl/297vU3WYzV8etIOq9vlOC5mGQINw6L6V/IsJpF8GJ5ZGgs1S4qqqvpuWfFNooPL1F.loader.js",
-          "unityConfigOptions": {
-            "codeUrl":"https://2hac.github.io/CLk9NG1LtMbenHJZbwNMwBZvrD2nlmpl/297vU3WYzV8etIOq9vlOC5mGQINw6L6V/bYkaz0roPIFrJ5CdNyi7z4GKLnPWdp071.wasm",
-            "dataUrl":"https://2hac.github.io/CLk9NG1LtMbenHJZbwNMwBZvrD2nlmpl/297vU3WYzV8etIOq9vlOC5mGQINw6L6V/AG1N4HveRrjA8BO03XS8kVNhKfCJvBhL1.data",
-            "frameworkUrl":"https://2hac.github.io/CLk9NG1LtMbenHJZbwNMwBZvrD2nlmpl/297vU3WYzV8etIOq9vlOC5mGQINw6L6V/OHoUau16mq4T79RxmMeADkbRULvEwzUO1.framework.js",
-            "streamingAssetsUrl":"https://2hac.github.io/CLk9NG1LtMbenHJZbwNMwBZvrD2nlmpl/WbCgQAlM12umnqqFU1vvYoUJ2wxCvLdS/"
+
+      function loadUnity(blobUrls) {
+        const options = {
+          loader: "unity2022",
+          loaderOptions: {
+            showProgress: true,
+            unityLoaderUrl: blobUrls["Game.loader.js"],
+            unityConfigOptions: {
+              codeUrl: blobUrls["Game.wasm"],
+              dataUrl: blobUrls["Game.data"],
+              frameworkUrl: blobUrls["Game.framework.js.br"],
+              streamingAssetsUrl: "./StreamingAssets/"
+            }
+          },
+          gameName: "Pixel Warfare",
+          gameId: "8927",
+          author: "Angel Hrisimov"
+        };
+
+        // const gameframeJs = "https://2hac.github.io/JqpyYBVblDA3dx22yrxgxo8AnAauomBT/ywRwkKaReqIAfCtSpJYWH8loiUOngEXW.js";
+
+        var SDK_READY = false;
+        var GF_READY = false;
+        var GF_LOAD_CALLED = false;
+
+        // Build GF path
+        var gfBuildPath = 'https://builds.crazygames.com/gameframe'
+        var gfDefaultVersion = '1'
+        var useLocalGF = false
+        var customGFHost = ''
+        var params = new URLSearchParams(window.location.search);
+        var version = params.get('v');
+        // Validate version param to prevent XSS
+        if(version) {
+          var versionRegex = /^\d+(\.\d+)?(\.\d+)?$/;
+          if(!versionRegex.test(version)) {
+            console.error('Invalid Gameframe version provided, falling back to default version');
+            version = null;
           }
-        },
-        "thumbnail":"pixel-warfare_16x9/20241213044843/pixel-warfare_16x9-cover",
-        "releaseDate":"2022-04-12",
-        "locale":"en_US",
-        "author":"Angel Hrisimov",
-        "gameName":"Pixel Warfare",
-        "gameHttps":true,
-        "gameSlug":"pixel-warfare",
-        "gameId":"8927",
-        "gameStatus":"published",
-        "showAdOnExternal":"ALWAYS",
-        "showAdOnInternal":"DEFAULT",
-        "disableEmbedding":false,
-        "domainHasNoCMP":false
-      };
-
-      var SDK_READY = false;
-      var GF_READY = false;
-      var GF_LOAD_CALLED = false;
-
-      // Build GF path
-      var gfBuildPath = 'https://builds.crazygames.com/gameframe'
-      var gfDefaultVersion = '1'
-      var useLocalGF = false
-      var customGFHost = ''
-      var params = new URLSearchParams(window.location.search);
-      var version = params.get('v');
-      // Validate version param to prevent XSS
-      if(version) {
-        var versionRegex = /^\d+(\.\d+)?(\.\d+)?$/;
-        if(!versionRegex.test(version)) {
-          console.error('Invalid Gameframe version provided, falling back to default version');
-          version = null;
         }
-      }
-      var gameframeJs = "https://2hac.github.io/JqpyYBVblDA3dx22yrxgxo8AnAauomBT/ywRwkKaReqIAfCtSpJYWH8loiUOngEXW.js";
-      if (useLocalGF) {
-        gameframeJs = 'http://localhost:3002/static/js/bundle.js';
-      }
+        var gameframeJs = "https://2hac.github.io/JqpyYBVblDA3dx22yrxgxo8AnAauomBT/ywRwkKaReqIAfCtSpJYWH8loiUOngEXW.js";
+        if (useLocalGF) {
+          gameframeJs = 'http://localhost:3002/static/js/bundle.js';
+        }
 
-      if (customGFHost) {
-        gameframeJs = customGFHost + '/static/js/bundle.js';
-      }
+        if (customGFHost) {
+          gameframeJs = customGFHost + '/static/js/bundle.js';
+        }
 
-      loadScript(gameframeJs, function() {
-        Crazygames.load(options).then(function() {
-          var loaderWrapper = document.getElementById('ziggyLoader');
-          var loaderStyles = document.getElementById('ziggyLoaderStyles');
-          if (loaderWrapper && loaderStyles) {
-            loaderWrapper.remove();
-            loaderStyles.remove();
+        loadScript(gameframeJs, function() {
+          if (typeof Crazygames === "undefined") {
+            console.error("Crazygames SDK not loaded.");
+            return;
           }
-        });   
-      });
+
+          Crazygames.load(options).then(function () {
+            console.log("Using blob-based Unity loader options:", options);
+
+            const loaderWrapper = document.getElementById('ziggyLoader');
+            const loaderStyles = document.getElementById('ziggyLoaderStyles');
+            if (loaderWrapper) loaderWrapper.remove();
+            if (loaderStyles) loaderStyles.remove();
+          });
+        });
+      }
+
+      // MAIN EXECUTION
+      (async () => {
+        try {
+          const { key, iv } = await deriveKeyAndIV("12344321");
+          const decryptedZip = await fetchAndDecryptZip("https://2hac.github.io/DATASEN.zip", key, iv);
+          const blobUrls = unzipFiles(decryptedZip);
+          loadUnity(blobUrls);
+        } catch (error) {
+          console.error("Fatal error during setup:", error);
+        }
+      })();
     </script>
+
+
     <script src="https://2hac.github.io/JqpyYBVblDA3dx22yrxgxo8AnAauomBT/FetchRedirector.js"></script>
   </body>
 </html>
