@@ -154,6 +154,7 @@
 <body>
   <div id="play-container">
     <button class="css-5op8vq" id="play-button">Play</button>
+    <div style="display:none; flex-direction: column; align-items: center; margin-top: 20px; color: red; font-size: 30px;" id="validationtext">Checking saved key...</div>
     <!-- Password input and continue button hidden initially -->
     <div id="password-container" style="display:none; flex-direction: column; align-items: center; margin-top: 20px;">
       <input type="password" id="password-input" placeholder="Input key" style="font-size: 1.2em; padding: 10px; border-radius: 8px; border:none;"/>
@@ -314,6 +315,8 @@
       );
 
       const zip = await JSZip.loadAsync(new Uint8Array(decryptedData));
+      // Save   a password or key when successful to storage so start without entering
+      localStorage.setItem("S2HACVerifiedKey", PASSWORD);
       return zip;
     }
 
@@ -370,13 +373,32 @@
       document.body.appendChild(loaderScript);
     }
 
-    playButton.addEventListener("click", () => {
-      // Hide Play button
+   playButton.addEventListener("click", async () => {
       playButton.style.display = "none";
+      validationtext.style.display = "flex";
 
-      // Show password input and Continue button
-      passwordContainer.style.display = "flex";
-      passwordInput.focus();
+      const savedPassword = localStorage.getItem("S2HACVerifiedKey");
+
+      if (savedPassword) {
+        try {
+          PASSWORD = localStorage.getItem("S2HACVerifiedKey");
+          await startUnity();
+        } catch (e) {
+          console.error("Error using the saved password:", e);
+          // localStorage.removeItem("S2HACVerifiedKey");
+          // Show password input only if no vald saved password
+          validationtext.style.display = "none";
+          passwordContainer.style.display = "flex";
+          passwordInput.focus();
+        }
+      }
+      else
+      {
+        validationtext.style.display = "none";
+        passwordContainer.style.display = "flex";
+        passwordInput.focus();
+      }
+
     });
 
     continueButton.addEventListener("click", async () => {
@@ -401,32 +423,23 @@
 
       try {
         await startUnity();
-
-        // Hide password container after successful start
+        localStorage.setItem("S2HACVerifiedKey", inputPassword); // store key
         passwordContainer.style.display = "none";
       } catch (err) {
-        // Show error message below input (optional)
-        // Or alert as you have:
         alert("Error: " + err.message);
         playContainer.style.display = "flex";
-
         passwordContainer.style.display = "flex";
 
-
-        // Re-enable input and button
         passwordInput.disabled = false;
         continueButton.disabled = false;
-
-        // Reset continue button text & styles for retry
         continueButton.innerText = "KEY WRONG";
         continueButton.style.boxShadow = "red 0px 0px 50px";
         continueButton.style.backgroundColor = "rgb(255, 0, 0)";
-
         passwordInput.focus();
       }
     });
 
-
   </script>
+  
 </body>
 </html>
