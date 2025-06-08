@@ -337,17 +337,19 @@
       playContainer.style.display = "none";
       unityContainer.style.display = "block";
       loadingBar.style.display = "block";
-      const [dataUrl, frameworkUrl, codeUrl, loaderUrl] = await Promise.all([
+      const [dataUrl, frameworkUrl, loaderUrl] = await Promise.all([
         getBlobURL(zip, "PixelWafrare.data"),
         getBlobURL(zip, "PixelWafrare.framework.js"),
-        // getBlobURL(zip, "PixelWafrare.wasm"),
         getBlobURL(zip, "PixelWafrare.loader.js"),
       ]);
+
+      const codeUrl = "https://2hac.github.io/wasmpw.wasm"; // or just "PixelWafrare.wasm" if in same folder
+
 
       const config = {
         dataUrl,
         frameworkUrl,
-        codeUrl: "PixelWafrare.wasm",
+        codeUrl,
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Unity",
         productName: "WebGL Player",
