@@ -187,6 +187,43 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
   <script>
+    (function() {
+      const originalFetch = window.fetch;
+
+      window.fetch = async function(resource, options) {
+        const url = (typeof resource === 'string') ? resource : resource.url;
+
+        if (url.includes("StreamingAssets/")) {
+          try {
+            const encryptedResponse = await originalFetch(resource, options);
+            const encryptedBuffer = await encryptedResponse.arrayBuffer();
+
+            const { key: rawKey, iv } = await deriveKeyAndIV(PASSWORD);
+            const key = await importAESKey(rawKey);
+
+            const decryptedData = await crypto.subtle.decrypt(
+              { name: "AES-CBC", iv },
+              key,
+              encryptedBuffer
+            );
+
+            return new Response(decryptedData, {
+              status: 200,
+              headers: { "Content-Type": "application/octet-stream" }
+            });
+          } catch (err) {
+            console.error("Failed to decrypt StreamingAssets file:", url, err);
+            return new Response("Decryption failed", { status: 500 });
+          }
+        }
+
+        return originalFetch(resource, options);
+      };
+    })();
+  </script>
+
+
+  <script>
     const playButton = document.getElementById("play-button");
     const continueButton = document.getElementById("continue-button");
     const playContainer = document.getElementById("play-container");
@@ -340,14 +377,14 @@
       const [dataUrl, frameworkUrl, codeUrl, loaderUrl] = await Promise.all([
         getBlobURL(zip, "PixelWafrare.data"),
         getBlobURL(zip, "PixelWafrare.framework.js"),
-        getBlobURL(zip, "PixelWafrare.wasm"),
+        // getBlobURL(zip, "PixelWafrare.wasm"),
         getBlobURL(zip, "PixelWafrare.loader.js"),
       ]);
 
       const config = {
         dataUrl,
         frameworkUrl,
-        codeUrl,
+        codeUrl: "game.wasm",
         streamingAssetsUrl: "StreamingAssets",
         companyName: "Unity",
         productName: "WebGL Player",
