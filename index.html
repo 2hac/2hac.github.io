@@ -320,6 +320,26 @@
       return zip;
     }
 
+    // Replace with the actual URL you want to intercept
+    const TARGET_FETCH_URL = "parkour"; // match partial name if needed
+    const ENCRYPTED_URL = "https://2hac.github.io/CLk9NG1LtMbenHJZbwNMwBZvrD2nlmpl/WbCgQAlM12umnqqFU1vvYoUJ2wxCvLdS/parkour";
+    // let PASSWORD = "12344321";
+
+    // Intercept fetch
+    const originalFetch = window.fetch;
+    window.fetch = async function(resource, config) {
+      if (typeof resource === "string" && resource.includes(TARGET_FETCH_URL)) {
+        console.log("[Interceptor] Replacing fetch for:", resource);
+        try {
+          const filename = TARGET_FETCH_URL.split("/").pop(); // e.g., "PixelWafrare.data"
+          return await getDecryptedBlob(filename);
+        } catch (err) {
+          console.error("Decryption fetch failed, falling back to original:", err);
+        }
+      }
+      return originalFetch.apply(this, arguments);
+    };
+
 
 
 
@@ -337,14 +357,12 @@
       playContainer.style.display = "none";
       unityContainer.style.display = "block";
       loadingBar.style.display = "block";
-      const [dataUrl, frameworkUrl, loaderUrl] = await Promise.all([
+      const [dataUrl, frameworkUrl, codeUrl, loaderUrl] = await Promise.all([
         getBlobURL(zip, "PixelWafrare.data"),
         getBlobURL(zip, "PixelWafrare.framework.js"),
+        getBlobURL(zip, "PixelWafrare.wasm"),
         getBlobURL(zip, "PixelWafrare.loader.js"),
       ]);
-
-      const codeUrl = "https://2hac.github.io/wasmpw.wasm"; // or just "PixelWafrare.wasm" if in same folder
-
 
       const config = {
         dataUrl,
