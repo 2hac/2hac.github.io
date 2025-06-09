@@ -186,9 +186,6 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
-  <script src="https://cdn.jsdelivr.net/npm/brotli-wasm@1.4.1/dist/brotli.min.js"></script>
-
-
   <script>
     const playButton = document.getElementById("play-button");
     const continueButton = document.getElementById("continue-button");
@@ -341,9 +338,9 @@
       unityContainer.style.display = "block";
       loadingBar.style.display = "block";
       const [dataUrl, frameworkUrl, codeUrl, loaderUrl] = await Promise.all([
-        getBlobURL(zip, "PixelWafrare.data.br"),
+        getBlobURL(zip, "PixelWafrare.data"),
         getBlobURL(zip, "PixelWafrare.framework.js"),
-        getDecompressedWasmBlob(zip, "PixelWafrare.wasm.br"),
+        getBlobURL(zip, "PixelWafrare.wasm"),
         getBlobURL(zip, "PixelWafrare.loader.js"),
       ]);
 
@@ -376,7 +373,7 @@
       document.body.appendChild(loaderScript);
     }
 
-    playButton.addEventListener("click", async () => {
+   playButton.addEventListener("click", async () => {
       playButton.style.display = "none";
       validationtext.style.display = "flex";
 
@@ -403,18 +400,6 @@
       }
 
     });
-
-    async function getDecompressedWasmBlob(zip, filename) {
-      const compressedFile = zip.file(filename);
-      if (!compressedFile) throw new Error(`${filename} not found`);
-      const compressedData = await compressedFile.async("uint8array");
-
-      // Decompress using Brotli
-      const decompressed = BrotliDecode(compressedData);
-      const blob = new Blob([decompressed], { type: "application/wasm" });
-      return URL.createObjectURL(blob);
-    }
-
 
     continueButton.addEventListener("click", async () => {
       const inputPassword = passwordInput.value.trim();
