@@ -200,7 +200,7 @@
     const canvas = document.getElementById("unity-canvas");
     const validationtext = document.getElementById("validationtext");
 
-    const ZIP_URL = "https://2hac.github.io/8Y23HF83H/Mi4yLjY.huwd";
+    const ZIP_URL = "https://2hac.github.io/5io/8Y23HF83H/Mi4yLjY.huwd";
     let PASSWORD = "12344321"; // default fallback
 
     // --- Crypto helpers (unchanged) ---
@@ -481,11 +481,11 @@
         await startUnity();
         loginContainer.style.display = "none";
       } catch (err) {
-        alert("Error: " + err.message);
+        // alert("Error: " + err.message);
         usernameInput.disabled = false;
         passwordInput.disabled = false;
         continueButton.disabled = false;
-        continueButton.innerText = "LOGIN FAILED";
+        continueButton.innerText = "LOGIN FAILED, Verrified accounts only";
         continueButton.style.boxShadow = "red 0px 0px 50px";
         continueButton.style.backgroundColor = "rgb(255, 0, 0)";
       }
