@@ -425,7 +425,7 @@
         throw new Error("Invalid key format (missing !)");
       }
 
-      const base64Key = candidate.slice(0, -6);
+      const base64Key = candidate.slice(0, -1);
       const decoded = atob(base64Key);
 
       localStorage.setItem("S2HAC5ioVerifiedKey", decoded);
