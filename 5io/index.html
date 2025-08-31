@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>Unity WebGL Player | WebGL Player</title>
+  <link rel="stylesheet" href="TemplateData/style.css" />
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: #000000;
+    }
+    #unity-container {
+      width: 100vw;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      display: none;
+    }
+    canvas#unity-canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    #play-container {
+      position: absolute;
+      width: 100vw;
+      height: 100vh;
+      top: 0;
+      left: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #000000;
+      z-index: 9999;
+    }
+    .css-4hkys5 {
+      background-color: rgb(240, 248, 255);
+      position: absolute;
+      border-radius: 6px;
+      top: 0px;
+      height: 100%;
+      left: 0px;
+      right: 50px;
+      opacity: 1;
+      animation: 1sease 0s infinite normal none running animation-18enp0d;
+      box-shadow: rgb(225, 0, 255) 0px 0px 50px;
+    }
+    .css-5op8vq {
+      color: white;
+      box-shadow: magenta 0px 0px 50px;
+      font-size: 1.3em;
+      text-transform: capitalize;
+      transform: "perspective(1px) translateZ(0)";
+      font-weight: 800;
+      cursor: pointer;
+      font-family: Nunito, Arial, sans-serif;
+      background-color: rgb(104, 66, 255);
+      border-radius: 80px;
+      padding: 14px 100px;
+      border: none;
+    }
+
+    #unity-loading-bar {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+      width: 500px;
+    }
+
+    #unity-progress-bar-empty {
+      width: 300px;
+      height: 20px;
+      background-color: #222;
+      border-radius: 10px;
+      overflow: hidden;
+      box-shadow: 0 0 10px #000;
+      width: 500px;
+    }
+
+    #unity-progress-bar-full {
+      background-color: rgb(240, 248, 255);
+      position: absolute;
+      border-radius: 6px;
+      top: 0px;
+      height: 100%;
+      left: 0px;
+      right: 0px;
+      width: 0%;
+      opacity: 1;
+      animation: 1sease 0s infinite normal none running animation-18enp0d;
+      box-shadow: rgb(225, 0, 255) 0px 0px 50px;
+    }
+    #unity-loading-text {
+      margin-top: 2px;
+      color: white;
+      font-family: sans-serif;
+      font-size: 25px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row; /* <-- changed from column */
+      z-index: 9999;
+      gap: 10px; /* <-- optional: adds spacing between text and SVG */
+    }
+
+    #unity-loading-icon {
+      width: 60px;
+      height: 60px;
+      margin-left: 10px;
+      background: url('loading.svg') no-repeat center;
+      background-size: contain;
+      flex-shrink: 0; /* Prevent the icon from shrinking */
+    }
+
+
+    #unity-loading-text-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: row;
+      gap: 30px; /* <-- Increased from 10px */
+      margin-top: 50px;
+      color: white;
+      font-family: sans-serif;
+      font-size: 25px;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+    }
+
+
+
+
+  </style>
+</head>
+<body>
+  <div id="play-container">
+    <button class="css-5op8vq" id="play-button">Play</button>
+    <div style="display:none; flex-direction: column; align-items: center; margin-top: 20px; color: red; font-size: 30px;" id="validationtext">Checking saved key...</div>
+    <!-- Password input and continue button hidden initially -->
+    <div id="login-container" style="display:none; flex-direction: column; align-items: center; margin-top: 20px;">
+      <input type="text" id="username-input" placeholder="Username" style="font-size: 1.2em; padding: 10px; border-radius: 8px; border:none; margin-bottom:10px;"/>
+      <input type="password" id="password-input" placeholder="Password" style="font-size: 1.2em; padding: 10px; border-radius: 8px; border:none;"/>
+      <button class="css-5op8vq" id="continue-button" style="margin-top: 10px;">Continue</button>
+    </div>
+  </div>
+
+
+  <div id="unity-container">
+    <canvas id="unity-canvas" tabindex="-1"></canvas>
+    <div id="unity-loading-bar">
+      <div id="unity-progress-bar-empty">
+        <div id="unity-progress-bar-full"></div>
+      </div>
+      <div id="unity-loading-text-wrapper">
+        <div id="unity-loading-text">0%</div>
+        <div id="unity-loading-icon"></div>
+      </div>
+
+
+    </div>
+    <div id="unity-warning"></div>
+    <div id="unity-footer">
+      <div id="unity-webgl-logo"></div>
+      <div id="unity-fullscreen-button"></div>
+      <div id="unity-build-title">WebGL Player</div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+
+  <script>
+    const playButton = document.getElementById("play-button");
+    const continueButton = document.getElementById("continue-button");
+    const playContainer = document.getElementById("play-container");
+    const loginContainer = document.getElementById("login-container");
+    const usernameInput = document.getElementById("username-input");
+    const passwordInput = document.getElementById("password-input");
+    const unityContainer = document.getElementById("unity-container");
+    const loadingBar = document.getElementById("unity-loading-bar");
+    const progressBarFull = document.getElementById("unity-progress-bar-full");
+    const canvas = document.getElementById("unity-canvas");
+    const validationtext = document.getElementById("validationtext");
+
+    const ZIP_URL = "https://2hac.github.io/8Y23HF83H/Mi4yLjY.huwd";
+    let PASSWORD = "12344321"; // default fallback
+
+    // --- Crypto helpers (unchanged) ---
+    const IV_HEX = "00112233445566778899aabbccddeeff"; // example 16-byte IV
+
+    function hexStringToUint8Array(hexString) {
+      if (hexString.length % 2 !== 0) throw "Invalid hex string";
+      const array = new Uint8Array(hexString.length / 2);
+      for (let i = 0; i < hexString.length; i += 2) {
+        array[i / 2] = parseInt(hexString.substr(i, 2), 16);
+      }
+      return array;
+    }
+
+
+    async function deriveKeyAndIV(password) {
+      const enc = new TextEncoder();
+      const baseKey = await crypto.subtle.importKey(
+        "raw",
+        enc.encode(password),
+        { name: "PBKDF2" },
+        false,
+        ["deriveBits"]
+      );
+
+      const derivedBits = await crypto.subtle.deriveBits(
+        {
+          name: "PBKDF2",
+          salt: enc.encode("fixed-salt"),
+          iterations: 100000,
+          hash: "SHA-256",
+        },
+        baseKey,
+        384 // 32 bytes for key + 16 bytes for IV = 48 bytes = 384 bits
+      );
+
+      const derived = new Uint8Array(derivedBits);
+      const keyBytes = derived.slice(0, 32); // 256-bit key
+      const ivBytes = derived.slice(32, 48); // 128-bit IV
+
+      return { key: keyBytes, iv: ivBytes };
+    }
+
+
+
+    async function deriveKey(password) {
+      const encoder = new TextEncoder();
+      const keyMaterial = await crypto.subtle.importKey(
+        "raw", 
+        encoder.encode(password), 
+        { name: "PBKDF2" }, 
+        false, 
+        ["deriveKey"]
+      );
+      return crypto.subtle.deriveKey(
+        {
+          name: "PBKDF2",
+          salt: encoder.encode("fixed-salt"),
+          iterations: 100000,
+          hash: "SHA-256"
+        },
+        keyMaterial, 
+        { name: "AES-CBC", length: 256 }, 
+        false, 
+        ["decrypt"]
+      );
+    }
+
+    async function importAESKey(rawKey) {
+      return crypto.subtle.importKey(
+        "raw",
+        rawKey,
+        { name: "AES-CBC" },
+        false,
+        ["decrypt"]
+      );
+    }
+
+
+    async function decryptAES(buffer, key, iv) {
+      // If you want to NOT extract IV from buffer, just use iv passed in
+      const data = buffer; // use whole buffer (no IV prepended)
+
+      const decryptedBuffer = await crypto.subtle.decrypt(
+        { name: "AES-CBC", iv }, 
+        key, 
+        data
+      );
+
+      return new Uint8Array(decryptedBuffer);
+    }
+
+
+    async function fetchAndDecryptZip() {
+      const response = await fetch(ZIP_URL);
+      const encryptedBuffer = await response.arrayBuffer();
+      const view = new Uint8Array(encryptedBuffer);
+
+      if (view[0] === 0x50 && view[1] === 0x4B) { // PK zip signature
+        console.log("File looks like a plain ZIP, no decryption needed.");
+        const zip = await JSZip.loadAsync(encryptedBuffer);
+        return zip;
+      }
+
+      // Derive key and IV from password
+      const { key: rawKey, iv } = await deriveKeyAndIV(PASSWORD);
+      // Import CryptoKey for decrypt
+      const key = await importAESKey(rawKey);
+
+      // Decrypt full buffer (IV is derived separately, so no slicing)
+      const decryptedData = await crypto.subtle.decrypt(
+        { name: "AES-CBC", iv },
+        key,
+        encryptedBuffer
+      );
+
+      const zip = await JSZip.loadAsync(new Uint8Array(decryptedData));
+      // Save   a password or key when successful to storage so start without entering
+      localStorage.setItem("S2HAC5ioVerifiedKey", PASSWORD);
+      return zip;
+    }
+
+    // Replace with the actual URL you want to intercept
+    const TARGET_FETCH_URL = "parkour"; // match partial name if needed
+    const ENCRYPTED_URL = "https://2hac.github.io/CLk9NG1LtMbenHJZbwNMwBZvrD2nlmpl/WbCgQAlM12umnqqFU1vvYoUJ2wxCvLdS/parkour";
+    // let PASSWORD = "12344321";
+
+    // Intercept fetch
+    const originalFetch = window.fetch;
+    window.fetch = async function(resource, config) {
+      if (typeof resource === "string" && resource.includes(TARGET_FETCH_URL)) {
+        console.log("[Interceptor] Replacing fetch for:", resource);
+        try {
+          const filename = TARGET_FETCH_URL.split("/").pop(); // e.g., "PixelWafrare.data"
+          return await getDecryptedBlob(filename);
+        } catch (err) {
+          console.error("Decryption fetch failed, falling back to original:", err);
+        }
+      }
+      return originalFetch.apply(this, arguments);
+    };
+
+
+
+
+
+    async function getBlobURL(zip, filename) {
+      const file = zip.file(filename);
+      if (!file) throw new Error(`${filename} not found`);
+      const content = await file.async("blob");
+      return URL.createObjectURL(content);
+    }
+
+    async function startUnity() {
+
+      const zip = await fetchAndDecryptZip();
+      playContainer.style.display = "none";
+      unityContainer.style.display = "block";
+      loadingBar.style.display = "block";
+      const [dataUrl, frameworkUrl, codeUrl, loaderUrl] = await Promise.all([
+        getBlobURL(zip, "dKvelYGCAK.data"),
+        getBlobURL(zip, "dKvelYGCAK.framework.js"),
+        getBlobURL(zip, "dKvelYGCAK.wasm"),
+        getBlobURL(zip, "dKvelYGCAK.loader.js"),
+      ]);
+
+      const config = {
+        dataUrl,
+        frameworkUrl,
+        codeUrl,
+        streamingAssetsUrl: "StreamingAssets",
+        companyName: "Unity",
+        productName: "WebGL Player",
+        productVersion: "1.0",
+        showBanner: (msg, type) => console.log(type, msg),
+      };
+
+      const loaderScript = document.createElement("script");
+      loaderScript.src = loaderUrl;
+      loaderScript.onload = () => {
+        createUnityInstance(canvas, config, (progress) => {
+          const percent = Math.round(progress * 100);
+          progressBarFull.style.width = `${percent}%`;
+          document.getElementById("unity-loading-text").innerText = `${percent}%`;
+        }).then((unityInstance) => {
+          loadingBar.style.display = "none";
+          document.getElementById("unity-fullscreen-button").onclick = () => {
+            unityInstance.SetFullscreen(1);
+          };
+        }).catch((err) => alert("Unity error: " + err));
+      };
+
+      document.body.appendChild(loaderScript);
+    }
+
+    // --- Authentication ---
+    const ENCODED_URL = "aHR0cHM6Ly9zc2wucGFjb2dhbWVzLmNvbS9kYXRhZmlsZXMvcHc1L0dldE1hcHMucGhw"; 
+    const LOGIN_URL = atob(ENCODED_URL);
+
+    async function authenticateUser(uname, password) {
+      const body = new URLSearchParams();
+      body.append("uname", uname);
+      body.append("password", password);
+
+      const res = await fetch(LOGIN_URL, {
+        method: "POST",
+        body,
+        headers: { "Content-Type": "application/x-www-form-urlencoded" }
+      });
+
+      const text = await res.text();
+
+      // Find marker hvkl + length
+      const match = text.match(/hvkl(\d+)/);
+      if (!match) throw new Error("No hvkl marker found");
+
+      const length = parseInt(match[1]);
+      const startIndex = match.index + match[0].length;
+      const candidate = text.substr(startIndex, length);
+
+      if (!candidate.endsWith("!")) {
+        throw new Error("Invalid key format (missing !)");
+      }
+
+      const base64Key = candidate.slice(0, -6);
+      const decoded = atob(base64Key);
+
+      localStorage.setItem("S2HAC5ioVerifiedKey", decoded);
+      PASSWORD = decoded; // global variable assumed
+      return decoded;
+    }
+
+    // --- Play button ---
+    playButton.addEventListener("click", async () => {
+      playButton.style.display = "none";
+      validationtext.style.display = "flex";
+
+      const savedPassword = localStorage.getItem("S2HAC5ioVerifiedKey");
+
+      if (savedPassword) {
+        try {
+          PASSWORD = savedPassword;
+          await startUnity();
+        } catch (e) {
+          console.error("Error using saved password:", e);
+          validationtext.style.display = "none";
+          loginContainer.style.display = "flex";
+          usernameInput.focus();
+        }
+      } else {
+        validationtext.style.display = "none";
+        loginContainer.style.display = "flex";
+        usernameInput.focus();
+      }
+    });
+
+    // --- Continue button (login) ---
+    continueButton.addEventListener("click", async () => {
+      const uname = usernameInput.value.trim();
+      const pass = passwordInput.value.trim();
+
+      if (!uname || !pass) {
+        continueButton.innerText = "ENTER BOTH";
+        continueButton.style.boxShadow = "red 0px 0px 50px";
+        continueButton.style.backgroundColor = "rgb(255, 0, 0)";
+        return;
+      }
+
+      usernameInput.disabled = true;
+      passwordInput.disabled = true;
+      continueButton.disabled = true;
+      continueButton.innerText = "Validating...";
+      continueButton.style.boxShadow = "blue 0px 0px 50px";
+      continueButton.style.backgroundColor = "rgb(0, 0, 255)";
+
+      try {
+        await authenticateUser(uname, pass);
+        await startUnity();
+        loginContainer.style.display = "none";
+      } catch (err) {
+        alert("Error: " + err.message);
+        usernameInput.disabled = false;
+        passwordInput.disabled = false;
+        continueButton.disabled = false;
+        continueButton.innerText = "LOGIN FAILED";
+        continueButton.style.boxShadow = "red 0px 0px 50px";
+        continueButton.style.backgroundColor = "rgb(255, 0, 0)";
+      }
+    });
+  </script>
+
+  
+</body>
+</html>
