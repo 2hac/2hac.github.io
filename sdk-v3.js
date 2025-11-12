@@ -4439,11 +4439,9 @@
 
                     if (qaMode) {
                         // QA Mode active
-                        this.postMessage({ type: "local" });
                         return "local";
                     } else {
                         // Normal CrazyGames mode
-                        this.postMessage({ type: "crazygames" });
                         return "crazygames";
                     }
                 }
