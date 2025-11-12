@@ -1858,8 +1858,17 @@
             }
             ,
             t.shouldInitLocalMode = function() {
-                return ["localhost", "127.0.0.1", "preview.construct.net", "http://2hac.github.io/", "https://2hac.github.io/", "2hac.github.io"].includes(window.location.hostname) || "true" === (0,
-                a.getQueryStringValue)("useLocalSdk")
+                const qaOverride = localStorage.getItem("QaModeOveride");
+                if (qaOverride === "true") return true;
+                if (qaOverride === "false") return false;
+
+                return [
+                    "localhost",
+                    "127.0.0.1",
+                    "preview.construct.net",
+                    "2hac.github.io"
+                ].includes(window.location.hostname) ||
+                    (0, a.getQueryStringValue)("useLocalSdk") === "true";
             }
             ,
             t.checkIsCrazyGames = async function() {
@@ -4439,11 +4448,9 @@
 
                     if (qaMode) {
                         // QA Mode active
-                        this.postMessage({ type: "local" });
                         return "local";
                     } else {
                         // Normal CrazyGames mode
-                        this.postMessage({ type: "crazygames" });
                         return "crazygames";
                     }
                 }
