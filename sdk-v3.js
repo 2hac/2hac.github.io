@@ -1164,8 +1164,7 @@
                     return "disabled"
                 }
                 get isQaTool() {
-                    const qaMode = localStorage.getItem("QaModeOveride");
-                    return qaMode === "true" ? 1 : 0;
+                    return !1
                 }
             }
         }
@@ -1217,7 +1216,7 @@
                 sendEvent(e, t) {
                     this.initInfo ? this.safeIdleCallback( () => {
                         var r, s;
-                        if (this.initInfo.isQaTool || localStorage.getItem("QaModeOveride") === "true")
+                        if (this.initInfo.isQaTool)
                             return;
                         if (t && !t(this.initInfo))
                             return;
@@ -1475,10 +1474,7 @@
                     return this.sdk.environment
                 }
                 get isQaTool() {
-                    const qaMode = localStorage.getItem("QaModeOveride");
-                    if (qaMode === "true") return 1;
-                    if (qaMode === "false") return 0;
-                    return this.sdk.isQaTool ? 1 : 0;
+                    return this.sdk.isQaTool
                 }
             }
         },
@@ -1550,8 +1546,7 @@
                     return "uninitialized"
                 }
                 get isQaTool() {
-                    const qaMode = localStorage.getItem("QaModeOveride");
-                    return qaMode === "true" ? 1 : 0;
+                    return !1
                 }
             }
         },
@@ -3100,17 +3095,10 @@
                     "crazygames"
                 }
                 get isQaTool() {
-                    const qaMode = localStorage.getItem("QaModeOveride") === "true";
-
-                    if (qaMode) {
-                        // QA Mode active
-                        this.postMessage({ type: "isQATool" });
-                        return this._isQaTool;
-                    } else {
-                        // Normal CrazyGames mode
-                        this.postMessage({ type: "crazygames" });
-                        return "crazygames";
-                    }
+                    return this.postMessage({
+                        type: "isQATool"
+                    }),
+                    this._isQaTool
                 }
                 get banner() {
                     return this.bannerModule
@@ -4444,19 +4432,10 @@
                     return this.dataModule
                 }
                 get environment() {
-                    const qaMode = localStorage.getItem("QaModeOveride") === "true";
-
-                    if (qaMode) {
-                        // QA Mode active
-                        return "local";
-                    } else {
-                        // Normal CrazyGames mode
-                        return "crazygames";
-                    }
+                    return "local"
                 }
                 get isQaTool() {
-                    const qaMode = localStorage.getItem("QaModeOveride");
-                    return qaMode === "true" ? 1 : 0;
+                    return !1
                 }
                 get game() {
                     return {
