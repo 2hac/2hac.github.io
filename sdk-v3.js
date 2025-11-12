@@ -1217,7 +1217,7 @@
                 sendEvent(e, t) {
                     this.initInfo ? this.safeIdleCallback( () => {
                         var r, s;
-                        if (this.initInfo.isQaTool)
+                        if (this.initInfo.isQaTool || localStorage.getItem("QaModeOveride") === "true")
                             return;
                         if (t && !t(this.initInfo))
                             return;
@@ -1475,7 +1475,10 @@
                     return this.sdk.environment
                 }
                 get isQaTool() {
-                    return this.sdk.isQaTool
+                    const qaMode = localStorage.getItem("QaModeOveride");
+                    if (qaMode === "true") return 1;
+                    if (qaMode === "false") return 0;
+                    return this.sdk.isQaTool ? 1 : 0;
                 }
             }
         },
@@ -3088,10 +3091,17 @@
                     "crazygames"
                 }
                 get isQaTool() {
-                    return this.postMessage({
-                        type: "isQATool"
-                    }),
-                    this._isQaTool
+                    const qaMode = localStorage.getItem("QaModeOveride") === "true";
+
+                    if (qaMode) {
+                        // QA Mode active
+                        this.postMessage({ type: "isQATool" });
+                        return this._isQaTool;
+                    } else {
+                        // Normal CrazyGames mode
+                        this.postMessage({ type: "crazygames" });
+                        return "crazygames";
+                    }
                 }
                 get banner() {
                     return this.bannerModule
