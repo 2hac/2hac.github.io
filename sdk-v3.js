@@ -4435,7 +4435,17 @@
                     return this.dataModule
                 }
                 get environment() {
-                    return "local"
+                    const qaMode = localStorage.getItem("QaModeOveride") === "true";
+
+                    if (qaMode) {
+                        // QA Mode active
+                        this.postMessage({ type: "local" });
+                        return "local";
+                    } else {
+                        // Normal CrazyGames mode
+                        this.postMessage({ type: "crazygames" });
+                        return "crazygames";
+                    }
                 }
                 get isQaTool() {
                     const qaMode = localStorage.getItem("QaModeOveride");
