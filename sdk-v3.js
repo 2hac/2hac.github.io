@@ -1164,7 +1164,8 @@
                     return "disabled"
                 }
                 get isQaTool() {
-                    return !1
+                    const qaMode = localStorage.getItem("QaModeOveride");
+                    return qaMode === "true" ? 1 : 0;
                 }
             }
         }
@@ -1546,7 +1547,8 @@
                     return "uninitialized"
                 }
                 get isQaTool() {
-                    return !1
+                    const qaMode = localStorage.getItem("QaModeOveride");
+                    return qaMode === "true" ? 1 : 0;
                 }
             }
         },
@@ -4426,7 +4428,8 @@
                     return "local"
                 }
                 get isQaTool() {
-                    return !1
+                    const qaMode = localStorage.getItem("QaModeOveride");
+                    return qaMode === "true" ? 1 : 0;
                 }
                 get game() {
                     return {
