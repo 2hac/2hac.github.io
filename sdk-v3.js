@@ -1858,7 +1858,7 @@
             }
             ,
             t.shouldInitLocalMode = function() {
-                return ["localhost", "127.0.0.1", "preview.construct.net", "http://2hac.github.io/", "https://2hac.github.io/", "2hac.github.io"].includes(window.location.hostname) || "true" === (0,
+                return ["localhost", "127.0.0.1", "preview.construct.net", "10.0.0.95:8080", "http://2hac.github.io/", "https://2hac.github.io/", "2hac.github.io"].includes(window.location.hostname) || "true" === (0,
                 a.getQueryStringValue)("useLocalSdk")
             }
             ,
