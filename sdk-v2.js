@@ -6739,7 +6739,7 @@
                         "https://10.0.0.155:4443/"
                     ];
                     if (excluded.some(prefix => window.location.href.startsWith(prefix)))
-                        return false;
+                        return true;
 
                     const host = window.location.hostname;
 
