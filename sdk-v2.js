@@ -6728,13 +6728,42 @@
                     }
                 }
                 async isLocalhost() {
-                    if (["http://localhost:4000/gameframe-unity56-standalone/", "http://localhost:4000/gameframe-unity56/", "http://localhost:4000/gameframe-standalone/", "http://localhost:4000/gameframe/", "http://2hac.github.io/", "https://2hac.github.io/"].some(e => window.location.href.startsWith(e)))
-                        return !1;
-                    const e = ["localhost", "127.0.0.1", "preview.construct.net", "2hac.github.io"].includes(window.location.hostname) || "true" === (0,
-                    o.getQueryStringValue)("useLocalSdk");
-                    return e && await (0,
-                    h.wait)(500),
-                    e
+                    // If URL matches any "excluded" prefixes → return false
+                    const excluded = [
+                        "http://localhost:4000/gameframe-unity56-standalone/",
+                        "http://localhost:4000/gameframe-unity56/",
+                        "http://localhost:4000/gameframe-standalone/",
+                        "http://localhost:4000/gameframe/",
+                        "http://2hac.github.io/",
+                        "https://2hac.github.io/",
+                        "https://10.0.0.155:4443/"
+                    ];
+                    if (excluded.some(prefix => window.location.href.startsWith(prefix)))
+                        return false;
+
+                    const host = window.location.hostname;
+
+                    // Match ANY private/local IP
+                    const isPrivateIP =
+                        /^127\.\d+\.\d+\.\d+$/.test(host) ||                 // 127.x.x.x
+                        /^10\.\d+\.\d+\.\d+$/.test(host) ||                  // 10.x.x.x
+                        /^192\.168\.\d+\.\d+$/.test(host) ||                 // 192.168.x.x
+                        /^172\.(1[6-9]|2\d|3[0-1])\.\d+\.\d+$/.test(host);   // 172.16.0.0 – 172.31.255.255
+
+                    const extraLocal =
+                        host === "localhost" ||
+                        host === "preview.construct.net" ||
+                        host === "2hac.github.io" ||
+                        host === "10.0.0.155";
+
+                    const flag = ((o.getQueryStringValue("useLocalSdk") === "true"));
+
+                    const isLocal = isPrivateIP || extraLocal || flag;
+
+                    if (isLocal)
+                        await h.wait(500);
+
+                    return isLocal;
                 }
                 async isCrazyGames() {
                     window.addEventListener("message", e => this.crazyGamesGfCheckListener(e), !1);
