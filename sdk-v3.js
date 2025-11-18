@@ -4748,7 +4748,7 @@
                             this.hideOverlay(),
                             e()
                         }
-                        , 5e3)
+                        , 2e3)
                     }
                     )
                 }
