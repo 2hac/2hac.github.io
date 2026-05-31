@@ -5,5 +5,5 @@
     "asmMemoryUrl": "Game.asm.memory.unityweb.gz",
     "asmFrameworkUrl": "Game.asm.framework.unityweb.gz",
     "splashScreenStyle": "Dark",
-    "backgroundColor": "#222C36"
+    "backgroundColor": "#0a001f"
 }

@@ -933,7 +933,39 @@ var UnityLoader = UnityLoader || {
                 s++) : n.finished || d++
             }
             var l = a ? (a - d - (i ? s * (i - o) / i : 0)) / a : 0;
-            e.gameInstance.onProgress(e.gameInstance, l)
+            var totalLoaded = 0;
+            var totalSize = 0;
+            var activeFiles = [];
+
+            for (var name in e.buildDownloadProgress)
+            {
+                var file =
+                    e.buildDownloadProgress[name];
+
+                totalLoaded +=
+                    file.loaded || 0;
+
+                totalSize +=
+                    file.total || 0;
+
+                activeFiles.push({
+                    name:name,
+                    loaded:file.loaded || 0,
+                    total:file.total || 0,
+                    finished:file.finished
+                });
+            }
+
+            e.realDownloadInfo = {
+                loaded: totalLoaded,
+                total: totalSize,
+                files: activeFiles
+            };
+
+            e.gameInstance.onProgress(
+                e.gameInstance,
+                l
+            );
         }
     },
     Compression: {
@@ -2547,8 +2579,11 @@ var UnityLoader = UnityLoader || {
                 } catch (e) {}
             },
             hasUnityMarker: function(e) {
-                return !0;
-            }
+                return e &&
+                    e.length >= 2 &&
+                    e[0] === 31 &&
+                    e[1] === 139;
+            },
             /*hasUnityMarker: function(e) {
                 var t = 10
                   , r = "UnityWeb Compressed Content (gzip)";

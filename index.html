@@ -1,25 +1,622 @@
 <!DOCTYPE html>
 <html lang="en-us">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Unity WebGL Player | New Unity Project</title>
-    <link rel="shortcut icon" href="Games/6989/Build/favicon.ico">
-    <link rel="stylesheet" href="Games/6989/Build/style.css">
-    <script src="Games/6989/Build/UnityProgress.js"></script>  
-    <script src="Games/6989/Build/Game.js"></script>
-    <script>
-      var gameInstance = UnityLoader.instantiate("gameContainer", "Games/6989/Build/Game.json", {onProgress: UnityProgress});
-    </script>
-  </head>
-  <body>
-    <div class="webgl-content">
-      <div id="gameContainer" style="width: 960px; height: 600px"></div>
-      <div class="footer">
-        <div class="webgl-logo"></div>
-        <div class="fullscreen" onclick="gameInstance.SetFullscreen(1)"></div>
-        <div class="title">New Unity Project</div>
-      </div>
+
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+<title>Pixel Warfare 5</title>
+
+<link rel="shortcut icon" href="Games/6989/Build/favicon.ico">
+
+<script src="Games/6989/Build/UnityProgress.js"></script>
+<script src="Games/6989/Build/Game.js"></script>
+
+<style>
+
+html,
+body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#000;
+    font-family:sans-serif;
+}
+
+.webgl-content{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+}
+
+#gameContainer{
+    width:1280px;
+    height:720px;
+    opacity:0;
+    transition:opacity .5s;
+    background:#000;
+}
+
+.play-overlay{
+    position:absolute;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+        radial-gradient(
+            circle,
+            rgba(20,20,20,.7),
+            rgba(0,0,0,.95)
+        );
+}
+
+.play-btn{
+    border:none;
+    cursor:pointer;
+    color:#fff;
+    font-size:42px;
+    font-weight:bold;
+    padding:24px 70px;
+    background:
+        linear-gradient(
+            180deg,
+            #f5c400,
+            #d67b00
+        );
+    border-radius:8px;
+}
+
+.play-btn:hover{
+    transform:scale(1.05);
+}
+
+#loadingScreen{
+    position:absolute;
+    inset:0;
+    background:#000;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    z-index:5000;
+}
+
+#loadingScreen.hide{
+    opacity:0;
+    pointer-events:none;
+    transition:.6s;
+}
+
+.loading-card{
+    width:900px;
+}
+
+.loading-image{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    opacity:1;
+    transition:opacity .8s ease-in-out;
+}
+
+.loading-progress{
+    width:100%;
+    height:12px;
+    background:#333;
+}
+
+.loading-fill{
+    width:0%;
+    height:100%;
+    background:#f5b400;
+    transition:width .2s;
+}
+
+.loading-bottom{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:20px;
+    color:white;
+}
+
+.game-info{
+    display:flex;
+    align-items:center;
+    gap:15px;
+}
+
+.game-icon{
+    width:64px;
+    height:64px;
+    border-radius:50%;
+}
+
+.game-title{
+    font-size:18px;
+    font-weight:bold;
+}
+
+.game-subtitle{
+    color:#888;
+    font-size:12px;
+}
+
+.status-area{
+    display:flex;
+    align-items:center;
+    gap:15px;
+    color:#f5b400;
+    font-weight:bold;
+    font-size:20px;
+}
+
+.spinner{
+    width:40px;
+    height:40px;
+    border:4px solid rgba(255,255,255,.08);
+    border-top-color:#f5b400;
+    border-right-color:#ff7b00;
+    border-radius:50%;
+    animation:spin .7s linear infinite;
+    box-shadow:
+        0 0 10px rgba(245,180,0,.5),
+        0 0 20px rgba(245,180,0,.3);
+    position:relative;
+    display:flex;
+}
+
+@keyframes spin{
+    from{
+        transform:rotate(0deg);
+    }
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+@keyframes spin{
+    to{
+        transform:rotate(360deg);
+    }
+}
+
+.game-bar{
+    margin-top:12px;
+    display:flex;
+    justify-content:center;
+    gap:10px;
+}
+
+.game-btn{
+    background:#111;
+    border:1px solid #444;
+    color:white;
+    padding:10px 20px;
+    cursor:pointer;
+}
+
+.game-btn:hover{
+    background:#222;
+}
+
+.timestamp{
+    position:absolute;
+    right:15px;
+    bottom:10px;
+    color:#999;
+    font-size:11px;
+    font-family:monospace;
+    background:rgba(0,0,0,.5);
+    padding:4px 8px;
+}
+
+#downloadInfo{
+    color:#aaa;
+    font-size:13px;
+    font-family:monospace;
+    margin-top:4px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="webgl-content">
+
+    <div id="gameContainer"></div>
+
+    <div id="loadingScreen">
+
+        <div class="loading-card">
+
+            <img
+              class="loading-image"
+              id="loadingImage"
+              src="Games/6989/thumb/img1.jpg">
+
+            <div class="loading-progress">
+                <div
+                    class="loading-fill"
+                    id="loadingFill">
+                </div>
+            </div>
+
+            <div class="loading-bottom">
+
+                <div class="game-info">
+
+                    <img
+                        class="game-icon"
+                        src="Games/6989/Icon.webp">
+
+                    <div>
+
+                        <div class="game-title">
+                            PIXEL WARFARE 5
+                        </div>
+
+                        <div class="game-subtitle">
+                            MULTIPLAYER GAME
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="status-area">
+
+                    <div id="downloadInfo">
+                        0 MB / 0 MB
+                    </div>
+
+                    <span id="statusText">
+                        DOWNLOADING GAME 0%
+                    </span>
+
+                    <div class="spinner"></div>
+
+                </div>
+
+            </div>
+
+            <div class="timestamp" id="timestamp">
+                00:00:00
+            </div>
+
+        </div>
+
     </div>
-  </body>
+
+    <div
+        class="play-overlay"
+        id="playOverlay">
+
+        <button
+            class="play-btn"
+            onclick="startGame()">
+
+            ▶ PLAY
+
+        </button>
+
+    </div>
+
+    <div class="game-bar">
+
+        <button
+            class="game-btn"
+            onclick="gameInstance && gameInstance.SetFullscreen(1)">
+
+            Fullscreen
+
+        </button>
+
+        <button
+            class="game-btn"
+            onclick="location.reload()">
+
+            Reload
+
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+var gameInstance = null;
+
+function setStatus(text)
+{
+    document.getElementById(
+        "statusText"
+    ).textContent = text;
+}
+
+function startGame()
+{
+    document
+        .getElementById(
+            "playOverlay"
+        ).style.display = "none";
+
+    document
+        .getElementById(
+            "loadingScreen"
+        ).style.display = "flex";
+
+    gameInstance =
+        UnityLoader.instantiate(
+            "gameContainer",
+            "Games/6989/Build/Game.json",
+            {
+                onProgress:
+                function(
+                    game,
+                    progress
+                )
+                {
+                    var percent =
+                        Math.floor(
+                            progress * 100
+                        );
+
+                    document
+                        .getElementById(
+                            "loadingFill"
+                        ).style.width =
+                        percent + "%";
+
+                    if(
+                        progress < 1
+                    )
+                    {
+                        setStatus(
+                            "DOWNLOADING GAME "
+                            +
+                            percent
+                            +
+                            "%"
+                        );
+                    }
+                    else
+                    {
+                        setStatus(
+                            "PROCESSING FILES"
+                        );
+
+                        document
+                            .querySelector(
+                                ".spinner"
+                            )
+                            .style.display =
+                            "block";
+
+                        setTimeout(
+                            function()
+                            {
+                                setStatus(
+                                    "STARTING GAME"
+                                );
+
+                                setTimeout(
+                                    function()
+                                    {
+                                        document
+                                            .getElementById(
+                                                "gameContainer"
+                                            )
+                                            .style.opacity =
+                                            "1";
+
+                                        document
+                                            .getElementById(
+                                                "loadingScreen"
+                                            )
+                                            .classList
+                                            .add(
+                                                "hide"
+                                            );
+                                    },
+                                    1500
+                                );
+                            },
+                            1500
+                        );
+                    }
+                }
+            }
+        );
+}
+
+async function getFileSize(url)
+{
+    try
+    {
+        const response =
+            await fetch(url,{
+                method:"HEAD"
+            });
+
+        return parseInt(
+            response.headers.get(
+                "Content-Length"
+            ) || "0"
+        );
+    }
+    catch(e)
+    {
+        return 0;
+    }
+}
+
+function formatBytes(bytes)
+{
+    if(bytes < 1024)
+        return bytes + " B";
+
+    if(bytes < 1024*1024)
+        return (
+            bytes / 1024
+        ).toFixed(1) + " KB";
+
+    return (
+        bytes /
+        1024 /
+        1024
+    ).toFixed(1) + " MB";
+}
+
+var currentLoadingImage =
+    Math.floor(Math.random() * 10) + 1;
+
+var loadingImage =
+    document.getElementById(
+        "loadingImage"
+    );
+
+loadingImage.src =
+    "Games/6989/thumb/img" +
+    currentLoadingImage +
+    ".jpg";
+
+setInterval(function(){
+
+    if(
+        document.getElementById(
+            "loadingScreen"
+        ).classList.contains(
+            "hide"
+        )
+    )
+        return;
+
+    loadingImage.style.opacity = "0";
+
+    setTimeout(function(){
+
+        currentLoadingImage++;
+
+        if(
+            currentLoadingImage > 10
+        )
+        {
+            currentLoadingImage = 1;
+        }
+
+        loadingImage.src =
+            "Games/6989/thumb/img" +
+            currentLoadingImage +
+            ".jpg";
+
+        loadingImage.onload =
+        function()
+        {
+            loadingImage.style.opacity = "1";
+        };
+
+    },1);
+
+},5000);
+
+function updateTimestamp()
+{
+    const now = new Date();
+
+    const unixTs =
+        Math.floor(
+            now.getTime() / 1000
+        );
+
+    const year =
+        now.getFullYear();
+
+    const month =
+        String(
+            now.getMonth() + 1
+        ).padStart(2,"0");
+
+    const day =
+        String(
+            now.getDate()
+        ).padStart(2,"0");
+
+    const hours =
+        String(
+            now.getHours()
+        ).padStart(2,"0");
+
+    const minutes =
+        String(
+            now.getMinutes()
+        ).padStart(2,"0");
+
+    const seconds =
+        String(
+            now.getSeconds()
+        ).padStart(2,"0");
+
+    document.getElementById(
+        "timestamp"
+    ).innerHTML =
+        "TIME: " +
+        year +
+        "-" +
+        month +
+        "-" +
+        day +
+        " " +
+        hours +
+        ":" +
+        minutes +
+        ":" +
+        seconds +
+        "<br>" +
+        "UNIX: " +
+        unixTs +
+        "<br>" +
+        "Seconds since January 1st 1970. (UTC)";
+}
+
+updateTimestamp();
+
+setInterval(
+    updateTimestamp,
+    1000
+);
+
+setInterval(function(){
+
+    if(
+        !gameInstance ||
+        !gameInstance.Module ||
+        !gameInstance.Module.realDownloadInfo
+    )
+        return;
+
+    const info =
+        gameInstance.Module
+        .realDownloadInfo;
+
+    document.getElementById(
+        "downloadInfo"
+    ).innerHTML =
+        formatBytes(
+            info.loaded
+        ) +
+        " / " +
+        formatBytes(
+            info.total
+        );
+
+},100);
+</script>
+
+</body>
 </html>
