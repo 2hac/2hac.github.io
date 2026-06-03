@@ -1,9 +1,1 @@
-{
-    "TOTAL_MEMORY": 746586112,
-    "dataUrl": "Game.data.unityweb.gz",
-    "asmCodeUrl": "Game.asm.code.unityweb.gz",
-    "asmMemoryUrl": "Game.asm.memory.unityweb.gz",
-    "asmFrameworkUrl": "Game.asm.framework.unityweb.gz",
-    "splashScreenStyle": "Dark",
-    "backgroundColor": "#0a001f"
-}
+{"TOTAL_MEMORY":746586112,"dataUrl":"Game.data.unityweb.gz","asmCodeUrl":"Game.asm.code.unityweb.gz","asmMemoryUrl": "Game.asm.memory.unityweb.gz","asmFrameworkUrl":"Game.asm.framework.unityweb.gz","splashScreenStyle":"Dark","backgroundColor":"#0a001f"}
