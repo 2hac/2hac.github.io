@@ -1,3 +1,0 @@
-Test, The first version of Desktop version
-LINEBREAK Test this color RED GREEN BLUE>>
-Fixes: NO BUGS YET, I THINK
