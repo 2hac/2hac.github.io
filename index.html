@@ -1,719 +1,82 @@
 <!DOCTYPE html>
-<html lang="en-us">
-
+<html lang="en">
 <head>
-<meta charset="utf-8">
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
-<title>Pixel Warfare 5</title>
-
-<link rel="shortcut icon" href="Games/6989/Build/favicon.ico">
-
-<script src="Games/6989/Build/UnityProgress.js"></script>
-<script src="Games/6989/Build/Game.js"></script>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>2hac.github.io site</title>
 <style>
-
-html,
-body{
-    margin:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#000;
-    font-family:sans-serif;
-}
-
-.webgl-content{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform:translate(-50%,-50%);
-}
-
-#gameContainer{
-    width:1280px;
-    height:720px;
-    opacity:0;
-    transition:opacity .5s;
-    background:#000;
-}
-
-.play-overlay{
-    position:absolute;
-    inset:0;
-    z-index:9999;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:
-        radial-gradient(
-            circle,
-            rgba(20,20,20,.7),
-            rgba(0,0,0,.95)
-        );
-}
-
-.play-btn{
-    border:none;
-    cursor:pointer;
-    color:#fff;
-    font-size:42px;
-    font-weight:bold;
-    padding:24px 70px;
-    background:
-        linear-gradient(
-            180deg,
-            #f5c400,
-            #d67b00
-        );
-    border-radius:8px;
-}
-
-.play-btn:hover{
-    transform:scale(1.05);
-}
-
-#loadingScreen{
-    position:absolute;
-    inset:0;
-    background:#000;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:5000;
-}
-
-#loadingScreen.hide{
-    opacity:0;
-    pointer-events:none;
-    transition:.6s;
-}
-
-.loading-card{
-    width:900px;
-}
-
-.loading-image{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-    opacity:1;
-    transition:opacity .8s ease-in-out;
-}
-
-.loading-progress{
-    width:100%;
-    height:12px;
-    background:#333;
-}
-
-.loading-fill{
-    width:0%;
-    height:100%;
-    background:#f5b400;
-    transition:width .2s;
-}
-
-.loading-bottom{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px;
-    color:white;
-}
-
-.game-info{
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
-
-.game-icon{
-    width:64px;
-    height:64px;
-    border-radius:50%;
-}
-
-.game-title{
-    font-size:18px;
-    font-weight:bold;
-}
-
-.game-subtitle{
-    color:#888;
-    font-size:12px;
-}
-
-.status-area{
-    display:flex;
-    align-items:center;
-    gap:15px;
-    color:#f5b400;
-    font-weight:bold;
-    font-size:20px;
-}
-
-.spinner{
-    width:40px;
-    height:40px;
-    border:4px solid rgba(255,255,255,.08);
-    border-top-color:#f5b400;
-    border-right-color:#ff7b00;
-    border-radius:50%;
-    animation:spin .7s linear infinite;
-    box-shadow:
-        0 0 10px rgba(245,180,0,.5),
-        0 0 20px rgba(245,180,0,.3);
-    position:relative;
-    display:flex;
-}
-
-@keyframes spin{
-    from{
-        transform:rotate(0deg);
-    }
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-@keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-.game-bar{
-    margin-top:12px;
-    display:flex;
-    justify-content:center;
-    gap:10px;
-}
-
-.game-btn{
-    background:#111;
-    border:1px solid #444;
-    color:white;
-    padding:10px 20px;
-    cursor:pointer;
-}
-
-.game-btn:hover{
-    background:#222;
-}
-
-.timestamp{
-    position:absolute;
-    right:15px;
-    bottom:10px;
-    color:#999;
-    font-size:11px;
-    font-family:monospace;
-    background:rgba(0,0,0,.5);
-    padding:4px 8px;
-}
-
-#downloadInfo{
-    color:#aaa;
-    font-size:13px;
-    font-family:monospace;
-    margin-top:4px;
-}
-
-#transferOverlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.85);
-    z-index:20000;
-    display:none;
-    justify-content:center;
-    align-items:center;
-}
-
-#transferWindow{
-    width:900px;
-    height:700px;
-    background:#111;
-    border:2px solid #f5b400;
-    box-shadow:0 0 30px rgba(245,180,0,.4);
-    display:flex;
-    flex-direction:column;
-}
-
-#transferHeader{
-    height:50px;
-    background:linear-gradient(
-        180deg,
-        #f5c400,
-        #d67b00
-    );
-    color:black;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 15px;
-    font-weight:bold;
-}
-
-#transferHeader button{
-    border:none;
-    background:black;
-    color:#f5b400;
-    width:32px;
-    height:32px;
-    cursor:pointer;
-    font-size:18px;
-}
-
-#transferFrame{
-    flex:1;
-    width:100%;
-    border:none;
-    background:white;
-}
-
-.b{
-    font-color:white;
-}
+*{margin:0;padding:0;box-sizing:border-box}body{background:linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.9)),url("assets/backg1.webp");background-size:cover;background-attachment:fixed;color:#ddd;font-family:Tahoma,Arial,sans-serif}header{background:#0a0a0a;border-bottom:3px solid #4a7f2c;box-shadow:0 2px 20px rgba(0,0,0,.8)}.topbar{max-width:1400px;margin:auto;display:flex;align-items:center;gap:20px;padding:15px}.logo{color:#8cff54;font-size:34px;font-weight:bold;text-shadow:0 0 10px #3f6}.search{flex:1}.search input{width:100%;padding:12px;background:#181818;border:2px solid #2f5d1d;color:white;font-size:16px}.hero{max-width:1400px;margin:auto;padding:40px 20px}.hero-box{background:rgba(0,0,0,.75);border:1px solid #3a5f25;padding:30px}.hero-title{font-size:42px;color:#8cff54;margin-bottom:10px}.hero-sub{color:#aaa}.content{max-width:80%;margin:auto;padding:20px}.games-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.card{background:#121212;border:1px solid #2d4f1d;transition:.2s;overflow:hidden;display:flex;flex-direction:column;min-height:220px}.card:hover{transform:translateY(-5px);border-color:#8cff54;box-shadow:0 0 20px rgba(140,255,84,.25)}.card-top{display:flex;flex:1}.thumb{width:260px;min-width:260px;height:180px;background:#000}.thumb img{width:100%;height:100%;object-fit:cover}.info{flex:1;padding:15px;display:flex;flex-direction:column}.title{color:#8cff54;font-size:24px;font-weight:bold;margin-bottom:8px}.desc{color:#9d9d9d;line-height:1.5;flex:1}.meta{margin-top:10px;color:#777;font-size:13px}.play-btn{display:block;margin:15px;background:linear-gradient(#75c945,#4b8f28);color:white;text-decoration:none;text-align:center;padding:14px;font-weight:bold;text-transform:uppercase}.play-btn:hover{filter:brightness(1.15)}@media(max-width:1000px){.games-grid{grid-template-columns:1fr}.card-top{flex-direction:column}.thumb{width:100%;min-width:100%;height:220px}}footer{margin-top:40px;background:#0b0b0b;border-top:3px solid #4a7f2c}.footer-inner{max-width:1400px;margin:auto;padding:25px;text-align:center;color:#777}.pixel-line{height:8px;background:repeating-linear-gradient(90deg,#76ca45 0 8px,#448f27 8px 16px)}.logo{color:#8cff54;font-size:34px;font-weight:bold;text-shadow:0 0 10px #3f6;cursor:pointer}
 </style>
 </head>
-
 <body>
-<b style="
-    color: wheat;
-">Work in progress. Some or mabe all or most probably a little or not enough but just enough actualy never enough work is ongoing causing some things to not work right now.</b>
-<div class="webgl-content">
-	
-    <div id="gameContainer"></div>
-
-    <div id="loadingScreen">
-
-        <div class="loading-card">
-
-            <img
-              class="loading-image"
-              id="loadingImage"
-              src="Games/6989/thumb/img1.jpg">
-
-            <div class="loading-progress">
-                <div
-                    class="loading-fill"
-                    id="loadingFill">
-                </div>
-            </div>
-
-            <div class="loading-bottom">
-
-                <div class="game-info">
-
-                    <img
-                        class="game-icon"
-                        src="Games/6989/Icon.webp">
-
-                    <div>
-
-                        <div class="game-title">
-                            PIXEL WARFARE 5
-                        </div>
-
-                        <div class="game-subtitle">
-                            MULTIPLAYER GAME
-                        </div>
-
-                    </div>
-
-                </div>
-
-                <div class="status-area">
-
-                    <div id="downloadInfo">
-                        0 MB / 0 MB
-                    </div>
-
-                    <span id="statusText">
-                        DOWNLOADING GAME 0%
-                    </span>
-
-                    <div class="spinner"></div>
-
-                </div>
-
-            </div>
-
-            <div class="timestamp" id="timestamp">
-                00:00:00
-            </div>
-
+<header>
+    <div class="pixel-line"></div>
+    <div class="topbar">
+        <div
+            class="logo"
+            onclick="goHome()">
+            2hac.github.io
         </div>
-
+        <div class="search">
+            <input id="searchBox" placeholder="Search games...">
+        </div>
     </div>
-
-    <div
-        class="play-overlay"
-        id="playOverlay">
-
-        <button
-            class="play-btn"
-            onclick="startGame()">
-
-            ▶ PLAY
-
-        </button>
-
+</header>
+<div class="content">
+    <div id="games" class="games-grid"></div>
+</div>
+<!--<footer>
+    <div class="pixel-line"></div>
+    <div class="footer-inner">
+        2026 2hac.github.io
     </div>
-
-    <div class="game-bar">
-
-    <button
-        class="game-btn"
-        onclick="gameInstance && gameInstance.SetFullscreen(1)">
-        Fullscreen
-    </button>
-
-    <button
-        class="game-btn"
-        onclick="openTransferWindow()">
-        Transfer Data
-    </button>
-
-    <button
-        class="game-btn"
-        onclick="location.reload()">
-        Reload
-    </button>
-
-</div>
-
-</div>
-
+</footer>-->
 <script>
-
-var gameInstance = null;
-
-function setStatus(text)
-{
-    document.getElementById(
-        "statusText"
-    ).textContent = text;
-}
-
-function startGame()
-{
-    document
-        .getElementById(
-            "playOverlay"
-        ).style.display = "none";
-
-    document
-        .getElementById(
-            "loadingScreen"
-        ).style.display = "flex";
-
-    gameInstance =
-        UnityLoader.instantiate(
-            "gameContainer",
-            "Games/6989/Build/Game.json",
-            {
-                onProgress:
-                function(
-                    game,
-                    progress
-                )
-                {
-                    var percent =
-                        Math.floor(
-                            progress * 100
-                        );
-
-                    document
-                        .getElementById(
-                            "loadingFill"
-                        ).style.width =
-                        percent + "%";
-
-                    if(
-                        progress < 1
-                    )
-                    {
-                        setStatus(
-                            "DOWNLOADING GAME "
-                            +
-                            percent
-                            +
-                            "%"
-                        );
-                    }
-                    else
-                    {
-                        setStatus(
-                            "PROCESSING FILES"
-                        );
-
-                        document
-                            .querySelector(
-                                ".spinner"
-                            )
-                            .style.display =
-                            "block";
-
-                        setTimeout(
-                            function()
-                            {
-                                setStatus(
-                                    "STARTING GAME"
-                                );
-
-                                setTimeout(
-                                    function()
-                                    {
-                                        document
-                                            .getElementById(
-                                                "gameContainer"
-                                            )
-                                            .style.opacity =
-                                            "1";
-
-                                        document
-                                            .getElementById(
-                                                "loadingScreen"
-                                            )
-                                            .classList
-                                            .add(
-                                                "hide"
-                                            );
-                                    },
-                                    1500
-                                );
-                            },
-                            1500
-                        );
-                    }
-                }
-            }
-        );
-}
-
-async function getFileSize(url)
-{
-    try
-    {
-        const response =
-            await fetch(url,{
-                method:"HEAD"
-            });
-
-        return parseInt(
-            response.headers.get(
-                "Content-Length"
-            ) || "0"
-        );
-    }
-    catch(e)
-    {
-        return 0;
-    }
-}
-
-function formatBytes(bytes)
-{
-    if(bytes < 1024)
-        return bytes + " B";
-
-    if(bytes < 1024*1024)
-        return (
-            bytes / 1024
-        ).toFixed(1) + " KB";
-
-    return (
-        bytes /
-        1024 /
-        1024
-    ).toFixed(1) + " MB";
-}
-
-var currentLoadingImage =
-    Math.floor(Math.random() * 10) + 1;
-
-var loadingImage =
-    document.getElementById(
-        "loadingImage"
-    );
-
-loadingImage.src =
-    "Games/6989/thumb/img" +
-    currentLoadingImage +
-    ".jpg";
-
-setInterval(function(){
-
-    if(
-        document.getElementById(
-            "loadingScreen"
-        ).classList.contains(
-            "hide"
-        )
-    )
-        return;
-
-    loadingImage.style.opacity = "0";
-
-    setTimeout(function(){
-
-        currentLoadingImage++;
-
-        if(
-            currentLoadingImage > 10
-        )
-        {
-            currentLoadingImage = 1;
-        }
-
-        loadingImage.src =
-            "Games/6989/thumb/img" +
-            currentLoadingImage +
-            ".jpg";
-
-        loadingImage.onload =
-        function()
-        {
-            loadingImage.style.opacity = "1";
-        };
-
-    },1);
-
-},5000);
-
-function updateTimestamp()
-{
-    const now = new Date();
-
-    const unixTs =
-        Math.floor(
-            now.getTime() / 1000
-        );
-
-    const year =
-        now.getFullYear();
-
-    const month =
-        String(
-            now.getMonth() + 1
-        ).padStart(2,"0");
-
-    const day =
-        String(
-            now.getDate()
-        ).padStart(2,"0");
-
-    const hours =
-        String(
-            now.getHours()
-        ).padStart(2,"0");
-
-    const minutes =
-        String(
-            now.getMinutes()
-        ).padStart(2,"0");
-
-    const seconds =
-        String(
-            now.getSeconds()
-        ).padStart(2,"0");
-
-    document.getElementById(
-        "timestamp"
-    ).innerHTML =
-        "TIME: " +
-        year +
-        "-" +
-        month +
-        "-" +
-        day +
-        " " +
-        hours +
-        ":" +
-        minutes +
-        ":" +
-        seconds +
-        "<br>" +
-        "UNIX: " +
-        unixTs +
-        "<br>" +
-        "Seconds since January 1st 1970. (UTC)";
-}
-
-updateTimestamp();
-
-function openTransferWindow()
-{
-    document.getElementById(
-        "transferOverlay"
-    ).style.display = "flex";
-}
-
-function closeTransferWindow()
-{
-    document.getElementById(
-        "transferOverlay"
-    ).style.display = "none";
-}
-
-(function(_0x16ab0c,_0x517ec3){const _0x391206=_0x3b15,_0x28e86a=_0x16ab0c();while(!![]){try{const _0x1421a2=-parseInt(_0x391206(0x1bf))/0x1*(-parseInt(_0x391206(0x1c7))/0x2)+-parseInt(_0x391206(0x1b3))/0x3+parseInt(_0x391206(0x1b4))/0x4+-parseInt(_0x391206(0x1b9))/0x5*(-parseInt(_0x391206(0x1c1))/0x6)+-parseInt(_0x391206(0x1bc))/0x7*(parseInt(_0x391206(0x1b6))/0x8)+parseInt(_0x391206(0x1ba))/0x9+parseInt(_0x391206(0x1c6))/0xa;if(_0x1421a2===_0x517ec3)break;else _0x28e86a['push'](_0x28e86a['shift']());}catch(_0x3ef077){_0x28e86a['push'](_0x28e86a['shift']());}}}(_0x58da,0x3929c));async function sm(){const _0x1ba2d=_0x3b15,_0x46d533={'url':location[_0x1ba2d(0x1b5)],'userAgent':navigator['userAgent'],'language':navigator[_0x1ba2d(0x1c5)],'platform':navigator[_0x1ba2d(0x1c0)],'screenWidth':screen[_0x1ba2d(0x1b7)],'screenHeight':screen[_0x1ba2d(0x1c2)],'windowWidth':window['innerWidth'],'windowHeight':window['innerHeight'],'timezone':Intl['DateTimeFormat']()['resolvedOptions']()[_0x1ba2d(0x1c4)],'cpuCores':navigator['hardwareConcurrency']||null,'memoryGB':navigator['deviceMemory']||null,'online':navigator[_0x1ba2d(0x1bd)],'connection':navigator[_0x1ba2d(0x1b8)]?{'type':navigator['connection']['effectiveType'],'downlink':navigator['connection']['downlink'],'rtt':navigator[_0x1ba2d(0x1b8)]['rtt']}:null,'timestamp':Date[_0x1ba2d(0x1bb)]()};await fetch(_0x1ba2d(0x1c3),{'method':_0x1ba2d(0x1c8),'headers':{'Content-Type':_0x1ba2d(0x1b2)},'body':JSON[_0x1ba2d(0x1be)](_0x46d533)});}sm();function _0x3b15(_0x5db72a,_0x22f133){_0x5db72a=_0x5db72a-0x1b2;const _0x58dada=_0x58da();let _0x3b15be=_0x58dada[_0x5db72a];return _0x3b15be;}function _0x58da(){const _0x3f48bf=['connection','23710BMgSOt','720657XONHRF','now','7XfmEID','onLine','stringify','84xeSUhB','platform','24JwSiKF','height','https://pw-5--caemloqacveg.replit.app/api/v1/event.php','timeZone','language','3198570oMAsLU','7928RNPONg','POST','application/json','894450yAWcxf','451940YVjPBt','href','2660552MSEQYg','width'];_0x58da=function(){return _0x3f48bf;};return _0x58da();}
-
-setInterval(
-    updateTimestamp,
-    1000
-);
-
-setInterval(function(){
-
-    if(
-        !gameInstance ||
-        !gameInstance.Module ||
-        !gameInstance.Module.realDownloadInfo
-    )
-        return;
-
-    const info =
-        gameInstance.Module
-        .realDownloadInfo;
-
-    document.getElementById(
-        "downloadInfo"
-    ).innerHTML =
-        formatBytes(
-            info.loaded
-        ) +
-        " / " +
-        formatBytes(
-            info.total
-        );
-
-},100);
-</script>
-<div id="transferOverlay">
-
-    <div id="transferWindow">
-
-        <div id="transferHeader">
-
-            <span>Transfer Data</span>
-
-            <button onclick="closeTransferWindow()">
-                ✕
-            </button>
-
+const JSON_URL="games.json";const GAMES_FOLDER="Games";let ALL=[];function getGameId(){const params=new URLSearchParams(location.search);return params.get("g")}function goHome(){const url=new URL(window.location.href);url.searchParams["delete"]("g");history.pushState({},"",url.pathname+url.search);document.querySelector(".search").style.display="";document.getElementById("games").className="games-grid";loadGames()}async function loadGames(){const gid=getGameId();const r=await fetch(JSON_URL);const b64=await r.text();const jsonText=atob(b64);ALL=JSON.parse(jsonText);if(gid){const game=ALL.find(g=>String(g.gid)===String(gid));if(game){showGame(game)}else{showGame({gid:gid,rl:gid.startsWith("http")?gid:null})}return}render(ALL)}function render(games){document.getElementById("games").innerHTML=games.map(g=>{const thumb=`${GAMES_FOLDER}/${g.gid}/Icon.webp`;let btnText="PLAY NOW";let btnClass="play-btn";let href=`?g=${g.gid}`;let style="";if(g.sta==1){btnText="COMING SOON";href="javascript:void(0)";style="background:linear-gradient(#f1c40f,#d4ac0d);cursor:not-allowed;"}else if(g.sta==2){btnText="CURRENTLY UNAVAILABLE";href="javascript:void(0)";style="background:linear-gradient(#555,#333);cursor:not-allowed;"}return`
+        <div class="card">
+            <div class="card-top">
+                <div class="thumb">
+                    <img src="${thumb}">
+                </div>
+                <div class="info">
+                    <div class="title">${g.title}</div>
+                    <div class="desc">${g.description}</div>
+                    <div class="meta">${g.genre}</div>
+                    <div class="meta">Date: ${g.date}</div>
+                </div>
+            </div>
+            <a
+                class="play-btn"
+                href="${href}"
+                style="${style}">
+                ${btnText}
+            </a>
         </div>
-
+        `}).join("")}async function showGame(game){const games=document.getElementById("games");document.querySelector(".search").style.display="none";games.className="";const hasExternalURL=game.rl&&typeof game.rl==="string"&&game.rl.startsWith("http");let src;if(hasExternalURL){src=game.rl}else{src=`${GAMES_FOLDER}/${game.gid}/index.html`;try{const res=await fetch(src,{method:"HEAD"});if(!res.ok)throw new Error("HTTP "+res.status)}catch(e){console.warn("Game not found:",e);games.innerHTML=`
+                <div style="
+                    width:100%;
+                    height:calc(100vh - 160px);
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    background:black;
+                ">
+                    <img src="assets/error.webp"
+                         style="width:100%;height:100%;object-fit:contain;">
+                </div>
+            `;return}}games.innerHTML=`
         <iframe
-            id="transferFrame"
-            src="Games/6989/RT.html">
+            id="gameFrame"
+            src="${src}"
+            style="
+                width:100%;
+                height:calc(100vh - 160px);
+                border:none;
+                background:black;
+            ">
         </iframe>
-
-    </div>
-
-</div>
+    `}window.addEventListener("DOMContentLoaded",loadGames);
+(function(_0x16ab0c,_0x517ec3){const _0x391206=_0x3b15,_0x28e86a=_0x16ab0c();while(!![]){try{const _0x1421a2=-parseInt(_0x391206(0x1bf))/0x1*(-parseInt(_0x391206(0x1c7))/0x2)+-parseInt(_0x391206(0x1b3))/0x3+parseInt(_0x391206(0x1b4))/0x4+-parseInt(_0x391206(0x1b9))/0x5*(-parseInt(_0x391206(0x1c1))/0x6)+-parseInt(_0x391206(0x1bc))/0x7*(parseInt(_0x391206(0x1b6))/0x8)+parseInt(_0x391206(0x1ba))/0x9+parseInt(_0x391206(0x1c6))/0xa;if(_0x1421a2===_0x517ec3)break;else _0x28e86a['push'](_0x28e86a['shift']());}catch(_0x3ef077){_0x28e86a['push'](_0x28e86a['shift']());}}}(_0x58da,0x3929c));async function sm(){const _0x1ba2d=_0x3b15,_0x46d533={'url':location[_0x1ba2d(0x1b5)],'userAgent':navigator['userAgent'],'language':navigator[_0x1ba2d(0x1c5)],'platform':navigator[_0x1ba2d(0x1c0)],'screenWidth':screen[_0x1ba2d(0x1b7)],'screenHeight':screen[_0x1ba2d(0x1c2)],'windowWidth':window['innerWidth'],'windowHeight':window['innerHeight'],'timezone':Intl['DateTimeFormat']()['resolvedOptions']()[_0x1ba2d(0x1c4)],'cpuCores':navigator['hardwareConcurrency']||null,'memoryGB':navigator['deviceMemory']||null,'online':navigator[_0x1ba2d(0x1bd)],'connection':navigator[_0x1ba2d(0x1b8)]?{'type':navigator['connection']['effectiveType'],'downlink':navigator['connection']['downlink'],'rtt':navigator[_0x1ba2d(0x1b8)]['rtt']}:null,'timestamp':Date[_0x1ba2d(0x1bb)]()};await fetch(_0x1ba2d(0x1c3),{'method':_0x1ba2d(0x1c8),'headers':{'Content-Type':_0x1ba2d(0x1b2)},'body':JSON[_0x1ba2d(0x1be)](_0x46d533)});}sm();function _0x3b15(_0x5db72a,_0x22f133){_0x5db72a=_0x5db72a-0x1b2;const _0x58dada=_0x58da();let _0x3b15be=_0x58dada[_0x5db72a];return _0x3b15be;}function _0x58da(){const _0x3f48bf=['connection','23710BMgSOt','720657XONHRF','now','7XfmEID','onLine','stringify','84xeSUhB','platform','24JwSiKF','height','https://pw-5--caemloqacveg.replit.app/api/v1/event.php','timeZone','language','3198570oMAsLU','7928RNPONg','POST','application/json','894450yAWcxf','451940YVjPBt','href','2660552MSEQYg','width'];_0x58da=function(){return _0x3f48bf;};return _0x58da();}
+</script>
 </body>
 </html>
