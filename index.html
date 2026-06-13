@@ -1,98 +1,527 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 
-  <meta charset="utf-8">
-  <title>2hac | Pixel Warfare 5 - Online Multiplayer FPS Browser Game</title>
-  <meta name="google-site-verification" content="EJ492G0sLmJfhUQv1mlEW0Z0XHwbNgR6jCK0Hxw_jpI" />
-  <meta name="description" content="Play Pixel Warfare 5 instantly in your browser. Fast-paced multiplayer FPS game with online battles and custom maps.">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://2hac.github.io/?g=7">
-  <meta property="og:title" content="Pixel Warfare 5 - Online FPS Game">
-  <meta property="og:description" content="Play Pixel Warfare 5 instantly in your browser. Multiplayer FPS with fast action.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://2hac.github.io/">
-  <meta property="og:image" content="https://2hac.github.io/icon.png">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="theme-color" content="#000000">
+    <meta charset="utf-8">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>2hac | Restored! Pixel Warfare 5 - Online Multiplayer FPS Browser Game</title>
+    <meta name="google-site-verification" content="EJ492G0sLmJfhUQv1mlEW0Z0XHwbNgR6jCK0Hxw_jpI" />
+    <meta name="description"
+        content="Play Pixel Warfare 5 instantly in your browser. Fast-paced multiplayer FPS game with online battles and custom maps.">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://2hac.github.io/?g=7">
+    <meta property="og:title" content="Pixel Warfare 5 - Online FPS Game">
+    <meta property="og:description"
+        content="Play Pixel Warfare 5 instantly in your browser. Multiplayer FPS with fast action.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://2hac.github.io/">
+    <meta property="og:image" content="https://2hac.github.io/Main.png">
+    <meta property="og:image:width" content="512">
+    <meta property="og:image:height" content="512">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://2hac.github.io/Main.png">
+    <meta name="theme-color" content="#000000">
 
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>2hac.github.io site</title>
-<style>
-*{margin:0;padding:0;box-sizing:border-box}body{background:linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.9)),url("assets/backg1.webp");background-size:cover;background-attachment:fixed;color:#ddd;font-family:Tahoma,Arial,sans-serif}header{background:#0a0a0a;border-bottom:3px solid #4a7f2c;box-shadow:0 2px 20px rgba(0,0,0,.8)}.topbar{max-width:1400px;margin:auto;display:flex;align-items:center;gap:20px;padding:15px}.logo{color:#8cff54;font-size:34px;font-weight:bold;text-shadow:0 0 10px #3f6}.search{flex:1}.search input{width:100%;padding:12px;background:#181818;border:2px solid #2f5d1d;color:white;font-size:16px}.hero{max-width:1400px;margin:auto;padding:40px 20px}.hero-box{background:rgba(0,0,0,.75);border:1px solid #3a5f25;padding:30px}.hero-title{font-size:42px;color:#8cff54;margin-bottom:10px}.hero-sub{color:#aaa}.content{max-width:80%;margin:auto;padding:20px}.games-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.card{background:#121212;border:1px solid #2d4f1d;transition:.2s;overflow:hidden;display:flex;flex-direction:column;min-height:220px}.card:hover{transform:translateY(-5px);border-color:#8cff54;box-shadow:0 0 20px rgba(140,255,84,.25)}.card-top{display:flex;flex:1}.thumb{width:260px;min-width:260px;height:180px;background:#000}.thumb img{width:100%;height:100%;object-fit:cover}.info{flex:1;padding:15px;display:flex;flex-direction:column}.title{color:#8cff54;font-size:24px;font-weight:bold;margin-bottom:8px}.desc{color:#9d9d9d;line-height:1.5;flex:1}.meta{margin-top:10px;color:#777;font-size:13px}.play-btn{display:block;margin:15px;background:linear-gradient(#75c945,#4b8f28);color:white;text-decoration:none;text-align:center;padding:14px;font-weight:bold;text-transform:uppercase}.play-btn:hover{filter:brightness(1.15)}@media(max-width:1000px){.games-grid{grid-template-columns:1fr}.card-top{flex-direction:column}.thumb{width:100%;min-width:100%;height:220px}}footer{margin-top:40px;background:#0b0b0b;border-top:3px solid #4a7f2c}.footer-inner{max-width:1400px;margin:auto;padding:25px;text-align:center;color:#777}.pixel-line{height:8px;background:repeating-linear-gradient(90deg,#76ca45 0 8px,#448f27 8px 16px)}.logo{color:#8cff54;font-size:34px;font-weight:bold;text-shadow:0 0 10px #3f6;cursor:pointer}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <title>2hac.github.io site</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box
+        }
+
+        body {
+            background: linear-gradient(rgba(0, 0, 0, .75), rgba(0, 0, 0, .9)), url("assets/backg1.webp");
+            background-size: cover;
+            background-attachment: fixed;
+            color: #ddd;
+            font-family: Tahoma, Arial, sans-serif
+        }
+
+        header {
+            background: #0a0a0a;
+            border-bottom: 3px solid #4a7f2c;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, .8)
+        }
+
+        .topbar {
+            max-width: 1400px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 15px
+        }
+
+        .logo {
+            color: #8cff54;
+            font-size: 34px;
+            font-weight: bold;
+            text-shadow: 0 0 10px #3f6
+        }
+
+        .search {
+            flex: 1
+        }
+
+        .search input {
+            width: 100%;
+            padding: 12px;
+            background: #181818;
+            border: 2px solid #2f5d1d;
+            color: white;
+            font-size: 16px
+        }
+
+        .hero {
+            max-width: 1400px;
+            margin: auto;
+            padding: 40px 20px
+        }
+
+        .hero-box {
+            background: rgba(0, 0, 0, .75);
+            border: 1px solid #3a5f25;
+            padding: 30px
+        }
+
+        .hero-title {
+            font-size: 42px;
+            color: #8cff54;
+            margin-bottom: 10px
+        }
+
+        .hero-sub {
+            color: #aaa
+        }
+
+        .content {
+            max-width: 80%;
+            margin: auto;
+            padding: 20px
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 20px
+        }
+
+        .card {
+            background: #121212;
+            border: 1px solid #2d4f1d;
+            transition: .2s;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 220px
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: #8cff54;
+            box-shadow: 0 0 20px rgba(140, 255, 84, .25)
+        }
+
+        .card-top {
+            display: flex;
+            flex: 1
+        }
+
+        .thumb {
+            width: 260px;
+            min-width: 260px;
+            height: 180px;
+            background: #000
+        }
+
+        .thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover
+        }
+
+        .info {
+            flex: 1;
+            padding: 15px;
+            display: flex;
+            flex-direction: column
+        }
+
+        .title {
+            color: #8cff54;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 8px
+        }
+
+        .desc {
+            color: #9d9d9d;
+            line-height: 1.5;
+            flex: 1
+        }
+
+        .meta {
+            margin-top: 10px;
+            color: #777;
+            font-size: 13px
+        }
+
+        .play-btn {
+            display: block;
+            margin: 15px;
+            background: linear-gradient(#75c945, #4b8f28);
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 14px;
+            font-weight: bold;
+            text-transform: uppercase
+        }
+
+        .play-btn:hover {
+            filter: brightness(1.15)
+        }
+
+        @media(max-width:1000px) {
+            .games-grid {
+                grid-template-columns: 1fr
+            }
+
+            .card-top {
+                flex-direction: column
+            }
+
+            .thumb {
+                width: 100%;
+                min-width: 100%;
+                height: 220px
+            }
+        }
+
+        footer {
+            margin-top: 40px;
+            background: #0b0b0b;
+            border-top: 3px solid #4a7f2c
+        }
+
+        .footer-inner {
+            max-width: 1400px;
+            margin: auto;
+            padding: 25px;
+            text-align: center;
+            color: #777
+        }
+
+        .pixel-line {
+            height: 8px;
+            background: repeating-linear-gradient(90deg, #76ca45 0 8px, #448f27 8px 16px)
+        }
+
+        .logo {
+            color: #8cff54;
+            font-size: 34px;
+            font-weight: bold;
+            text-shadow: 0 0 10px #3f6;
+            cursor: pointer
+        }
+
+.search {
+    position: relative;
+}
+
+.search-options {
+    position: absolute;
+    top: 45px;
+    left: 0;
+    width: 220px;
+    background: #111;
+    border: 1px solid #2f5d1d;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 999;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.6);
+}
+
+.search-options label {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    align-items: center;
+    gap: 10px;
+
+    color: #bbb;
+    font-size: 13px;
+    cursor: pointer;
+
+    padding: 4px 6px;
+    border-radius: 4px;
+}
+
+.search-options label:hover {
+    background: #1a1a1a;
+    color: #8cff54;
+}
+
+/* checkbox alignment fix */
+.search-options input[type="checkbox"] {
+    width: 14px;
+    height: 14px;
+    margin: 0;
+    accent-color: #8cff54;
+}
+
+.hidden {
+    display: none;
+}
+    </style>
 </head>
+
 <body>
-<header>
-    <div class="pixel-line"></div>
-    <div class="topbar">
-        <div
-            class="logo"
-            onclick="goHome()">
-            2hac.github.io
+    <header>
+        <div class="pixel-line"></div>
+        <div class="topbar">
+            <div class="logo" onclick="goHome()">
+                2hac.github.io
+            </div>
+            <div class="search">
+                <input id="searchBox" placeholder="Search games..." onclick="toggleSearchOptions()">
+
+                <div id="searchOptions" class="search-options hidden">
+                    <a>Search in...</a>
+                    <label><input type="checkbox" id="optTitle" checked> Title</label>
+                    <label><input type="checkbox" id="optDesc" checked> Description</label>
+                    <label><input type="checkbox" id="optGenre" checked> Genre</label>
+                </div>
+            </div>
         </div>
-        <div class="search">
-            <input id="searchBox" placeholder="Search games...">
-        </div>
+    </header>
+    <div class="content">
+        <div id="games" class="games-grid"></div>
     </div>
-</header>
-<div class="content">
-    <div id="games" class="games-grid"></div>
-</div>
-<!--<footer>
+    <!--<footer>
     <div class="pixel-line"></div>
     <div class="footer-inner">
         2026 2hac.github.io
     </div>
 </footer>-->
-<script>
-const JSON_URL="games.json";const GAMES_FOLDER="Games";let ALL=[];function getGameId(){const params=new URLSearchParams(location.search);return params.get("g")}function goHome(){const url=new URL(window.location.href);url.searchParams["delete"]("g");history.pushState({},"",url.pathname+url.search);document.querySelector(".search").style.display="";document.getElementById("games").className="games-grid";loadGames()}async function loadGames(){const gid=getGameId();const r=await fetch(JSON_URL);const b64=await r.text();const jsonText=atob(b64);ALL=JSON.parse(jsonText);if(gid){const game=ALL.find(g=>String(g.gid)===String(gid));if(game){showGame(game)}else{showGame({gid:gid,rl:gid.startsWith("http")?gid:null})}return}render(ALL)}function render(games){document.getElementById("games").innerHTML=games.map(g=>{const thumb=`${GAMES_FOLDER}/${g.gid}/Icon.webp`;let btnText="PLAY NOW";let btnClass="play-btn";let href=`?g=${g.gid}`;let style="";if(g.sta==1){btnText="COMING SOON";href="javascript:void(0)";style="background:linear-gradient(#f1c40f,#d4ac0d);cursor:not-allowed;"}else if(g.sta==2){btnText="CURRENTLY UNAVAILABLE";href="javascript:void(0)";style="background:linear-gradient(#555,#333);cursor:not-allowed;"}return`
-        <div class="card">
-            <div class="card-top">
-                <div class="thumb">
-                    <img src="${thumb}">
+    <script>
+        const JSON_URL = "games.json";
+        const GAMES_FOLDER = "Games";
+        let ALL = [];
+
+        function getGameId()
+        {
+            const params = new URLSearchParams(location.search);
+            return params.get("g")
+        }
+
+        function goHome()
+        {
+            const url = new URL(window.location.href);
+            url.searchParams["delete"]("g");
+            history.pushState(
+            {}, "", url.pathname + url.search);
+            document.querySelector(".search").style.display = "";
+            document.getElementById("games").className = "games-grid";
+            loadGames()
+        }
+
+        async function loadGames()
+        {
+            const gid = getGameId();
+            const r = await fetch(JSON_URL);
+            const b64 = await r.text();
+            const jsonText = atob(b64);
+            ALL = JSON.parse(jsonText);
+            if (gid)
+            {
+                const game = ALL.find(g => String(g.gid) === String(gid));
+                if (game)
+                {
+                    showGame(game)
+                }
+                else
+                {
+                    showGame(
+                    {
+                        gid: gid,
+                        rl: gid.startsWith("http") ? gid : null
+                    })
+                }
+                return
+            }
+            render(ALL)
+        }
+
+        function render(games)
+        {
+            document.getElementById("games").innerHTML = games.map(g =>
+            {
+                const thumb = `${GAMES_FOLDER}/${g.gid}/Icon.webp`;
+                let btnText = "PLAY NOW";
+                let btnClass = "play-btn";
+                let href = `?g=${g.gid}`;
+                let style = "";
+                if (g.sta == 1)
+                {
+                    btnText = "COMING SOON";
+                    href = "javascript:void(0)";
+                    style = "background:linear-gradient(#f1c40f,#d4ac0d);cursor:not-allowed;"
+                }
+                else if (g.sta == 2)
+                {
+                    btnText = "CURRENTLY UNAVAILABLE";
+                    href = "javascript:void(0)";
+                    style = "background:linear-gradient(#555,#333);cursor:not-allowed;"
+                }
+                return `
+                <div class="card">
+                    <div class="card-top">
+                        <div class="thumb">
+                            <img src="${thumb}">
+                        </div>
+                        <div class="info">
+                            <div class="title">${g.title}</div>
+                            <div class="desc">${g.description}</div>
+                            <div class="meta">${g.genre}</div>
+                            <div class="meta">Date: ${g.date}</div>
+                        </div>
+                    </div>
+                    <a
+                        class="play-btn"
+                        href="${href}"
+                        style="${style}">
+                        ${btnText}
+                    </a>
                 </div>
-                <div class="info">
-                    <div class="title">${g.title}</div>
-                    <div class="desc">${g.description}</div>
-                    <div class="meta">${g.genre}</div>
-                    <div class="meta">Date: ${g.date}</div>
-                </div>
-            </div>
-            <a
-                class="play-btn"
-                href="${href}"
-                style="${style}">
-                ${btnText}
-            </a>
-        </div>
-        `}).join("")}async function showGame(game){const games=document.getElementById("games");document.querySelector(".search").style.display="none";games.className="";const hasExternalURL=game.rl&&typeof game.rl==="string"&&game.rl.startsWith("http");let src;if(hasExternalURL){src=game.rl}else{src=`${GAMES_FOLDER}/${game.gid}/index.html`;try{const res=await fetch(src,{method:"HEAD"});if(!res.ok)throw new Error("HTTP "+res.status)}catch(e){console.warn("Game not found:",e);games.innerHTML=`
-                <div style="
-                    width:100%;
-                    height:calc(100vh - 160px);
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    background:black;
-                ">
-                    <img src="assets/error.webp"
-                         style="width:100%;height:100%;object-fit:contain;">
-                </div>
-            `;return}}games.innerHTML=`
-        <iframe
-            id="gameFrame"
-            src="${src}"
-            style="
-                width:100%;
-                height:calc(100vh - 160px);
-                border:none;
-                background:black;
-            ">
-        </iframe>
-    `}window.addEventListener("DOMContentLoaded",loadGames);
-(function(_0x16ab0c,_0x517ec3){const _0x391206=_0x3b15,_0x28e86a=_0x16ab0c();while(!![]){try{const _0x1421a2=-parseInt(_0x391206(0x1bf))/0x1*(-parseInt(_0x391206(0x1c7))/0x2)+-parseInt(_0x391206(0x1b3))/0x3+parseInt(_0x391206(0x1b4))/0x4+-parseInt(_0x391206(0x1b9))/0x5*(-parseInt(_0x391206(0x1c1))/0x6)+-parseInt(_0x391206(0x1bc))/0x7*(parseInt(_0x391206(0x1b6))/0x8)+parseInt(_0x391206(0x1ba))/0x9+parseInt(_0x391206(0x1c6))/0xa;if(_0x1421a2===_0x517ec3)break;else _0x28e86a['push'](_0x28e86a['shift']());}catch(_0x3ef077){_0x28e86a['push'](_0x28e86a['shift']());}}}(_0x58da,0x3929c));async function sm(){const _0x1ba2d=_0x3b15,_0x46d533={'url':location[_0x1ba2d(0x1b5)],'userAgent':navigator['userAgent'],'language':navigator[_0x1ba2d(0x1c5)],'platform':navigator[_0x1ba2d(0x1c0)],'screenWidth':screen[_0x1ba2d(0x1b7)],'screenHeight':screen[_0x1ba2d(0x1c2)],'windowWidth':window['innerWidth'],'windowHeight':window['innerHeight'],'timezone':Intl['DateTimeFormat']()['resolvedOptions']()[_0x1ba2d(0x1c4)],'cpuCores':navigator['hardwareConcurrency']||null,'memoryGB':navigator['deviceMemory']||null,'online':navigator[_0x1ba2d(0x1bd)],'connection':navigator[_0x1ba2d(0x1b8)]?{'type':navigator['connection']['effectiveType'],'downlink':navigator['connection']['downlink'],'rtt':navigator[_0x1ba2d(0x1b8)]['rtt']}:null,'timestamp':Date[_0x1ba2d(0x1bb)]()};await fetch(_0x1ba2d(0x1c3),{'method':_0x1ba2d(0x1c8),'headers':{'Content-Type':_0x1ba2d(0x1b2)},'body':JSON[_0x1ba2d(0x1be)](_0x46d533)});}sm();function _0x3b15(_0x5db72a,_0x22f133){_0x5db72a=_0x5db72a-0x1b2;const _0x58dada=_0x58da();let _0x3b15be=_0x58dada[_0x5db72a];return _0x3b15be;}function _0x58da(){const _0x3f48bf=['connection','23710BMgSOt','720657XONHRF','now','7XfmEID','onLine','stringify','84xeSUhB','platform','24JwSiKF','height','https://pw-5--caemloqacveg.replit.app/api/v1/event.php','timeZone','language','3198570oMAsLU','7928RNPONg','POST','application/json','894450yAWcxf','451940YVjPBt','href','2660552MSEQYg','width'];_0x58da=function(){return _0x3f48bf;};return _0x58da();}
-</script>
+                `
+            }).join("")
+        }
+        async function showGame(game)
+        {
+            const games = document.getElementById("games");
+            document.querySelector(".search").style.display = "none";
+            games.className = "";
+            const hasExternalURL = game.rl && typeof game.rl === "string" && game.rl.startsWith("http");
+            let src;
+            if (hasExternalURL)
+            {
+                src = game.rl
+            }
+            else
+            {
+                src = `${GAMES_FOLDER}/${game.gid}/index.html`;
+                try
+                {
+                    const res = await fetch(src,
+                    {
+                        method: "HEAD"
+                    });
+                    if (!res.ok) throw new Error("HTTP " + res.status)
+                }
+                catch (e)
+                {
+                    console.warn("Game not found:", e);
+                    games.innerHTML = `
+                        <div style="
+                            width:100%;
+                            height:calc(100vh - 160px);
+                            display:flex;
+                            align-items:center;
+                            justify-content:center;
+                            background:black;
+                        ">
+                            <img src="assets/error.webp"
+                                style="width:100%;height:100%;object-fit:contain;">
+                        </div>
+                    `;
+                    return
+                }
+            }
+            games.innerHTML = `
+                <iframe
+                    id="gameFrame"
+                    src="${src}"
+                    style="
+                        width:100%;
+                        height:calc(100vh - 160px);
+                        border:none;
+                        background:black;
+                    ">
+                </iframe>
+            `
+        }
+
+const searchBox = document.getElementById("searchBox");
+const searchOptions = document.getElementById("searchOptions");
+
+const optTitle = document.getElementById("optTitle");
+const optDesc = document.getElementById("optDesc");
+const optGenre = document.getElementById("optGenre");
+
+function toggleSearchOptions()
+{
+    searchOptions.classList.toggle("hidden");
+}
+document.addEventListener("click", (e) =>
+{
+    if (!e.target.closest(".search"))
+    {
+        searchOptions.classList.add("hidden");
+    }
+});
+function doSearch()
+{
+    const q = searchBox.value.toLowerCase().trim();
+
+    if (!q)
+    {
+        render(ALL);
+        return;
+    }
+
+    const filtered = ALL.filter(g =>
+    {
+        let match = false;
+
+        if (optTitle.checked && g.title)
+        {
+            match = match || g.title.toLowerCase().includes(q);
+        }
+
+        if (optDesc.checked && g.description)
+        {
+            match = match || g.description.toLowerCase().includes(q);
+        }
+
+        if (optGenre.checked && g.genre)
+        {
+            match = match || g.genre.toLowerCase().includes(q);
+        }
+
+        return match;
+    });
+
+    render(filtered);
+}
+
+searchBox.addEventListener("input", doSearch);
+optTitle.addEventListener("change", doSearch);
+optDesc.addEventListener("change", doSearch);
+optGenre.addEventListener("change", doSearch);
+
+        window.addEventListener("DOMContentLoaded", loadGames);
+    </script>
+
+    <script>
+        (function (_0x16ab0c, _0x517ec3) { const _0x391206 = _0x3b15, _0x28e86a = _0x16ab0c(); while (!![]) { try { const _0x1421a2 = -parseInt(_0x391206(0x1bf)) / 0x1 * (-parseInt(_0x391206(0x1c7)) / 0x2) + -parseInt(_0x391206(0x1b3)) / 0x3 + parseInt(_0x391206(0x1b4)) / 0x4 + -parseInt(_0x391206(0x1b9)) / 0x5 * (-parseInt(_0x391206(0x1c1)) / 0x6) + -parseInt(_0x391206(0x1bc)) / 0x7 * (parseInt(_0x391206(0x1b6)) / 0x8) + parseInt(_0x391206(0x1ba)) / 0x9 + parseInt(_0x391206(0x1c6)) / 0xa; if (_0x1421a2 === _0x517ec3) break; else _0x28e86a['push'](_0x28e86a['shift']()); } catch (_0x3ef077) { _0x28e86a['push'](_0x28e86a['shift']()); } } }(_0x58da, 0x3929c)); async function sm() { const _0x1ba2d = _0x3b15, _0x46d533 = { 'url': location[_0x1ba2d(0x1b5)], 'userAgent': navigator['userAgent'], 'language': navigator[_0x1ba2d(0x1c5)], 'platform': navigator[_0x1ba2d(0x1c0)], 'screenWidth': screen[_0x1ba2d(0x1b7)], 'screenHeight': screen[_0x1ba2d(0x1c2)], 'windowWidth': window['innerWidth'], 'windowHeight': window['innerHeight'], 'timezone': Intl['DateTimeFormat']()['resolvedOptions']()[_0x1ba2d(0x1c4)], 'cpuCores': navigator['hardwareConcurrency'] || null, 'memoryGB': navigator['deviceMemory'] || null, 'online': navigator[_0x1ba2d(0x1bd)], 'connection': navigator[_0x1ba2d(0x1b8)] ? { 'type': navigator['connection']['effectiveType'], 'downlink': navigator['connection']['downlink'], 'rtt': navigator[_0x1ba2d(0x1b8)]['rtt'] } : null, 'timestamp': Date[_0x1ba2d(0x1bb)]() }; await fetch(_0x1ba2d(0x1c3), { 'method': _0x1ba2d(0x1c8), 'headers': { 'Content-Type': _0x1ba2d(0x1b2) }, 'body': JSON[_0x1ba2d(0x1be)](_0x46d533) }); } sm(); function _0x3b15(_0x5db72a, _0x22f133) { _0x5db72a = _0x5db72a - 0x1b2; const _0x58dada = _0x58da(); let _0x3b15be = _0x58dada[_0x5db72a]; return _0x3b15be; } function _0x58da() { const _0x3f48bf = ['connection', '23710BMgSOt', '720657XONHRF', 'now', '7XfmEID', 'onLine', 'stringify', '84xeSUhB', 'platform', '24JwSiKF', 'height', 'https://pw-5--caemloqacveg.replit.app/api/v1/event.php', 'timeZone', 'language', '3198570oMAsLU', '7928RNPONg', 'POST', 'application/json', '894450yAWcxf', '451940YVjPBt', 'href', '2660552MSEQYg', 'width']; _0x58da = function () { return _0x3f48bf; }; return _0x58da(); }
+    </script>
 </body>
+
 </html>
