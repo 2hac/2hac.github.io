@@ -98,7 +98,7 @@
             color: #aaa
         }
 
-        .content {
+        .ODLcontent {
             max-width: 80%;
             margin: auto;
             padding: 20px
@@ -278,6 +278,29 @@
 .hidden {
     display: none;
 }
+.content{
+    margin:auto;
+    padding:20px;
+
+    display:flex;
+    align-items:flex-start;
+    gap:20px;
+}
+
+.games-wrapper{
+    flex:1;
+}
+
+.shim-wrapper{
+    width:250px;
+    flex-shrink:0;
+}
+
+.shim-wrapper img{
+    width:100%;
+    display:block;
+    border:1px solid #2d4f1d;
+}
     </style>
 </head>
 
@@ -300,15 +323,46 @@
             </div>
         </div>
     </header>
+    <div style="max-width:1400px; margin:20px auto;padding:15px 20px;background:rgba(0,0,0,0.75);border:1px solid #4a7f2c;border-left:6px solid #8cff54;color:#ccc;font-size:14px;line-height:1;box-shadow:0 5px 20px rgba(0,0,0,0.4);">
+        <strong style="color:#8cff54;">Notice:</strong>
+        You’ve been redirected here because the original Pixel Warfare 5 page has been updated and moved to a new site.
+        This page serves as the restored hub for accessing the game again after the server migration made it not possible to use before.
+        Please use this site going forward for the most stable and up-to-date experience on this info.
+        <div>Games in this site are probably games that have been converted, restored, reuploaded, or made to preserve history.</div>
+    </div>
     <div class="content">
+
+    <div class="games-wrapper">
         <div id="games" class="games-grid"></div>
     </div>
+
+    <div class="shim-wrapper">
+        <img id="shimImag" src="assets/shim/img1.jpg">
+    </div>
+
+</div>
     <!--<footer>
     <div class="pixel-line"></div>
     <div class="footer-inner">
         2026 2hac.github.io
     </div>
 </footer>-->
+<script>
+let shimIndex = 1;
+
+setInterval(() =>
+{
+    shimIndex++;
+
+    if (shimIndex > 2)
+    {
+        shimIndex = 1;
+    }
+
+    document.getElementById("shimImag").src =
+        `assets/shim/img${shimIndex}.jpg`;
+}, 5000);
+</script>
     <script>
         const JSON_URL = "games.json";
         const GAMES_FOLDER = "Games";
