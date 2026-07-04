@@ -54,6 +54,10 @@
         <strong style="color:#ff6b6b;">Maintenance Notice:</strong>
         This site is undergoing extensive maintenance. Completion time is unknown. Games may not work correctly.
     </div>
+    <div style="max-width:1400px; margin:20px auto;padding:15px 20px;background:rgba(0,0,0,0.75);border:1px solid #2c7f7f;border-left:6px solid #54ffff;color:#ccc;font-size:14px;line-height:1;box-shadow:0 5px 20px rgba(0,0,0,0.4);">
+        <strong style="color:#54f9ff;">Info:</strong>
+        Pixel Warfare 5 has been set to work with default maps for now, Account system is getting reworked.
+    </div>
     <div style="max-width:1400px; margin:20px auto;padding:15px 20px;background:rgba(0,0,0,0.75);border:1px solid #4a7f2c;border-left:6px solid #8cff54;color:#ccc;font-size:14px;line-height:1;box-shadow:0 5px 20px rgba(0,0,0,0.4);">
         <strong style="color:#8cff54;">Notice:</strong>
         You’ve been redirected here because the original Pixel Warfare 5 page has been updated and moved to a new site.
@@ -175,6 +179,12 @@ let shimIndex = 1;
                     btnText = "CURRENTLY UNAVAILABLE";
                     href = "javascript:void(0)";
                     style = "background:linear-gradient(#555,#333);cursor:not-allowed;"
+                }
+                else if (g.sta == 3)
+                {
+                    btnText = "BROKEN";
+                    href = "javascript:void(0)";
+                    style = "background:linear-gradient(#93F,#F00);cursor:not-allowed;"
                 }
                 return `
                 <div class="card">
