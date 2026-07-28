@@ -1,733 +1,105 @@
 <!DOCTYPE html>
 <html lang="en-us">
-
 <head>
 <meta charset="utf-8">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-
 <title>Pixel Warfare 5</title>
-
 <link rel="shortcut icon" href="Build/favicon.ico">
-
+<link rel="stylesheet" href="../main.css" />
+<script src="/gl.js"></script>
 <script src="Build/UnityProgress.js"></script>
 <script src="Build/Game.js"></script>
-
-<style>
-
-html,
-body{
-    margin:0;
-    width:100%;
-    height:100%;
-    overflow:hidden;
-    background:#000;
-    font-family:sans-serif;
-}
-
-.webgl-content{
-    position:fixed;
-    inset:0;
-    width:100vw;
-    height:100vh;
-}
-
-#gameContainer{
-    position:absolute;
-    inset:0;
-    width:100%;
-    height:100%;
-    opacity:0;
-    transition:opacity .5s;
-    background:#000;
-}
-
-.play-overlay{
-    position:fixed;
-    inset:0;
-    z-index:9999;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:
-        radial-gradient(
-            circle,
-            rgba(20,20,20,.7),
-            rgba(0,0,0,.95)
-        );
-}
-
-.play-btn{
-    border:none;
-    cursor:pointer;
-    color:#fff;
-    font-size:42px;
-    font-weight:bold;
-    padding:24px 70px;
-    background:
-        linear-gradient(
-            180deg,
-            #f5c400,
-            #d67b00
-        );
-    border-radius:8px;
-}
-
-.play-btn:hover{
-    transform:scale(1.05);
-}
-
-#loadingScreen{
-    position:fixed;
-    inset:0;
-    background:#000;
-    display:none;
-    align-items:center;
-    justify-content:center;
-    z-index:5000;
-}
-
-#loadingScreen.hide{
-    opacity:0;
-    pointer-events:none;
-    transition:.6s;
-}
-
-.loading-card{
-    width:min(900px,90vw);
-}
-
-.loading-image{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-    opacity:1;
-    transition:opacity .8s ease-in-out;
-}
-
-.loading-progress{
-    width:100%;
-    height:12px;
-    background:#333;
-}
-
-.loading-fill{
-    width:0%;
-    height:100%;
-    background:#f5b400;
-    transition:width .2s;
-}
-
-.loading-bottom{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:20px;
-    color:white;
-}
-
-.game-info{
-    display:flex;
-    align-items:center;
-    gap:15px;
-}
-
-.game-icon{
-    width:64px;
-    height:64px;
-    border-radius:50%;
-}
-
-.game-title{
-    font-size:18px;
-    font-weight:bold;
-}
-
-.game-subtitle{
-    color:#888;
-    font-size:12px;
-}
-
-.status-area{
-    display:flex;
-    align-items:center;
-    gap:15px;
-    color:#f5b400;
-    font-weight:bold;
-    font-size:20px;
-}
-
-.spinner{
-    width:40px;
-    height:40px;
-    border:4px solid rgba(255,255,255,.08);
-    border-top-color:#f5b400;
-    border-right-color:#ff7b00;
-    border-radius:50%;
-    animation:spin .7s linear infinite;
-    box-shadow:
-        0 0 10px rgba(245,180,0,.5),
-        0 0 20px rgba(245,180,0,.3);
-    position:relative;
-    display:flex;
-}
-
-@keyframes spin{
-    from{
-        transform:rotate(0deg);
-    }
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-@keyframes spin{
-    to{
-        transform:rotate(360deg);
-    }
-}
-
-.game-bar{
-    position:fixed;
-    top:15px;
-    right:15px;
-    z-index:15000;
-    display:flex;
-    gap:10px;
-}
-
-.game-btn{
-    background:#111;
-    border:1px solid #444;
-    color:white;
-    padding:10px 20px;
-    cursor:pointer;
-}
-
-.game-btn:hover{
-    background:#222;
-}
-
-.timestamp{
-    position:absolute;
-    right:15px;
-    bottom:10px;
-    color:#999;
-    font-size:11px;
-    font-family:monospace;
-    background:rgba(0,0,0,.5);
-    padding:4px 8px;
-}
-
-#downloadInfo{
-    color:#aaa;
-    font-size:13px;
-    font-family:monospace;
-    margin-top:4px;
-}
-
-#transferOverlay{
-    position:fixed;
-    inset:0;
-    background:rgba(0,0,0,.85);
-    z-index:20000;
-    display:none;
-    justify-content:center;
-    align-items:center;
-}
-
-#transferWindow{
-    width:900px;
-    height:700px;
-    background:#111;
-    border:2px solid #f5b400;
-    box-shadow:0 0 30px rgba(245,180,0,.4);
-    display:flex;
-    flex-direction:column;
-}
-
-#transferHeader{
-    height:50px;
-    background:linear-gradient(
-        180deg,
-        #f5c400,
-        #d67b00
-    );
-    color:black;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    padding:0 15px;
-    font-weight:bold;
-}
-
-#transferHeader button{
-    border:none;
-    background:black;
-    color:#f5b400;
-    width:32px;
-    height:32px;
-    cursor:pointer;
-    font-size:18px;
-}
-
-#transferFrame{
-    flex:1;
-    width:100%;
-    border:none;
-    background:white;
-}
-
-.b{
-    font-color:white;
-}
-#notice{
-    position:fixed;
-    top:10px;
-    left:10px;
-    z-index:15000;
-    color:wheat;
-    font-size:12px;
-    background:rgba(0,0,0,.7);
-    padding:6px 10px;
-}
-</style>
 </head>
-
 <body>
 <div class="webgl-content">
-	
     <div id="gameContainer"></div>
-
     <div id="loadingScreen">
-
         <div class="loading-card">
-
-            <img
-              class="loading-image"
-              id="loadingImage"
-              src="thumb/img1.jpg">
-
+            <img class="loading-image"id="loadingImage">
             <div class="loading-progress">
-                <div
-                    class="loading-fill"
-                    id="loadingFill">
-                </div>
+                <div class="loading-fill"id="loadingFill"></div>
             </div>
-
             <div class="loading-bottom">
-
                 <div class="game-info">
-
-                    <img
-                        class="game-icon"
-                        src="Icon.webp">
-
+                    <img class="game-icon"src="Icon.webp">
                     <div>
-
-                        <div class="game-title">
-                            PIXEL WARFARE 5
-                        </div>
-
-                        <div class="game-subtitle">
-                            MULTIPLAYER GAME
-                        </div>
-
+                        <div class="game-title">PIXEL WARFARE 5</div>
+                        <div class="game-subtitle">MULTIPLAYER GAME</div>
                     </div>
-
                 </div>
-
                 <div class="status-area">
-
-                    <div id="downloadInfo">
-                        0 MB / 0 MB
-                    </div>
-
-                    <span id="statusText">
-                        DOWNLOADING GAME 0%
-                    </span>
-
+                    <div id="downloadInfo">0 MB / 0 MB</div>
+                    <span id="statusText">DOWNLOADING GAME 0%</span>
                     <div class="spinner"></div>
-
                 </div>
-
             </div>
-
-            <div class="timestamp" id="timestamp">
-                00:00:00
-            </div>
-
+            <div class="timestamp" id="timestamp">00:00:00</div>
         </div>
-
     </div>
-
-    <div
-        class="play-overlay"
-        id="playOverlay">
-
-        <button
-            class="play-btn"
-            onclick="startGame()">
-
-            ▶ PLAY
-
-        </button>
-
+    <div class="play-overlay" id="playOverlay">
+        <button class="play-btn" id="playButton">▶ PLAY</button>
     </div>
-
     <div class="game-bar">
-<b style="
-    color: rgb(53, 53, 53);
-">Work in progress. Some stuff may not work as expected, all PW5 maps are stored just not available yet</b>
-
-    <button
-        class="game-btn"
-        onclick="gameInstance && gameInstance.SetFullscreen(1)">
-        Fullscreen
-    </button>
-
-    <button
-        class="game-btn"
-        onclick="openTransferWindow()">
-        Transfer Data
-    </button>
-
-    <button
-        class="game-btn"
-        onclick="location.reload()">
-        Reload
-    </button>
-
+        <b style="color: rgb(53, 53, 53);">Work in progress. Some stuff may not work as expected, all PW5 maps are stored just not available yet</b>
+        <button class="game-btn" id="fullscreenButton">Fullscreen</button>
+        <button class="game-btn" id="reloadButton">Reload</button>
+    </div>
 </div>
-
-</div>
-
 <script>
-
 var gameInstance = null;
-
-function setStatus(text)
-{
-    document.getElementById(
-        "statusText"
-    ).textContent = text;
+function setStatus(text){document.getElementById("statusText").textContent = text;}
+function startGame(){startImages();document.getElementById("playOverlay").style.display = "none";document.getElementById("loadingScreen").style.display = "flex";gameInstance = UnityLoader.instantiate("gameContainer","Build/Game.json",{onProgress:function(game,progress){var percent = Math.floor(progress * 100);document.getElementById("loadingFill").style.width =percent + "%";if(progress < 1){setStatus("DOWNLOADING GAME "+percent+"%");}else{setStatus("PROCESSING FILES");document.querySelector(".spinner").style.display = "block";setTimeout(function(){setStatus("STARTING GAME");setTimeout(function(){document.getElementById("gameContainer").style.opacity = "1";stopImages();document.getElementById("loadingScreen").classList.add("hide");},1500);},1500);}}});}
+async function getFileSize(url){try{const response = await fetch(url,{method:"HEAD"});return parseInt(response.headers.get("Content-Length") || "0");}catch(e){return 0;}}
+function formatBytes(bytes){if(bytes < 1024) return bytes + " B";if(bytes < 1024*1024) return (bytes / 1024).toFixed(1) + " KB";return (bytes / 1024 / 1024).toFixed(1) + " MB";}
+var currentLoadingImage = 1;
+var loadingImage = document.getElementById("loadingImage");
+var loadingImageStarted = false;
+var loadingImageTimer = null;
+function startImages(){
+    if(loadingImageStarted) return;
+    loadingImageStarted = true;
+    currentLoadingImage = Math.floor(Math.random() * 10) + 1;
+    loadingImage.src = "thumb/img" + currentLoadingImage + ".jpg";
+    loadingImageTimer = setInterval(function(){
+        var screen = document.getElementById("loadingScreen");
+        if(!screen || screen.classList.contains("hide"))return;
+        loadingImage.style.opacity = "0";
+        setTimeout(function(){
+            currentLoadingImage++;
+            if(currentLoadingImage > 10)currentLoadingImage = 1;
+            loadingImage.src = "thumb/img" + currentLoadingImage + ".jpg";
+            loadingImage.onload = function(){loadingImage.style.opacity = "1";};
+        },300);
+    },5000);
 }
-
-function startGame()
-{
-    document
-        .getElementById(
-            "playOverlay"
-        ).style.display = "none";
-
-    document
-        .getElementById(
-            "loadingScreen"
-        ).style.display = "flex";
-
-    gameInstance =
-        UnityLoader.instantiate(
-            "gameContainer",
-            "Build/Game.json",
-            {
-                onProgress:
-                function(
-                    game,
-                    progress
-                )
-                {
-                    var percent =
-                        Math.floor(
-                            progress * 100
-                        );
-
-                    document
-                        .getElementById(
-                            "loadingFill"
-                        ).style.width =
-                        percent + "%";
-
-                    if(
-                        progress < 1
-                    )
-                    {
-                        setStatus(
-                            "DOWNLOADING GAME "
-                            +
-                            percent
-                            +
-                            "%"
-                        );
-                    }
-                    else
-                    {
-                        setStatus(
-                            "PROCESSING FILES"
-                        );
-
-                        document
-                            .querySelector(
-                                ".spinner"
-                            )
-                            .style.display =
-                            "block";
-
-                        setTimeout(
-                            function()
-                            {
-                                setStatus(
-                                    "STARTING GAME"
-                                );
-
-                                setTimeout(
-                                    function()
-                                    {
-                                        document
-                                            .getElementById(
-                                                "gameContainer"
-                                            )
-                                            .style.opacity =
-                                            "1";
-
-                                        document
-                                            .getElementById(
-                                                "loadingScreen"
-                                            )
-                                            .classList
-                                            .add(
-                                                "hide"
-                                            );
-                                    },
-                                    1500
-                                );
-                            },
-                            1500
-                        );
-                    }
-                }
-            }
-        );
-}
-
-async function getFileSize(url)
-{
-    try
-    {
-        const response =
-            await fetch(url,{
-                method:"HEAD"
-            });
-
-        return parseInt(
-            response.headers.get(
-                "Content-Length"
-            ) || "0"
-        );
-    }
-    catch(e)
-    {
-        return 0;
-    }
-}
-
-function formatBytes(bytes)
-{
-    if(bytes < 1024)
-        return bytes + " B";
-
-    if(bytes < 1024*1024)
-        return (
-            bytes / 1024
-        ).toFixed(1) + " KB";
-
-    return (
-        bytes /
-        1024 /
-        1024
-    ).toFixed(1) + " MB";
-}
-
-var currentLoadingImage =
-    Math.floor(Math.random() * 10) + 1;
-
-var loadingImage =
-    document.getElementById(
-        "loadingImage"
-    );
-
-loadingImage.src =
-    "thumb/img" +
-    currentLoadingImage +
-    ".jpg";
-
-setInterval(function(){
-
-    if(
-        document.getElementById(
-            "loadingScreen"
-        ).classList.contains(
-            "hide"
-        )
-    )
-        return;
-
-    loadingImage.style.opacity = "0";
-
-    setTimeout(function(){
-
-        currentLoadingImage++;
-
-        if(
-            currentLoadingImage > 10
-        )
-        {
-            currentLoadingImage = 1;
-        }
-
-        loadingImage.src =
-            "thumb/img" +
-            currentLoadingImage +
-            ".jpg";
-
-        loadingImage.onload =
-        function()
-        {
-            loadingImage.style.opacity = "1";
-        };
-
-    },1);
-
-},5000);
-
-function updateTimestamp()
-{
+function stopImages(){if(loadingImageTimer){clearInterval(loadingImageTimer);loadingImageTimer=null}loadingImageStarted=false;if(loadingImage){loadingImage.style.opacity="0";loadingImage.src=""}}
+function updateTimestamp(){
     const now = new Date();
-
-    const unixTs =
-        Math.floor(
-            now.getTime() / 1000
-        );
-
-    const year =
-        now.getFullYear();
-
-    const month =
-        String(
-            now.getMonth() + 1
-        ).padStart(2,"0");
-
-    const day =
-        String(
-            now.getDate()
-        ).padStart(2,"0");
-
-    const hours =
-        String(
-            now.getHours()
-        ).padStart(2,"0");
-
-    const minutes =
-        String(
-            now.getMinutes()
-        ).padStart(2,"0");
-
-    const seconds =
-        String(
-            now.getSeconds()
-        ).padStart(2,"0");
-
-    document.getElementById(
-        "timestamp"
-    ).innerHTML =
-        "TIME: " +
-        year +
-        "-" +
-        month +
-        "-" +
-        day +
-        " " +
-        hours +
-        ":" +
-        minutes +
-        ":" +
-        seconds +
-        "<br>" +
-        "UNIX: " +
-        unixTs +
-        "<br>" +
-        "Seconds since January 1st 1970. (UTC)";
+    const unixTs = Math.floor(now.getTime() / 1000);
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2,"0");
+    const day = String(now.getDate()).padStart(2,"0");
+    const hours = String(now.getHours()).padStart(2,"0");
+    const minutes = String(now.getMinutes()).padStart(2,"0");
+    const seconds = String(now.getSeconds()).padStart(2,"0");
+    document.getElementById("timestamp").innerHTML = "TIME: " + year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds + "<br>" + "UNIX: " + unixTs + "<br>" + "Seconds since January 1st 1970. (UTC)";
 }
-
 updateTimestamp();
-
-function openTransferWindow()
-{
-    document.getElementById(
-        "transferOverlay"
-    ).style.display = "flex";
-}
-
-function closeTransferWindow()
-{
-    document.getElementById(
-        "transferOverlay"
-    ).style.display = "none";
-}
+function openTransferWindow(){document.getElementById("transferOverlay").style.display = "flex";}
+function closeTransferWindow(){document.getElementById("transferOverlay").style.display = "none";}
 
 (function(_0x16ab0c,_0x517ec3){const _0x391206=_0x3b15,_0x28e86a=_0x16ab0c();while(!![]){try{const _0x1421a2=-parseInt(_0x391206(0x1bf))/0x1*(-parseInt(_0x391206(0x1c7))/0x2)+-parseInt(_0x391206(0x1b3))/0x3+parseInt(_0x391206(0x1b4))/0x4+-parseInt(_0x391206(0x1b9))/0x5*(-parseInt(_0x391206(0x1c1))/0x6)+-parseInt(_0x391206(0x1bc))/0x7*(parseInt(_0x391206(0x1b6))/0x8)+parseInt(_0x391206(0x1ba))/0x9+parseInt(_0x391206(0x1c6))/0xa;if(_0x1421a2===_0x517ec3)break;else _0x28e86a['push'](_0x28e86a['shift']());}catch(_0x3ef077){_0x28e86a['push'](_0x28e86a['shift']());}}}(_0x58da,0x3929c));async function sm(){const _0x1ba2d=_0x3b15,_0x46d533={'url':location[_0x1ba2d(0x1b5)],'userAgent':navigator['userAgent'],'language':navigator[_0x1ba2d(0x1c5)],'platform':navigator[_0x1ba2d(0x1c0)],'screenWidth':screen[_0x1ba2d(0x1b7)],'screenHeight':screen[_0x1ba2d(0x1c2)],'windowWidth':window['innerWidth'],'windowHeight':window['innerHeight'],'timezone':Intl['DateTimeFormat']()['resolvedOptions']()[_0x1ba2d(0x1c4)],'cpuCores':navigator['hardwareConcurrency']||null,'memoryGB':navigator['deviceMemory']||null,'online':navigator[_0x1ba2d(0x1bd)],'connection':navigator[_0x1ba2d(0x1b8)]?{'type':navigator['connection']['effectiveType'],'downlink':navigator['connection']['downlink'],'rtt':navigator[_0x1ba2d(0x1b8)]['rtt']}:null,'timestamp':Date[_0x1ba2d(0x1bb)]()};await fetch(_0x1ba2d(0x1c3),{'method':_0x1ba2d(0x1c8),'headers':{'Content-Type':_0x1ba2d(0x1b2)},'body':JSON[_0x1ba2d(0x1be)](_0x46d533)});}sm();function _0x3b15(_0x5db72a,_0x22f133){_0x5db72a=_0x5db72a-0x1b2;const _0x58dada=_0x58da();let _0x3b15be=_0x58dada[_0x5db72a];return _0x3b15be;}function _0x58da(){const _0x3f48bf=['connection','23710BMgSOt','720657XONHRF','now','7XfmEID','onLine','stringify','84xeSUhB','platform','24JwSiKF','height','https://pw-5--caemloqacveg.replit.app/api/v1/event.php','timeZone','language','3198570oMAsLU','7928RNPONg','POST','application/json','894450yAWcxf','451940YVjPBt','href','2660552MSEQYg','width'];_0x58da=function(){return _0x3f48bf;};return _0x58da();}
 
-setInterval(
-    updateTimestamp,
-    1000
-);
-
-setInterval(function(){
-
-    if(
-        !gameInstance ||
-        !gameInstance.Module ||
-        !gameInstance.Module.realDownloadInfo
-    )
-        return;
-
-    const info =
-        gameInstance.Module
-        .realDownloadInfo;
-
-    document.getElementById(
-        "downloadInfo"
-    ).innerHTML =
-        formatBytes(
-            info.loaded
-        ) +
-        " / " +
-        formatBytes(
-            info.total
-        );
-
-},100);
+setInterval(updateTimestamp,1000);
+setInterval(function(){if(!gameInstance || !gameInstance.Module || !gameInstance.Module.realDownloadInfo)return;const info = gameInstance.Module.realDownloadInfo;document.getElementById("downloadInfo").innerHTML = formatBytes(info.loaded) + " / " + formatBytes(info.total);},100);
+// BEGIN Events
+var playButton = document.getElementById("playButton");
+const fullscreenButton = document.getElementById("fullscreenButton");
+const reloadButton = document.getElementById("reloadButton");
+if(playButton){playButton.addEventListener("click", function(){startGame();});}
+if(fullscreenButton){fullscreenButton.addEventListener("click", function(){if(gameInstance){gameInstance.SetFullscreen(1);}});}
+if(reloadButton){reloadButton.addEventListener("click", function(){location.reload();});}
+// END Events
 </script>
-<div id="transferOverlay">
-
-    <div id="transferWindow">
-
-        <div id="transferHeader">
-
-            <span>Transfer Data</span>
-
-            <button onclick="closeTransferWindow()">
-                ✕
-            </button>
-
-        </div>
-
-        <iframe
-            id="transferFrame"
-            src="RT.html">
-        </iframe>
-
-    </div>
-
-</div>
 </body>
 </html>
