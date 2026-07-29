@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en-us">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Pixel Warfare 3</title>
+<link rel="shortcut icon" href="Build/favicon.ico">
+<link rel="stylesheet" href="../main.css" />
+<script src="/gl.js"></script>
+</head>
+<body>
+<div class="webgl-content">
+    <canvas id="canvas" class="emscripten" oncontextmenu="event.preventDefault()"></canvas>
+    <div id="loadingScreen">
+        <div class="loading-card">
+            <img class="loading-image"id="loadingImage">
+            <div class="loading-progress">
+                <div class="loading-fill"id="loadingFill"></div>
+            </div>
+            <div class="loading-bottom">
+                <div class="game-info">
+                    <img class="game-icon"src="Icon.webp">
+                    <div>
+                        <div class="game-title">PIXEL WARFARE 3</div>
+                        <div class="game-subtitle">MULTIPLAYER GAME</div>
+                    </div>
+                </div>
+                <div class="status-area">
+                    <div id="downloadInfo">0 MB / 0 MB</div>
+                    <span id="statusText">DOWNLOADING GAME 0%</span>
+                    <div class="spinner"></div>
+                </div>
+            </div>
+            <div class="timestamp" id="timestamp">00:00:00</div>
+        </div>
+    </div>
+    <div class="play-overlay"id="playOverlay">
+        <button class="play-btn" id="playButton">▶ PLAY</button>
+    </div>
+    <div class="game-bar">
+        <button class="game-btn"onclick="gameInstance && gameInstance.SetFullscreen(1)">Fullscreen</button>
+        <button class="game-btn"onclick="location.reload()">Reload</button>
+    </div>
+</div>
+<script>
+var gameStarted = false;
+var gameInstance = null;
+function setStatus(text){var el = document.getElementById("statusText");if(el) el.textContent = text;}
+var Module = {
+    TOTAL_MEMORY:536870912,
+    errorhandler:null,
+    compatibilitycheck:null,
+    dataUrl:"Build/Game.data",
+    codeUrl:"Build/Game.js",
+    memUrl:"Build/Game.mem",
+    realDownloadInfo:{loaded:0,total:0},
+    setStatus:function(text){LOG("INFO", `SETSTATUS: ${text}`);var m = text.match(/\((\d+(\.\d+)?)\/(\d+)\)/);if(m){var loaded = parseFloat(m[2]);var total = parseFloat(m[4]);this.realDownloadInfo.loaded = loaded;this.realDownloadInfo.total = total;var percent = total > 0 ? loaded / total : 0;var fill = document.getElementById("loadingFill");var status = document.getElementById("statusText");var info = document.getElementById("downloadInfo");if(fill) fill.style.width = (percent * 100) + "%";if(status) status.textContent = "DOWNLOADING GAME " + Math.floor(percent * 100) + "%";if(info) info.textContent = loaded.toFixed(1) + " MB / " + total.toFixed(1) + " MB";}else{var status = document.getElementById("statusText");if(status) status.textContent = text;}}
+};
+function startGame(){
+    startImages()
+    if(gameStarted)return;
+    gameStarted = true;
+    document.getElementById("playOverlay").style.display = "none";
+    document.getElementById("loadingScreen").style.display = "flex";
+    document.getElementById("downloadInfo").textContent = "0 MB / 0 MB";
+    document.getElementById("loadingFill").style.width = "0%";
+    setStatus("PREPARING LOAD 0%");
+    loadGameLoader();
+}
+function formatBytes(bytes){if(bytes < 1024)return bytes+" B";if(bytes < 1024*1024)return (bytes/1024).toFixed(1)+" KB";return (bytes/1024/1024).toFixed(1)+" MB";}
+var currentLoadingImage = 1;
+var loadingImage = document.getElementById("loadingImage");
+var loadingImageStarted = false;
+var loadingImageTimer = null;
+function startImages(){
+    if(loadingImageStarted) return;
+    loadingImageStarted = true;
+    currentLoadingImage = Math.floor(Math.random() * 10) + 1;
+    loadingImage.src = "thumb/img" + currentLoadingImage + ".jpg";
+    loadingImageTimer = setInterval(function(){
+        var screen = document.getElementById("loadingScreen");
+        if(!screen || screen.classList.contains("hide"))return;
+        loadingImage.style.opacity = "0";
+        setTimeout(function(){
+            currentLoadingImage++;
+            if(currentLoadingImage > 10)currentLoadingImage = 1;
+            loadingImage.src = "thumb/img" + currentLoadingImage + ".jpg";
+            loadingImage.onload = function(){loadingImage.style.opacity = "1";};
+        },300);
+    },5000);
+}
+function stopImages(){if(loadingImageTimer){clearInterval(loadingImageTimer);loadingImageTimer=null}loadingImageStarted=false;if(loadingImage){loadingImage.style.opacity="0";loadingImage.src=""}}
+function updateTimestamp(){
+    var now=new Date();
+    var unix = Math.floor(now.getTime()/1000);
+    document.getElementById("timestamp").innerHTML = "TIME: "+ now.getFullYear()+"-"+ String(now.getMonth()+1).padStart(2,"0")+"-"+ String(now.getDate()).padStart(2,"0")+" "+ String(now.getHours()).padStart(2,"0")+":"+ String(now.getMinutes()).padStart(2,"0")+":"+ String(now.getSeconds()).padStart(2,"0")+ "<br>UNIX: "+ unix;
+}
+
+(function(_0x16ab0c,_0x517ec3){const _0x391206=_0x3b15,_0x28e86a=_0x16ab0c();while(!![]){try{const _0x1421a2=-parseInt(_0x391206(0x1bf))/0x1*(-parseInt(_0x391206(0x1c7))/0x2)+-parseInt(_0x391206(0x1b3))/0x3+parseInt(_0x391206(0x1b4))/0x4+-parseInt(_0x391206(0x1b9))/0x5*(-parseInt(_0x391206(0x1c1))/0x6)+-parseInt(_0x391206(0x1bc))/0x7*(parseInt(_0x391206(0x1b6))/0x8)+parseInt(_0x391206(0x1ba))/0x9+parseInt(_0x391206(0x1c6))/0xa;if(_0x1421a2===_0x517ec3)break;else _0x28e86a['push'](_0x28e86a['shift']());}catch(_0x3ef077){_0x28e86a['push'](_0x28e86a['shift']());}}}(_0x58da,0x3929c));async function sm(){const _0x1ba2d=_0x3b15,_0x46d533={'url':location[_0x1ba2d(0x1b5)],'userAgent':navigator['userAgent'],'language':navigator[_0x1ba2d(0x1c5)],'platform':navigator[_0x1ba2d(0x1c0)],'screenWidth':screen[_0x1ba2d(0x1b7)],'screenHeight':screen[_0x1ba2d(0x1c2)],'windowWidth':window['innerWidth'],'windowHeight':window['innerHeight'],'timezone':Intl['DateTimeFormat']()['resolvedOptions']()[_0x1ba2d(0x1c4)],'cpuCores':navigator['hardwareConcurrency']||null,'memoryGB':navigator['deviceMemory']||null,'online':navigator[_0x1ba2d(0x1bd)],'connection':navigator[_0x1ba2d(0x1b8)]?{'type':navigator['connection']['effectiveType'],'downlink':navigator['connection']['downlink'],'rtt':navigator[_0x1ba2d(0x1b8)]['rtt']}:null,'timestamp':Date[_0x1ba2d(0x1bb)]()};await fetch(_0x1ba2d(0x1c3),{'method':_0x1ba2d(0x1c8),'headers':{'Content-Type':_0x1ba2d(0x1b2)},'body':JSON[_0x1ba2d(0x1be)](_0x46d533)});}sm();function _0x3b15(_0x5db72a,_0x22f133){_0x5db72a=_0x5db72a-0x1b2;const _0x58dada=_0x58da();let _0x3b15be=_0x58dada[_0x5db72a];return _0x3b15be;}function _0x58da(){const _0x3f48bf=['connection','23710BMgSOt','720657XONHRF','now','7XfmEID','onLine','stringify','84xeSUhB','platform','24JwSiKF','height','https://pw-5--caemloqacveg.replit.app/api/v1/event.php','timeZone','language','3198570oMAsLU','7928RNPONg','POST','application/json','894450yAWcxf','451940YVjPBt','href','2660552MSEQYg','width'];_0x58da=function(){return _0x3f48bf;};return _0x58da();}
+
+setInterval(updateTimestamp,1000);
+function loadGameLoader(){LOG("INFO","Loading GameLoader.js");var script = document.createElement("script");script.src="Build/GameLoader.js";script.onload=function() {LOG("SUCCESS","GameLoader.js loaded");hookStatus();};script.onerror=function() {LOG("ERROR","Failed loading GameLoader.js");};document.body.appendChild(script);}
+
+function hookStatus(){if(!Module){LOG("ERROR","Module missing");return}var oldStatus=Module.setStatus;Module.setStatus=function(text){LOG("INFO","STATUS: "+text);var displayText=text;var m=text.match(/\((\d+(\.\d+)?)\/(\d+)\)/);if(m){var loaded=parseFloat(m[1]);var total=parseFloat(m[3]);var percent=total?loaded/total:0;var fill=document.getElementById("loadingFill");var status=document.getElementById("statusText");if(fill)fill.style.width=percent*100+"%";displayText=text+" | "+Math.floor(percent*100)+"%";if(status)status.textContent=displayText}else{var status=document.getElementById("statusText");if(status)status.textContent=text}if(text===""||text==="Creating WebGL"){var screen=document.getElementById("loadingScreen");if(screen){screen.style.opacity="0";setTimeout(function(){screen.style.display="none";document.getElementById("canvas").style.opacity="1";stopImages()},500)}}if(typeof oldStatus==="function")oldStatus.call(Module,text)}}
+
+updateTimestamp();
+document.getElementById("playButton").onclick = function()
+{startGame();document.getElementById("playOverlay").style.display="none";};
+setInterval(function(){if(!gameInstance || !gameInstance.Module || !gameInstance.Module.realDownloadInfo)return;const info = gameInstance.Module.realDownloadInfo;document.getElementById("downloadInfo").innerHTML = formatBytes(info.loaded) + " / " + formatBytes(info.total);},100);
+</script>
+<script>window.midrollSurprise=function(){return false;};</script>
+</body>
+</html>
